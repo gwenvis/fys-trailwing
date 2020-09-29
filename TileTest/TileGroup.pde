@@ -4,7 +4,7 @@
  */
 
 class TileGroup {
-  ArrayList<Tile> tiles;
+  ArrayList<Tile> tiles = new ArrayList<Tile>();
   PVector position;
   
   //Copies tile position in position.
