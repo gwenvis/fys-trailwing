@@ -36,8 +36,4 @@ class Tile {
   void drawTileRelative(PVector parent) {
     image(sprite, position.x + parent.x, position.y + parent.y, size.x, size.y);
   }
-
-  boolean checkCollision() {
-    return false;
-  }
 }
