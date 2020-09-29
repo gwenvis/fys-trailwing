@@ -1,4 +1,4 @@
-z/**
+/**
  Made Cody Bolleboom
  29-09-2020 13:33
  */
@@ -8,5 +8,6 @@ class TileGroup {
   PVector position;
 
   void drawGroup() {
+    
   }
 }
