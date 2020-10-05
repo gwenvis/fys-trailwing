@@ -2,18 +2,24 @@
  Made Cody Bolleboom
  05-10-2020 10:44
  */
- 
- class TileManager {
+
+class TileManager {
   ArrayList<TileGroup> tiles = new ArrayList<TileGroup>();
-  
-  
-  
+  int speed = 5;
+
+  //Moves all the tiles. (Patrick Eikema)
+  void move() {
+    for(int i = 0; i < tiles.size(); i++){
+      tiles.get(i).position.x -= speed;
+      
+    }
+  }
   /**
-  * This function loads the chunks json file and builds the level
-  *
-  * @param int this is the array index of the needed chunk
-  * @returns void
-  */
+   * This function loads the chunks json file and builds the level
+   *
+   * @param int this is the array index of the needed chunk
+   * @returns void
+   */
   void loadGroup(int chunkIndex) {
     //Get the chunks from the file
     JSONArray chunks = loadJSONArray("json/chunks.json");

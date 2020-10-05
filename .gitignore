@@ -8,3 +8,7 @@ application.windows32
 application.windows64
 application.macosx
 out
+TileTest/data/json/chunks.json
+TileTest/TileGroup.pde
+TileTest/Tile.pde
+TileTest/TileTest.pde
