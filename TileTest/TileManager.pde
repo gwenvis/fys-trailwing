@@ -13,8 +13,8 @@ class TileManager {
   int chunkAmount;
 
   //Moves all the tiles. (Patrick Eikema)
-  void move() {
-    for (int i = 0; i < tiles.size(); i++) {
+  void moveGroups() {
+    for(int i = 0; i < tiles.size(); i++){
       tiles.get(i).position.x -= speed;
     }
   }
@@ -29,6 +29,24 @@ class TileManager {
         tiles.add(newGroup);
     }
   }
+  
+  void drawGroups() {
+    for(int i = 0; i < tiles.size(); i++){
+     tiles.get(i).drawGroup(); 
+    }
+    
+  }
+  /**
+   * This function loads the chunks json file and builds the level
+   *
+   * @param int this is the array index of the needed chunk
+   * @returns void
+   */
+  void loadGroup(int chunkIndex) {
+    //Get the chunks from the file
+    JSONArray chunks = loadJSONArray("json/chunks.json");
+    //get a single chunk by the given index
+    JSONObject chunk = chunks.getJSONObject(chunkIndex);
 
   void listener() {
     if (tiles.size() > 0) {
