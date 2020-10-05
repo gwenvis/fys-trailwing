@@ -127,11 +127,11 @@ public static class Input {
     }
 
     for(HashMap.Entry<Integer,  Boolean> f : frameKeyCodeDict.entrySet()) {
-        frameKeyDict.put(f.getKey(), false);
+      frameKeyCodeDict.put(f.getKey(), false);
     }
 
-    for(HashMap.Entry<Integer,  Boolean> f : mouseFrameDict.entrySet()) {
-        frameKeyDict.put(f.getKey(), false);
+    for(HashMap.Entry<Integer,  Boolean> f : frameMouseDict.entrySet()) {
+      frameMouseDict.put(f.getKey(), false);
     }
   }
 }
