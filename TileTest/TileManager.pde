@@ -8,11 +8,18 @@ class TileManager {
   int speed = 5;
 
   //Moves all the tiles. (Patrick Eikema)
-  void move() {
+  void moveGroups() {
     for(int i = 0; i < tiles.size(); i++){
       tiles.get(i).position.x -= speed;
       
     }
+  }
+  
+  void drawGroups() {
+    for(int i = 0; i < tiles.size(); i++){
+     tiles.get(i).drawGroup(); 
+    }
+    
   }
   /**
    * This function loads the chunks json file and builds the level
