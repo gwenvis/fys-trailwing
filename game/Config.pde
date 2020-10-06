@@ -5,4 +5,12 @@ static class Config {
   final static int CAMERA_MOVEMENT_SPEED = 5;
   
   final static float PLAYER_BOTTOM_OFFSET = 200;
+  final static float PLAYER_JUMP_POWER = -4.5f;
+  final static float PLAYER_JUMP_GRAVITY = 4.5f;
+  final static float PLAYER_SPEED = 5;
+  final static float PLAYER_START_HP = 100;
+  final static float PLAYER_JUMP_OFFSET = 120;
+  final static float SHIELD_OFFSET_X = 100;
+  final static float SHIELD_WIDTH = 10;
+  final static float SHIELD_HEIGHT = 100;
 }
