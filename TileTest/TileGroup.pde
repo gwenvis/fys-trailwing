@@ -7,12 +7,12 @@ class TileGroup {
   ArrayList<Tile> tiles = new ArrayList<Tile>();
   PVector position;
 
-  //Copies tile position in position.
+  //Copies tile position in position. (Patrick Eikema)
   TileGroup(PVector tempPos) {
     position = tempPos;
   }
 
-  // Loops through all tiles in the array and draws it relative to the tiles that are already drawn.
+  // Loops through all tiles in the array and draws it relative to the tiles that are already drawn. (Patrick Eikema)
   void drawGroup() {
     for (int i = 0; i < tiles.size(); i ++ ) {
       tiles.get(i).drawTileRelative(position);
@@ -20,14 +20,14 @@ class TileGroup {
   }
 
   /**
-  * This function loads the chunks json file and builds the level
-  *
-  * @param int this is the array index of the needed chunk
-  * @returns void
-  */
-  void loadGroup(int chunkIndex) {
-    //Get the chunks from the file
-    JSONArray chunks = loadJSONArray("json/chunks.json");
+   * @author Cody Bolleboom
+   * This function loads the chunks json file and builds the level
+   *
+   * @param JSONArray chunks array taken out the data/chunks.json
+   * @param int this is the array index of the needed chunk
+   * @returns void
+   */
+  void loadGroup(JSONArray chunks, int chunkIndex) {
     //get a single chunk by the given index
     JSONObject chunk = chunks.getJSONObject(chunkIndex);
 
