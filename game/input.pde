@@ -4,12 +4,17 @@ import java.util.Map;
  *  The input class will handle all Processing related input so they
  *  are not affected by Windows delays and will be held down the entire time.
  *  Also provides functionality for presses that happened at the moment.
+ *
+ *  Author: Antonio Bottelier
  */
 public static class Input {
   
+  // Generate the hashsmaps required for input handling
   private static HashMap<Character, Boolean> keyDict = new HashMap<Character, Boolean>();
   private static HashMap<Integer, Boolean> keyCodeDict = new HashMap<Integer, Boolean>();
   private static HashMap<Integer, Boolean> mouseDict = new HashMap<Integer, Boolean>();
+
+  // Frame dependent input hashmaps
   private static HashMap<Character, Boolean> frameKeyDict = new HashMap<Character, Boolean>();
   private static HashMap<Integer, Boolean> frameKeyCodeDict = new HashMap<Integer, Boolean>();
   private static HashMap<Integer, Boolean> frameMouseDict = new HashMap<Integer, Boolean>();
@@ -80,12 +85,18 @@ public static class Input {
   
   private static void keyCodeUpdate(int _keyCode, boolean pressed) {
     keyCodeDict.put(_keyCode, pressed);
+
+    // if the key has been released, remove it from the frame dependent
+    // hashmaps, otherwise add it.
     if(!pressed) frameKeyCodeDict.remove(_keyCode);
     else frameKeyCodeDict.put(_keyCode, pressed);
   }
 
   private static void keyUpdate(char _key, boolean pressed) {
     keyDict.put(_key, pressed);
+
+    // if the key has been released, remove it from the frame dependent
+    // hashmaps, otherwise add it.
     if(!pressed) frameKeyDict.remove(_key);
     else frameKeyDict.put(_key, pressed);
   }
@@ -103,8 +114,7 @@ public static class Input {
   public static void keyReleased(char _key, int coded, int _keyCode) {
     if(_key == coded)
       keyCodeUpdate(_keyCode, false);
-    else
-      keyUpdate(_key, false); 
+    else keyUpdate(_key, false); 
   }
 
   public static void mousePressed(int _mouseButton) {
@@ -121,6 +131,10 @@ public static class Input {
     if(frameMouseDict.containsKey(_mouseButton)) frameMouseDict.remove(_mouseButton);
   }
 
+  /*
+   * The update() function should be called at the end of every frame
+   * to clear the current frame's key input
+   */
   public static void update() {
     for(HashMap.Entry<Character,  Boolean> f : frameKeyDict.entrySet()) {
       frameKeyDict.put(f.getKey(), false);
