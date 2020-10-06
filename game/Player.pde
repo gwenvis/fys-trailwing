@@ -20,6 +20,7 @@ class Player {
     fall=false;
     shieldIsUp=false;
     image = loadImage("Jojo_1.png");
+    image.resize(100, 100);
   }
   
   void init(){
@@ -44,13 +45,9 @@ class Player {
   void move() {
     if (Input.keyCodePressed(LEFT)) {
       playerPos.x-=playerSpeed;
-      image = loadImage("Jojo_1.png");
-      image.resize(100, 100);
     }
     if (Input.keyCodePressed(RIGHT)) {
       playerPos.x+=playerSpeed;
-      image = loadImage("Jojo_1.png");
-      image.resize(100, 100);
     }
     if (Input.keyCodePressed(UP)) {
       // if keypressed is arrow up then jump is true
