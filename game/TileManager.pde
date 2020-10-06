@@ -5,9 +5,10 @@
 
 class TileManager {
   ArrayList<TileGroup> tileGroups = new ArrayList<TileGroup>();
-  float defaultGroupWidth = 1000;
+  float defaultGroupWidth = Config.DEFAULT_GROUP_WIDTH;
   float speed;
-  int startingGroups = 3;
+  int startingGroups = Config.MIN_STARTING_CHUNKS;
+  float bottomOffset = Config.CHUNK_BOTTOM_OFFSET;
 
   JSONArray chunks;
   int chunkAmount;
@@ -17,7 +18,7 @@ class TileManager {
    * 
    * load the chunks from json and create the minimal amount of the groups
    */
-  TileManager(float movementSpeed) {
+  TileManager(float movementSpeed) {    
     speed = movementSpeed;
 
     //load chunks form json
@@ -27,7 +28,7 @@ class TileManager {
     //create the minimal amount of chunks
     for (int i = 0; i < startingGroups; i++) {
       //create a new chunk to the right of the most right chunk
-      TileGroup newGroup = new TileGroup(new PVector(i * defaultGroupWidth, height - 100));
+      TileGroup newGroup = new TileGroup(new PVector(i * defaultGroupWidth, height - bottomOffset));
         //add the tile positions of a random chunk to the new chunk
         newGroup.loadGroup(chunks, (int)random(0, chunkAmount));
         //add the chunk to the manager list
@@ -70,7 +71,7 @@ class TileManager {
         TileGroup lastGroup = tileGroups.get(tileGroups.size() - 1);
 
         //create a new chunk to the right of the most right chunk
-        TileGroup newGroup = new TileGroup(new PVector(lastGroup.position.x + defaultGroupWidth, height - 100));
+        TileGroup newGroup = new TileGroup(new PVector(lastGroup.position.x + defaultGroupWidth, height - bottomOffset));
         //add the tile positions of a random chunk to the new chunk
         newGroup.loadGroup(chunks, (int)random(0, chunkAmount));
         //add the chunk to the manager list

@@ -10,16 +10,17 @@ class Player {
     playerPos.x = x;
     playerPos.y = y;
     playerStartY = playerPos.y;
-    jumpTopY = playerPos.y - 120;
-    jumpPower = -4.5f;
-    jumpGravity = 4.5f;
+    jumpTopY = playerPos.y - Config.PLAYER_JUMP_OFFSET;
+    jumpPower = Config.PLAYER_JUMP_POWER;
+    jumpGravity = Config.PLAYER_JUMP_GRAVITY;
     //playerHP = 100;
-    playerSpeed = 5;
+    playerSpeed = Config.PLAYER_SPEED;
     //angle = 0;
     jump=false;
     fall=false;
     shieldIsUp=false;
     image = loadImage("Jojo_1.png");
+    image.resize(100, 100);
   }
   
   void init(){
@@ -32,7 +33,6 @@ class Player {
     update();
     //rect(playerX, playerY, 50, 50);
     image(image, playerPos.x, playerPos.y);
-    image.resize(100, 100);
   }
 
   void update() {
@@ -44,13 +44,9 @@ class Player {
   void move() {
     if (Input.keyCodePressed(LEFT)) {
       playerPos.x-=playerSpeed;
-      image = loadImage("Jojo_1.png");
-      image.resize(100, 100);
     }
     if (Input.keyCodePressed(RIGHT)) {
       playerPos.x+=playerSpeed;
-      image = loadImage("Jojo_1.png");
-      image.resize(100, 100);
     }
     if (Input.keyCodePressed(UP)) {
       // if keypressed is arrow up then jump is true
@@ -76,15 +72,14 @@ class Player {
     } else if (playerPos.y>=playerStartY && fall) {
       jump=false;
       fall=false;
-      keyCode = 0;
     } else {
       playerPos.y += jumpGravity;
     }
   }
 
   void shield() {
-    if (shieldIsUp == true) {
-      rect(playerPos.x+100, playerPos.y, 10, 100);
+    if (shieldIsUp) {
+      rect(playerPos.x+Config.SHIELD_OFFSET_X, playerPos.y, Config.SHIELD_WIDTH, Config.SHIELD_HEIGHT);
     }
   }
 }

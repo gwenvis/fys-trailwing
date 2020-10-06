@@ -1,5 +1,5 @@
-import processing.sound.*;
-SoundFile file;
+/*import processing.sound.*;
+SoundFile file;*/
 TileManager manager;
 Player player;
 float circleX = 2000;
@@ -8,10 +8,11 @@ int radius = 10;
 boolean ballHit = false;
 
 void setup() {
+  background(255);
   fullScreen();
   frameRate(60);
-  manager = new TileManager(10);
-  player = new Player(width/2, height/2);
+  manager = new TileManager(Config.CAMERA_MOVEMENT_SPEED);
+  player = new Player(width/2, height - Config.PLAYER_BOTTOM_OFFSET);
 }
 
 void draw()
