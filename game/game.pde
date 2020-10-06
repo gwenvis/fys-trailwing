@@ -1,5 +1,5 @@
-import processing.sound.*;
-SoundFile file;
+/*import processing.sound.*;
+SoundFile file;*/
 TileManager manager;
 Player player;
 float circleX = 2000;
