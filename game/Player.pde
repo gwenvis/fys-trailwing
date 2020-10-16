@@ -5,6 +5,8 @@ class Player {
   boolean jump, fall, shieldIsUp;
   PImage image;
 
+  Animation currentAnimation;
+
   Player(float x, float y) {
     playerPos = new PVector(0, 0);
     playerPos.x = x;
@@ -21,6 +23,8 @@ class Player {
     shieldIsUp=false;
     image = loadImage("Jojo_1.png");
     image.resize(100, 100);
+    animations.test();
+    currentAnimation = animations.PLAYER_WALK;
   }
   
   void init(){
@@ -32,7 +36,8 @@ class Player {
   void draw() {
     update();
     //rect(playerX, playerY, 50, 50);
-    image(image, playerPos.x, playerPos.y);
+
+    currentAnimation.draw(playerPos.x, playerPos.y, 100, 100);
   }
 
   void update() {

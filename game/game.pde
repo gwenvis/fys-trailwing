@@ -6,11 +6,13 @@ float circleX = 2000;
 float xSpeed = 5;
 int radius = 10;
 boolean ballHit = false;
+Animations animations;
 
 void setup() {
   background(255);
   fullScreen();
   frameRate(60);
+  animations = new Animations();
   manager = new TileManager(Config.CAMERA_MOVEMENT_SPEED);
   player = new Player(width/2, height - Config.PLAYER_BOTTOM_OFFSET);
 }
