@@ -23,7 +23,6 @@ class Player {
     shieldIsUp=false;
     image = loadImage("Jojo_1.png");
     image.resize(100, 100);
-    animations.test();
     currentAnimation = animations.PLAYER_WALK;
   }
   
