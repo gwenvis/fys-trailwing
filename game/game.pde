@@ -49,7 +49,12 @@ void draw()
     circleX+=xSpeed;
   }
 
-  println(player.shieldIsUp);
+  print(manager.ObstacleCheckCollision(player.playerPos, new PVector(100, 100)));
+  PVector collision = manager.checkCollision(player.playerPos, new PVector(100, 100));
+  //print(collision);
+  //print("\n");
+  player.collision = collision;
+  player.playerPos.sub(collision.x * manager.speed, 0);
 }
 
 void keyPressed() {

@@ -1,9 +1,10 @@
 class Player {
   private int playerHP, angle;
-  private PVector playerPos;
+  public PVector playerPos;
   private float playerSpeed, jumpTopY, jumpPower, jumpGravity, playerStartY;
   boolean jump, fall, shieldIsUp;
   PImage image;
+  PVector collision = new PVector(0, 0);
 
   Player(float x, float y) {
     playerPos = new PVector(0, 0);
@@ -19,7 +20,7 @@ class Player {
     jump=false;
     fall=false;
     shieldIsUp=false;
-    image = loadImage("Jojo_1.png");
+    image = loadImage("new_player.png");
     image.resize(100, 100);
   }
   
@@ -32,6 +33,7 @@ class Player {
   void draw() {
     update();
     //rect(playerX, playerY, 50, 50);
+    imageMode(CENTER);
     image(image, playerPos.x, playerPos.y);
   }
 
@@ -42,10 +44,10 @@ class Player {
   }
 
   void move() {
-    if (Input.keyCodePressed(LEFT)) {
+    if (Input.keyCodePressed(LEFT) && collision.x != -1) {
       playerPos.x-=playerSpeed;
     }
-    if (Input.keyCodePressed(RIGHT)) {
+    if (Input.keyCodePressed(RIGHT) && collision.x != 1) {
       playerPos.x+=playerSpeed;
     }
     if (Input.keyCodePressed(UP)) {

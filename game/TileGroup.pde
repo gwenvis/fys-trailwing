@@ -5,6 +5,7 @@
 
 class TileGroup {
   ArrayList<Tile> tiles = new ArrayList<Tile>();
+  ArrayList<Obstacle> obstacles = new ArrayList<Obstacle>();
   PVector position;
 
   //Copies tile position in position. (Patrick Eikema)
@@ -16,6 +17,10 @@ class TileGroup {
   void drawGroup() {
     for (int i = 0; i < tiles.size(); i ++ ) {
       tiles.get(i).drawTileRelative(position);
+    }
+
+    for (Obstacle obstacle : obstacles) {
+      obstacle.drawTileRelative(position);
     }
   }
 
@@ -42,6 +47,19 @@ class TileGroup {
       tiles.add(new Tile(tile.getString("sprite"), 
         new PVector(tile.getFloat("width"), tile.getFloat("height")), 
         new PVector(tile.getFloat("x"), tile.getFloat("y"))));
+    }
+
+    //gets the obstacles of the chunk
+    JSONArray chunkObstacles = chunk.getJSONArray("obstacles");
+    //loop through the 
+    for (int n = 0; n < chunkObstacles.size(); n++) {
+      //get the single obstacles as an object
+      JSONObject obstacle = chunkObstacles.getJSONObject(n);
+
+      //add the tile with its variables to the tile array
+      obstacles.add(new Obstacle(obstacle.getString("sprite"),  //<>//
+        new PVector(obstacle.getFloat("width"), obstacle.getFloat("height")), 
+        new PVector(obstacle.getFloat("x"), obstacle.getFloat("y")), 1));
     }
   }
 }

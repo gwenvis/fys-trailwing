@@ -25,6 +25,7 @@ class Tile {
    * @returns void
    */
   void drawTile() {
+    imageMode(CENTER);
     image(sprite, position.x, position.y, size.x, size.y);
   }
 
@@ -37,6 +38,7 @@ class Tile {
    * @returns void
    */
   void drawTileRelative(PVector parent) {
+    imageMode(CENTER);
     image(sprite, position.x + parent.x, position.y + parent.y, size.x, size.y);
   }
 }
