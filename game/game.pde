@@ -49,12 +49,12 @@ void draw()
     circleX+=xSpeed;
   }
 
-  print(manager.ObstacleCheckCollision(player.playerPos, new PVector(100, 100)));
-  PVector collision = manager.checkCollision(player.playerPos, new PVector(100, 100));
-  //print(collision);
+  //print(manager.ObstacleCheckCollision(player.playerPos, new PVector(100, 100)));
+  TileCollision collision = manager.checkCollision(player.playerPos, new PVector(100, 100));
+  //print(collision.direction);
   //print("\n");
-  player.collision = collision;
-  player.playerPos.sub(collision.x * manager.speed, 0);
+  player.tileCollision = collision;
+  player.playerPos.sub(collision.direction.x * manager.speed, 0);
 }
 
 void keyPressed() {

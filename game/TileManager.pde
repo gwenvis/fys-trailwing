@@ -56,7 +56,7 @@ class TileManager {
    *
    * @return void
    */
-  PVector checkCollision(PVector targetPosition, PVector targetSize) {
+  TileCollision checkCollision(PVector targetPosition, PVector targetSize) {
     for (TileGroup tileGroup : tileGroups) {
       for (Tile tile : tileGroup.tiles) {
         PVector tilePosition = new PVector(tileGroup.position.x + tile.position.x, tileGroup.position.y + tile.position.y);
@@ -74,15 +74,19 @@ class TileManager {
           if (tilePosition.y - tile.size.y / 2 ==  targetPosition.y + targetSize.y / 2 || tilePosition.y + tile.size.y / 2 ==  targetPosition.y - targetSize.y / 2) {
             collision.x = 0;
           }
+          
+          TileCollision col = new TileCollision();
+          col.direction = collision;
+          col.position = new PVector(tilePosition.x + tile.size.x * collision.x, tilePosition.y + tile.size.y * collision.y);
 
-          return collision;
+          return col;
         }
       }
     }
 
-    return new PVector(0, 0);
+    return new TileCollision();
   }
-  
+
   /**
    * @author Cody Bolleboom
    * Checks the collision and returns the collision direction as a boolean
@@ -145,4 +149,9 @@ class TileManager {
       }
     }
   }
+}
+
+class TileCollision {
+  PVector direction = new PVector();
+  PVector position;
 }
