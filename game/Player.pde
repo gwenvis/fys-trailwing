@@ -9,8 +9,11 @@ class Player {
   private float playerSpeed, jumpPower, jumpGravity, playerJump, gravityPull, currentArmourSpeedMultiplier, playerVelocity, speedUp;
   boolean jump, barrierLeft, barrierRight, shieldIsUp, armourHit;
   PImage image;
+  PVector size = Config.PLAYER_SIZE;
 
   TileCollision tileCollision = new TileCollision();
+  Obstacle obstacle = null;
+  TileManager manager;
 
   /*
     schedule creates tasks to be excecuted with various delays and return a task object that can be used to cancel or check execution
@@ -38,7 +41,7 @@ class Player {
     barrierLeft=false;
     barrierRight=false;
     image = loadImage("new_player.png");
-    image.resize(100, 100);
+    image.resize((int)size.x, (int)size.y);
 
     //command that has to be excecuted infinitily until end is reached, which isn't specified in this case
     Runnable speedUp = new Runnable() {
@@ -73,7 +76,7 @@ class Player {
       gravityPull++;
     }
 
-    if (tileCollision.direction.y == -1 && gravityPull != 0) {
+    if (tileCollision.direction.y == Config.DOWN && gravityPull != 0) {
       playerPos.y = tileCollision.position.y;
       gravityPull = 0;
       jump = false;
@@ -81,10 +84,14 @@ class Player {
       jump();
     }
 
+    if (tileCollision.direction.y != Config.DOWN && gravityPull == 0) {
+      player.playerPos.sub(tileCollision.direction.x * manager.speed, 0);
+    }
 
-    if (armourHit) {
-      currentArmourSpeedMultiplier = armourLevels.get(currentArmourLevel);
-      armourHit = false;
+    if (obstacle != null) {
+      currentArmourLevel += obstacle.damage;
+      currentArmourSpeedMultiplier = armourLevels.get(currentArmourLevel > armourLevels.size() - 1 ? armourLevels.size() - 1 : currentArmourLevel);
+      obstacle = null;
     }
 
     barrierLeft = playerBarrierLeft();
@@ -94,14 +101,14 @@ class Player {
   }
 
   void move() {
-    playerVelocity = playerSpeed*currentArmourSpeedMultiplier;
-    if (Input.keyCodePressed(LEFT)&&!barrierLeft && tileCollision.direction.x != -1) {
+    playerVelocity = playerSpeed/**currentArmourSpeedMultiplier*/;
+    if (Input.keyCodePressed(LEFT)&&!barrierLeft && tileCollision.direction.x != Config.LEFT) {
       playerPos.x-=playerVelocity;
     }
-    if (Input.keyCodePressed(RIGHT)&&!barrierRight && tileCollision.direction.x != 1) {
+    if (Input.keyCodePressed(RIGHT)&&!barrierRight && tileCollision.direction.x != Config.RIGHT) {
       playerPos.x+=playerVelocity;
     }
-    if (Input.keyCodePressed(UP)) {
+    if (Input.keyCodePressed(UP) && tileCollision.direction.y == Config.DOWN) {
       // if keypressed is arrow up then jump is true
       jump = true;
     }    
@@ -118,11 +125,11 @@ class Player {
   }
 
   void armourLevelsList() {
-    armourLevels.add(1f);
-    armourLevels.add(1.5f);
-    armourLevels.add(3f);
-    armourLevels.add(4.5f);
-    armourLevels.add(6f);
+    armourLevels.add(5f);
+    armourLevels.add(10f);
+    armourLevels.add(15f);
+    armourLevels.add(20f);
+    armourLevels.add(25f);
   }
 
   void speedingUp() {

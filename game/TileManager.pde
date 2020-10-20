@@ -7,6 +7,7 @@ class TileManager {
   ArrayList<TileGroup> tileGroups = new ArrayList<TileGroup>();
   float defaultGroupWidth = Config.DEFAULT_GROUP_WIDTH;
   float speed;
+  float speedCap;
   int startingGroups = Config.MIN_STARTING_CHUNKS;
   float bottomOffset = Config.CHUNK_BOTTOM_OFFSET;
 
@@ -69,7 +70,7 @@ class TileManager {
 
         if ((top && left) || (top && right) || (bottom && left) || bottom && right) {
 
-          PVector collision = new PVector((right ? 1 : (left ? -1 : 0)), (top ? 1 : (bottom ? -1 : 0)));
+          PVector collision = new PVector((right ? Config.RIGHT : (left ? Config.LEFT : 0)), (top ? Config.UP : (bottom ? Config.DOWN : 0)));
 
           if (tilePosition.y - tile.size.y / 2 ==  targetPosition.y + targetSize.y / 2 || tilePosition.y + tile.size.y / 2 ==  targetPosition.y - targetSize.y / 2) {
             collision.x = 0;
@@ -95,6 +96,8 @@ class TileManager {
    */
   Obstacle ObstacleCheckCollision(PVector targetPosition, PVector targetSize) {
     for (TileGroup tileGroup : tileGroups) {
+      
+      int i = 0;
       for (Obstacle obstacle : tileGroup.obstacles) {
         PVector tilePosition = new PVector(tileGroup.position.x + obstacle.position.x, tileGroup.position.y + obstacle.position.y);
 
@@ -106,14 +109,18 @@ class TileManager {
 
         if ((top && left) || (top && right) || (bottom && left) || bottom && right) {
 
-          PVector collision = new PVector((right ? 1 : (left ? -1 : 0)), (top ? 1 : (bottom ? -1 : 0)));
+          PVector collision = new PVector((right ? Config.RIGHT : (left ? Config.LEFT : 0)), (top ? Config.UP : (bottom ? Config.DOWN : 0)));
 
           if (tilePosition.y - obstacle.size.y / 2 ==  targetPosition.y + targetSize.y / 2 || tilePosition.y + obstacle.size.y / 2 ==  targetPosition.y - targetSize.y / 2) {
             collision.x = 0;
           }
 
+
+          tileGroup.obstacles.remove(i);
           return obstacle;
         }
+        
+        i++;
       }
     }
 
