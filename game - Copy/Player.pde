@@ -3,16 +3,11 @@ import java.util.concurrent.Executors;
 import java.util.concurrent.TimeUnit;
 
 class Player {
-  private int playerHP, angle;
-  public PVector playerPos;
-  private float playerSpeed, jumpTopY, jumpPower, jumpGravity, playerStartY;
-  boolean jump, fall, shieldIsUp;
   private int playerHP, currentArmourLevel;
   private PVector playerPos;
   private float playerSpeed, jumpPower, jumpGravity, playerJump, gravityPull, currentArmourSpeedMultiplier, playerVelocity, speedUp;
   boolean jump, barrierLeft, barrierRight, shieldIsUp, armourHit;
   PImage image;
-  PVector collision = new PVector(0, 0);
 
   /*
     schedule creates tasks to be excecuted with various delays and return a task object that can be used to cancel or check execution
@@ -37,10 +32,6 @@ class Player {
 
     armourHit=false;
     jump=false;
-    fall=false;
-    shieldIsUp=false;
-    image = loadImage("new_player.png");
-    image.resize(100, 100);
     barrierLeft=false;
     barrierRight=false;
     //image = loadImage("Jojo_1.png");
@@ -68,16 +59,15 @@ class Player {
 
   void draw() {
     update();
-    //rect(playerX, playerY, 50, 50);
-    imageMode(CENTER);
-    image(image, playerPos.x, playerPos.y);
+    //ATTENTION the height, de starting x-position is cemented at -200 from the screen height
+    rect(playerPos.x, playerPos.y, 100, 100);
+    //image(image, playerPos.x, playerPos.y);
   }
 
   void update() {
     if (jump) {
       jump();
     }
-    
     if (armourHit) {
       currentArmourSpeedMultiplier = armourLevels.get(currentArmourLevel);
       armourHit = false;
@@ -87,15 +77,11 @@ class Player {
   }
 
   void move() {
-    if (Input.keyCodePressed(LEFT) && collision.x != -1) {
-      playerPos.x-=playerSpeed;
     playerVelocity = playerSpeed*currentArmourSpeedMultiplier;
     print(" so slow: "+playerVelocity);
     if (Input.keyCodePressed(LEFT)&&!barrierLeft) {
       playerPos.x-=playerVelocity;
     }
-    if (Input.keyCodePressed(RIGHT) && collision.x != 1) {
-      playerPos.x+=playerSpeed;
     if (Input.keyCodePressed(RIGHT)&&!barrierRight) {
       playerPos.x+=playerVelocity;
     }
