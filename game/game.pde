@@ -1,11 +1,12 @@
 /*import processing.sound.*;
-SoundFile file;*/
+ SoundFile file;*/
 TileManager manager;
 Player player;
 float circleX = 2000;
 float xSpeed = 5;
 int radius = 10;
 boolean ballHit = false;
+Enemy enemy;
 
 void setup() {
   background(255);
@@ -13,6 +14,7 @@ void setup() {
   frameRate(60);
   manager = new TileManager(Config.CAMERA_MOVEMENT_SPEED);
   player = new Player(width/2, height - Config.PLAYER_BOTTOM_OFFSET);
+  enemy = new Enemy();
 }
 
 void draw()
@@ -50,7 +52,12 @@ void draw()
   }
 
   println(player.shieldIsUp);
+  
+  enemy.attack(player.playerPos.x, player.playerPos.y);
+
+  enemy.draw(player.playerPos.x, player.playerPos.y);
 }
+
 
 void keyPressed() {
   //send pressed key to input class
