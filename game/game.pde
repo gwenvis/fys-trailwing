@@ -31,35 +31,17 @@ void draw()
 
   manager.moveGroups();
   manager.drawGroups();
-
-
-  if (ballHit == false) {
-    circleX-=xSpeed;
-  }
-
-  if (circleX == player.playerPos.x+110) {
-    if (player.shieldIsUp == true) {
-      ballHit = true;
-      println("Ball hits shield!");
-      println(player.playerPos.x+110);
-      println(circleX);
-      println(ballHit);
-    }
-  }
-
-  if (circleX > 2000) {
-    ballHit = false;
-  }
-
-  if (ballHit == true) {
-    circleX+=xSpeed;
-  }
-
-  println(player.shieldIsUp);
   
   enemy.attack(player.playerPos.x, player.playerPos.y);
 
   enemy.draw(player.playerPos.x, player.playerPos.y);
+  
+    //print(manager.ObstacleCheckCollision(player.playerPos, new PVector(100, 100)));
+  TileCollision collision = manager.checkCollision(player.playerPos, player.size);
+  //print(collision.direction);
+  //print("\n");
+  player.obstacle = manager.ObstacleCheckCollision(player.playerPos, player.size);
+  player.tileCollision = collision;
 }
 
 void keyPressed() {
