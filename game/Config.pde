@@ -13,4 +13,9 @@ static class Config {
   final static float SHIELD_OFFSET_X = 100;
   final static float SHIELD_WIDTH = 10;
   final static float SHIELD_HEIGHT = 100;
+
+  final static String[] POWERUP_SPRITENAMES = new String[] {
+    "invincibility.png",
+    "super_jump.png"
+  };
 }

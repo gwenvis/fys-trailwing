@@ -1,6 +1,7 @@
 class Player {
   private int playerHP, angle;
   private PVector playerPos;
+  private PVector size = new PVector(100, 100); 
   private float playerSpeed, jumpTopY, jumpPower, jumpGravity, playerStartY;
   boolean jump, fall, shieldIsUp;
   PImage image;
@@ -20,7 +21,7 @@ class Player {
     fall=false;
     shieldIsUp=false;
     image = loadImage("Jojo_1.png");
-    image.resize(100, 100);
+    image.resize((int)size.x, (int)size.y);
   }
   
   void init(){
@@ -74,6 +75,17 @@ class Player {
       fall=false;
     } else {
       playerPos.y += jumpGravity;
+    }
+  }
+
+  void givePowerUp(PowerupType type) {
+    switch(type){
+      case INVINCIBILITY:
+        println("invincinibitly");
+        break;
+      case SUPER_JUMP:
+        println("super mump");
+        break;
     }
   }
 
