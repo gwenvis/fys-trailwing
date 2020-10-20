@@ -1,4 +1,3 @@
-
 import java.util.concurrent.ScheduledExecutorService;
 import java.util.concurrent.Executors;
 import java.util.concurrent.TimeUnit;
@@ -7,20 +6,14 @@ class Player {
   private int playerHP, currentArmourLevel;
   private PVector playerPos;
   private float playerSpeed, jumpPower, jumpGravity, playerJump, gravityPull, currentArmourSpeedMultiplier, playerVelocity, speedUp;
-  private PVector size = new PVector(100, 100); 
   boolean jump, barrierLeft, barrierRight, shieldIsUp, armourHit;
-  boolean jumpBoost = false;
-  boolean invincibility = false;
-  float currentPowerupTimer = 0;
   PImage image;
-
-  TileCollision tileCollision = new TileCollision();
 
   /*
     schedule creates tasks to be excecuted with various delays and return a task object that can be used to cancel or check execution
-   excecuterservice submits tasks with a delay (0 is possible) 
-   newScheduledThreadPool(1) creates a new threadpool to excecute
-   */
+    excecuterservice submits tasks with a delay (0 is possible) 
+    newScheduledThreadPool(1) creates a new threadpool to excecute
+  */
   ScheduledExecutorService executor = Executors.newScheduledThreadPool(1);
 
   ArrayList<Float> armourLevels = new ArrayList<Float>();
@@ -41,8 +34,8 @@ class Player {
     jump=false;
     barrierLeft=false;
     barrierRight=false;
-    image = loadImage("new_player.png");
-    image.resize((int)size.x, (int)size.y);
+    //image = loadImage("Jojo_1.png");
+    //image.resize(100, 100);
 
     //command that has to be excecuted infinitily until end is reached, which isn't specified in this case
     Runnable speedUp = new Runnable() {
@@ -66,49 +59,30 @@ class Player {
 
   void draw() {
     update();
-    imageMode(CENTER);
-    image(image, playerPos.x, playerPos.y);
+    //ATTENTION the height, de starting x-position is cemented at -200 from the screen height
+    rect(playerPos.x, playerPos.y, 100, 100);
+    //image(image, playerPos.x, playerPos.y);
   }
 
   void update() {
-    //print(playerPos);
-    //print("\n");
-    if (tileCollision.direction.y == 0) {
-      gravityPull++;
-    }
-
-    if (tileCollision.direction.y == -1 && gravityPull != 0) {
-      playerPos.y = tileCollision.position.y;
-      gravityPull = 0;
-      jump = false;
-    } else if (jump) {
+    if (jump) {
       jump();
     }
-
-
     if (armourHit) {
       currentArmourSpeedMultiplier = armourLevels.get(currentArmourLevel);
       armourHit = false;
     }
-    
-    currentPowerupTimer--;
-    if(currentPowerupTimer <= 0) {
-      jumpBoost = false;
-      invincibility = false;
-    }
-
     barrierLeft = playerBarrierLeft();
     barrierRight = playerBarrierRight();
-
-    playerPos.y += gravityPull*jumpGravity;
   }
 
   void move() {
     playerVelocity = playerSpeed*currentArmourSpeedMultiplier;
-    if (Input.keyCodePressed(LEFT)&&!barrierLeft && tileCollision.direction.x != -1) {
+    print(" so slow: "+playerVelocity);
+    if (Input.keyCodePressed(LEFT)&&!barrierLeft) {
       playerPos.x-=playerVelocity;
     }
-    if (Input.keyCodePressed(RIGHT)&&!barrierRight && tileCollision.direction.x != 1) {
+    if (Input.keyCodePressed(RIGHT)&&!barrierRight) {
       playerPos.x+=playerVelocity;
     }
     if (Input.keyCodePressed(UP)) {
@@ -123,24 +97,11 @@ class Player {
   }
 
   void jump() {
-    if(jumpBoost)
-      playerPos.y+=playerJump*Config.POWERUP_JUMP_BOOST;
-    else
-      playerPos.y+=playerJump;
+    playerPos.y+=playerJump;
     playerJump = jumpPower + (gravityPull*jumpGravity);
-  }
+    gravityPull++;
 
-  void givePowerUp(PowerupType type) {
-    switch(type) {
-      case INVINCIBILITY:
-        invincibility = true;
-        break;
-      case SUPER_JUMP:
-        jumpBoost = true;
-        break;
-    }
-
-    currentPowerupTimer = Config.POWERUP_ACTIVE_TIMER;
+    //if(collisionTiles){jump=false;}
   }
 
   void armourLevelsList() {

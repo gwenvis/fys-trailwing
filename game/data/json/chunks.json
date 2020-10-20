@@ -1,17 +1,16 @@
 [
 	{
-	"name": "default",
-	"tiles": [
-		{"sprite": "placeholder_ground.png", "width": 400, "height": 100, "x": 0, "y": 0},
-		{"sprite": "placeholder_ground.png", "width": 400, "height": 100, "x": 600, "y": 0},
-		{"sprite": "placeholder_ground.png", "width": 1000, "height": 100, "x": 0, "y": -600}
-	]
-	},
-	{
 	"name": "defaultInverse",
+	"obstacles": [
+		{"sprite": "placeholder_obstacle.png", "width": 100, "height": 100, "x": 600, "y": -100}
+	],
+	"powerups": [
+		{"x": 900, "y":-700},
+		{"x": 400, "y":-100}
+	],
 	"tiles": [
+		{"sprite": "placeholder_ground.png", "width": 100, "height": 100, "x": 800, "y": -100},
 		{"sprite": "placeholder_ground.png", "width": 400, "height": 100, "x": 0, "y": -600},
-		{"sprite": "placeholder_ground.png", "width": 400, "height": 100, "x": 600, "y": -300},
 		{"sprite": "placeholder_ground.png", "width": 1000, "height": 100, "x": 0, "y": 0}
 	]
 	},
