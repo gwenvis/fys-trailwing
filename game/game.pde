@@ -14,7 +14,7 @@ void setup() {
   frameRate(60);
   manager = new TileManager(Config.DEFAULT_CAMERA_MOVEMENT_SPEED);
   player = new Player(width/2, height - Config.PLAYER_BOTTOM_OFFSET);
-  enemy = new Enemy();
+  enemy = new Enemy(player);
 }
 
 void draw()
@@ -32,9 +32,10 @@ void draw()
   manager.moveGroups();
   manager.drawGroups();
   
-  enemy.attack(player.playerPos.x, player.playerPos.y);
+  enemy.attack();
 
-  enemy.draw(player.playerPos.x, player.playerPos.y);
+  enemy.draw();
+  enemy.movement();
   
     //print(manager.ObstacleCheckCollision(player.playerPos, new PVector(100, 100)));
   TileCollision collision = manager.checkCollision(player.playerPos, player.size);
