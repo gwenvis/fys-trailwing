@@ -9,15 +9,17 @@ class Tile {
   PVector size;
   PImage sprite;
   boolean enabled = true;
+  String layer;
 
   /**
    * @author Cody Bolleboom
    * This constructor sets the sprite, size and position
    */
-  Tile(String spritePath, PVector spriteSize, PVector spritePosition) {
+  Tile(String spritePath, PVector spriteSize, PVector spritePosition, String spriteLayer) {
     sprite = loadImage(spritePath);
     size = spriteSize;
     position = spritePosition;
+    layer = spriteLayer;
   }
 
   Tile() {}

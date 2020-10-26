@@ -5,6 +5,7 @@ void setup() {
   fullScreen();
   frameRate(60);
   switchScreen(new MainMenuScreen());
+  smooth();
 }
 
 void draw() {

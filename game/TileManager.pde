@@ -75,7 +75,7 @@ class TileManager {
           if (tilePosition.y - tile.size.y / 2 ==  targetPosition.y + targetSize.y / 2 || tilePosition.y + tile.size.y / 2 ==  targetPosition.y - targetSize.y / 2) {
             collision.x = 0;
           }
-          
+
           TileCollision col = new TileCollision();
           col.direction = collision;
           col.position = new PVector(tilePosition.x + tile.size.x * collision.x, tilePosition.y + tile.size.y * collision.y);
@@ -96,7 +96,7 @@ class TileManager {
    */
   Obstacle ObstacleCheckCollision(PVector targetPosition, PVector targetSize) {
     for (TileGroup tileGroup : tileGroups) {
-      
+
       int i = 0;
       for (Obstacle obstacle : tileGroup.obstacles) {
         PVector tilePosition = new PVector(tileGroup.position.x + obstacle.position.x, tileGroup.position.y + obstacle.position.y);
@@ -115,11 +115,12 @@ class TileManager {
             collision.x = 0;
           }
 
-
-          tileGroup.obstacles.remove(i);
+          if (!obstacle.layer.equals("shop")) {
+            tileGroup.obstacles.remove(i);
+          }
           return obstacle;
         }
-        
+
         i++;
       }
     }
