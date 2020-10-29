@@ -34,7 +34,7 @@ class Enemy {
     this.attackW = (width/10)*3;
     this.attackH = 50;
     //this.distance = width/2+50;
-    
+
     //attackvariables
     this.angry = false;
     this.attackTimer = 0;
@@ -85,11 +85,9 @@ class Enemy {
       angry = false;
     }
 
-    if (angry) {
-      if (millis()-laserTimer > laserDurationCooldown) {
-        this.distance = player.playerPos.x - x;
-        image(laser, x+size/2, y, distance-size/2, attackH);
-      }
+    if (angry && millis()-laserTimer > laserDurationCooldown) {
+      this.distance = player.playerPos.x - x;
+      image(laser, x+size/2, y, distance-size/2, attackH);
     }
   }
 
