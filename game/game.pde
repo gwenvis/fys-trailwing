@@ -2,7 +2,7 @@ IScreen currentScreen;
 
 void setup() {
   background(255);
-  fullScreen();
+  fullScreen(P2D);
   frameRate(60);
   switchScreen(new MainMenuScreen());
   smooth();

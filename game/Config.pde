@@ -8,8 +8,8 @@ static class Config {
   final static float CAMERA_SPEED_UP_SPEED = 0.02;
   
   final static float PLAYER_BOTTOM_OFFSET = 300;
-  final static float PLAYER_JUMP_POWER = -25f;
-  final static float PLAYER_JUMP_GRAVITY = 1f;
+  final static float PLAYER_JUMP_POWER = -30f;
+  final static float PLAYER_JUMP_GRAVITY = 0.8f;
   final static float PLAYER_SPEED = 5;
   final static float PLAYER_START_HP = 100;
   final static float PLAYER_JUMP_OFFSET = 120;
