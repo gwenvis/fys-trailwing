@@ -30,7 +30,7 @@ class Enemy {
     this.x = 150;
     this.y = player.playerPos.y -5;
     this.speed = 4;
-    this.size = 200;
+    this.size = 230;
     this.attackW = (width/10)*3;
     this.attackH = 50;
     //this.distance = width/2+50;
