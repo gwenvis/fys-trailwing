@@ -10,8 +10,8 @@ class Obstacle extends Tile {
    * @author Cody Bolleboom
    * sets the Tile constructor variables
    */
-  Obstacle(String spritePath, PVector spriteSize, PVector spritePosition, float obstacleDamage) {
-    super(spritePath, spriteSize, spritePosition);
+  Obstacle(String spritePath, PVector spriteSize, PVector spritePosition, float obstacleDamage, String spriteLayer) {
+    super(spritePath, spriteSize, spritePosition, spriteLayer);
     damage = obstacleDamage;
   }
 }
