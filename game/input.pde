@@ -79,6 +79,10 @@ public static class Input {
    *  Check if the mouse button was clicked this frame.
    */
   public static boolean mouseButtonClicked(int mouseButton) {
+      if(frameMouseDict.containsKey(mouseButton)) {
+      return frameMouseDict.get(mouseButton);
+    }
+
     return false;
   }
   

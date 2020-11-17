@@ -7,7 +7,6 @@ public class Powerup extends Tile
   ArrayList<PImage> sprites;
 
   PowerupType powerUpType;
-  RunnerScreen screen; 
 
   Powerup(PowerupType powerUpType, PVector pos, PVector size) {
     this.powerUpType = powerUpType;
@@ -22,15 +21,14 @@ public class Powerup extends Tile
     }
 
     this.sprite = sprites.get(powerUpType.getValue());
-    screen = (RunnerScreen)currentScreen;
   }
 
   @Override
   void update() {
     // test collision with player
     
-    PVector playerPos = screen.player.playerPos;
-    PVector playerSize = screen.player.size;
+    PVector playerPos = player.playerPos;
+    PVector playerSize = player.size;
     boolean hCol = relativePosition.x < playerPos.x + playerSize.x 
       && relativePosition.x + size.x > playerPos.x;
     boolean vCol = relativePosition.y < playerPos.y + playerSize.y
@@ -38,7 +36,7 @@ public class Powerup extends Tile
 
     if(vCol && hCol) {
       enabled = false;
-      screen.player.givePowerUp(powerUpType);
+      player.givePowerUp(powerUpType);
     }
   }
 }
