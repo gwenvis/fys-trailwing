@@ -91,7 +91,7 @@ class Player {
       playerPos.sub(tileCollision.direction.x * manager.speed, 0);
     }
 
-    if (obstacle != null) {
+    if (obstacle != null && obstacle.layer.equals("obstacle")) {
       currentArmourLevel += obstacle.damage;
       currentArmourSpeedMultiplier = armourLevels.get(currentArmourLevel > armourLevels.size() - 1 ? armourLevels.size() - 1 : currentArmourLevel);
       obstacle = null;
