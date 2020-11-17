@@ -38,6 +38,7 @@ void draw()
 
 void keyPressed() {
   //send pressed key to input class
+
   Input.keyPressed(key, CODED, keyCode);
   start.keyPress();
 }
@@ -62,14 +63,10 @@ void gameStates() {
   if (gameState == "START") {
     start.screen();
     start.menuSelecter();
+    start.audioSlider();
   } else if (gameState == "PLAY") {
     play.playGame();
-  } else if( gameState == "HISCORE"){
-    hiscore.screen(); 
+  } else if ( gameState == "HISCORE") {
+    hiscore.screen();
   }
 }
-
-void movieEvent(Movie backgroundVideo){
- backgroundVideo.read(); 
- 
- }
