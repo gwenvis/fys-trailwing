@@ -1,62 +1,45 @@
+import processing.sound.*;
+import processing.video.*;
+
 /*import processing.sound.*;
-SoundFile file;*/
+ SoundFile file;*/
 TileManager manager;
 Player player;
 float circleX = 2000;
 float xSpeed = 5;
 int radius = 10;
 boolean ballHit = false;
-Animations animations;
+String gameState;
+Enemy enemy;
+PlayGame play;
+StartMenu start;
+Hiscore hiscore;
+SoundFile backgroundMusicStartScreen;
 
 void setup() {
+  gameState = "START";
   background(255);
-  fullScreen();
+  fullScreen(P2D);
   frameRate(60);
-  animations = new Animations();
-  manager = new TileManager(Config.CAMERA_MOVEMENT_SPEED);
+  play = new PlayGame();
+  start = new StartMenu();
+  manager = new TileManager(Config.DEFAULT_CAMERA_MOVEMENT_SPEED);
   player = new Player(width/2, height - Config.PLAYER_BOTTOM_OFFSET);
+  enemy = new Enemy(player);
+  backgroundMusicStartScreen = new SoundFile(this, "backgroundMusic.wav");
+  hiscore = new Hiscore();
 }
 
 void draw()
 {
-  background(255);
+  gameStates();
   Input.update();
-  player.init();
-  manager.listener();
-  manager.moveGroups();
-  manager.drawGroups();
-
-  ellipse(circleX, 600, radius, radius);
-
-
-  if (ballHit == false) {
-    circleX-=xSpeed;
-  }
-
-  if (circleX == player.playerPos.x+110) {
-    if (player.shieldIsUp == true) {
-      ballHit = true;
-      println("Ball hits shield!");
-      println(player.playerPos.x+110);
-      println(circleX);
-      println(ballHit);
-    }
-  }
-
-  if (circleX > 2000) {
-    ballHit = false;
-  }
-
-  if (ballHit == true) {
-    circleX+=xSpeed;
-  }
-
-  println(player.shieldIsUp);
 }
 
 void keyPressed() {
   //send pressed key to input class
   Input.keyPressed(key, CODED, keyCode);
+  start.keyPress();
 }
 
 void keyReleased() {
@@ -73,3 +56,20 @@ void mouseReleased() {
   //send released mouseside to input class
   Input.mouseReleased(mouseButton);
 }
+
+
+void gameStates() {
+  if (gameState == "START") {
+    start.screen();
+    start.menuSelecter();
+  } else if (gameState == "PLAY") {
+    play.playGame();
+  } else if( gameState == "HISCORE"){
+    hiscore.screen(); 
+  }
+}
+
+void movieEvent(Movie backgroundVideo){
+ backgroundVideo.read(); 
+ 
+ }

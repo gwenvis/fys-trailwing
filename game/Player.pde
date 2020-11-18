@@ -1,89 +1,182 @@
-class Player {
-  private int playerHP, angle;
-  private PVector playerPos;
-  private float playerSpeed, jumpTopY, jumpPower, jumpGravity, playerStartY;
-  boolean jump, fall, shieldIsUp;
-  PImage image;
 
-  Animation currentAnimation;
+import java.util.concurrent.ScheduledExecutorService;
+import java.util.concurrent.Executors;
+import java.util.concurrent.TimeUnit;
+
+class Player {
+  private int playerHP, currentArmourLevel;
+  private PVector playerPos;
+  private float playerSpeed, jumpPower, jumpGravity, playerJump, gravityPull, currentArmourSpeedMultiplier, playerVelocity, speedUp;
+  boolean jump, barrierLeft, barrierRight, shieldIsUp, armourHit;
+  boolean jumpBoost = false;
+  boolean invincibility = false;
+  float currentPowerupTimer = 0;
+  PImage image;
+  PVector size = Config.PLAYER_SIZE;
+
+  TileCollision tileCollision = new TileCollision();
+  Obstacle obstacle = null;
+  TileManager manager;
+
+  /*
+    schedule creates tasks to be excecuted with various delays and return a task object that can be used to cancel or check execution
+   excecuterservice submits tasks with a delay (0 is possible) 
+   newScheduledThreadPool(1) creates a new threadpool to excecute
+   */
+  ScheduledExecutorService executor = Executors.newScheduledThreadPool(1);
+
+  ArrayList<Float> armourLevels = new ArrayList<Float>();
 
   Player(float x, float y) {
     playerPos = new PVector(0, 0);
     playerPos.x = x;
     playerPos.y = y;
-    playerStartY = playerPos.y;
-    jumpTopY = playerPos.y - Config.PLAYER_JUMP_OFFSET;
+    playerJump = 0;
+    gravityPull = 0;
+
     jumpPower = Config.PLAYER_JUMP_POWER;
     jumpGravity = Config.PLAYER_JUMP_GRAVITY;
     //playerHP = 100;
     playerSpeed = Config.PLAYER_SPEED;
-    //angle = 0;
+
+    armourHit=false;
     jump=false;
-    fall=false;
-    shieldIsUp=false;
-    image = loadImage("Jojo_1.png");
-    image.resize(100, 100);
-    currentAnimation = animations.PLAYER_WALK;
+    barrierLeft=false;
+    barrierRight=false;
+    image = loadImage("new_player.png");
+    image.resize((int)size.x, (int)size.y);
+
+    //command that has to be excecuted infinitily until end is reached, which isn't specified in this case
+    Runnable speedUp = new Runnable() {
+      public void run() {
+        speedingUp();
+      }
+    };
+
+    //speedingUp() first excecuted after 0 seconds, excecuted every 3 seconds
+    executor.scheduleAtFixedRate(speedUp, 0, 3, TimeUnit.SECONDS);
+
+    currentArmourLevel = 0;
+    armourLevelsList();
+    currentArmourSpeedMultiplier = armourLevels.get(currentArmourLevel);
   }
-  
-  void init(){
+
+  void init() {
     draw();
     move();
-    shield();
   }
-  
+
   void draw() {
     update();
-    //rect(playerX, playerY, 50, 50);
-
-    currentAnimation.draw(playerPos.x, playerPos.y, 100, 100);
+    imageMode(CENTER);
+    image(image, playerPos.x, playerPos.y);
   }
 
   void update() {
-    if (jump) {
+    //print(playerPos);
+    //print("\n");
+    if (tileCollision.direction.y == 0) {
+      gravityPull++;
+    }
+
+    if (tileCollision.direction.y == Config.DOWN && gravityPull != 0) {
+      playerPos.y = tileCollision.position.y;
+      gravityPull = 0;
+      jump = false;
+    } else if (jump) {
       jump();
     }
+
+    if (tileCollision.direction.y != Config.DOWN && gravityPull == 0) {
+      playerPos.sub(tileCollision.direction.x * manager.speed, 0);
+    }
+
+    if (obstacle != null && obstacle.layer.equals("obstacle")) {
+      currentArmourLevel += obstacle.damage;
+      currentArmourSpeedMultiplier = armourLevels.get(currentArmourLevel > armourLevels.size() - 1 ? armourLevels.size() - 1 : currentArmourLevel);
+      obstacle = null;
+    }
+    
+    currentPowerupTimer--;
+    if(currentPowerupTimer <= 0) {
+      jumpBoost = false;
+      invincibility = false;
+    }
+
+    barrierLeft = playerBarrierLeft();
+    barrierRight = playerBarrierRight();
+
+    playerPos.y += gravityPull*jumpGravity;
   }
 
   void move() {
-    if (Input.keyCodePressed(LEFT)) {
-      playerPos.x-=playerSpeed;
+    playerVelocity = playerSpeed/**currentArmourSpeedMultiplier*/;
+    if (Input.keyCodePressed(LEFT)&&!barrierLeft && tileCollision.direction.x != Config.LEFT) {
+      playerPos.x-=playerVelocity;
     }
-    if (Input.keyCodePressed(RIGHT)) {
-      playerPos.x+=playerSpeed;
+    if (Input.keyCodePressed(RIGHT)&&!barrierRight && tileCollision.direction.x != Config.RIGHT) {
+      playerPos.x+=playerVelocity;
     }
-    if (Input.keyCodePressed(UP)) {
+    if (Input.keyCodePressed(UP) && tileCollision.direction.y == Config.DOWN) {
       // if keypressed is arrow up then jump is true
       jump = true;
-    }
-    /*if (keyCode == DOWN) {
-     playerY+=playerSpeed;
-     image = loadImage("Jojo_2.png");
-     //image.resize(1000, 1000);
-     }*/
-    if (Input.keyCodePressed(CONTROL)) {
-      shieldIsUp = true;
-      shield();
+    }    
+    if (Input.keyCodePressed(DOWN)) {
+      //ATTENTION change to hit by enemy, pressed=> multiplier changes to much
+      armourHit = true;
+      currentArmourLevel++;
     }
   }
 
   void jump() {
-    if (playerPos.y>jumpTopY && !fall) {
-      playerPos.y += jumpPower;
-    } else if (playerPos.y <= jumpTopY) {
-      playerPos.y += jumpGravity;
-      fall=true;
-    } else if (playerPos.y>=playerStartY && fall) {
-      jump=false;
-      fall=false;
-    } else {
-      playerPos.y += jumpGravity;
+    if(jumpBoost)
+    {
+      playerPos.y+=playerJump*Config.POWERUP_JUMP_BOOST;
+      println("yo jump boost");
     }
+    else
+      playerPos.y+=playerJump;
+    playerJump = jumpPower + (gravityPull*jumpGravity);
   }
 
-  void shield() {
-    if (shieldIsUp) {
-      rect(playerPos.x+Config.SHIELD_OFFSET_X, playerPos.y, Config.SHIELD_WIDTH, Config.SHIELD_HEIGHT);
+  void givePowerUp(PowerupType type) {
+    switch(type) {
+      case INVINCIBILITY:
+        invincibility = true;
+        break;
+      case SUPER_JUMP:
+        jumpBoost = true;
+        break;
     }
+
+    currentPowerupTimer = Config.POWERUP_ACTIVE_TIMER * frameRate;
+  }
+
+  void armourLevelsList() {
+    armourLevels.add(5f);
+    armourLevels.add(10f);
+    armourLevels.add(15f);
+    armourLevels.add(20f);
+    armourLevels.add(25f);
+  }
+
+  void speedingUp() {
+    playerSpeed = playerSpeed * .8f;
+  }
+
+  Boolean playerBarrierLeft() {
+    float leftBarrier = width/100 * 20;
+    if (playerPos.x <= leftBarrier) {
+      return true;
+    }
+    return false;
+  }
+  Boolean playerBarrierRight() {
+    float rightBarrier = width/100 * 80;
+    //playerWidth is 100
+    if (playerPos.x + 50>= rightBarrier) {
+      return true;
+    }
+    return false;
   }
 }

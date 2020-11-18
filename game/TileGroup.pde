@@ -5,6 +5,9 @@
 
 class TileGroup {
   ArrayList<Tile> tiles = new ArrayList<Tile>();
+  ArrayList<Obstacle> obstacles = new ArrayList<Obstacle>();
+  ArrayList<PVector> powerups = new ArrayList<PVector>();
+  Powerup powerup;
   PVector position;
 
   //Copies tile position in position. (Patrick Eikema)
@@ -17,6 +20,13 @@ class TileGroup {
     for (int i = 0; i < tiles.size(); i ++ ) {
       tiles.get(i).drawTileRelative(position);
     }
+
+    for (Obstacle obstacle : obstacles) {
+      obstacle.drawTileRelative(position);
+    }
+
+    if(powerup != null)
+      powerup.drawTileRelative(position);
   }
 
   /**
@@ -41,7 +51,38 @@ class TileGroup {
       //add the tile with its variables to the tile array
       tiles.add(new Tile(tile.getString("sprite"), 
         new PVector(tile.getFloat("width"), tile.getFloat("height")), 
-        new PVector(tile.getFloat("x"), tile.getFloat("y"))));
+        new PVector(tile.getFloat("x"), tile.getFloat("y")), 
+        tile.getString("layer")));
+    }
+
+    //gets the obstacles of the chunk
+    JSONArray chunkObstacles = chunk.getJSONArray("obstacles");
+    //loop through the  //<>//
+    for (int n = 0; n < chunkObstacles.size(); n++) {
+      //get the single obstacles as an object
+      JSONObject obstacle = chunkObstacles.getJSONObject(n);
+
+      //add the tile with its variables to the tile array
+      obstacles.add(new Obstacle(obstacle.getString("sprite"),  //<>//
+        new PVector(obstacle.getFloat("width"), obstacle.getFloat("height")), 
+        new PVector(obstacle.getFloat("x"), obstacle.getFloat("y")), 1, obstacle.getString("layer")));
+    }
+
+    JSONArray chunkPowerups = chunk.getJSONArray("powerups");
+
+    for(int i = 0; i < chunkPowerups.size(); i++) {
+      JSONObject powerup = chunkPowerups.getJSONObject(i);
+
+      powerups.add(new PVector(powerup.getFloat("x"), powerup.getFloat("y")));
+    }
+
+    float spawnChance = random(0, 100);
+    boolean spawn = spawnChance < Config.POWERUP_SPAWN_CHANCE;
+    if(spawn)
+    {
+      PowerupType pType = PowerupType.values()[(int)random(0, PowerupType.values().length)];
+      PVector size = new PVector(Config.POWERUP_WIDTH, Config.POWERUP_HEIGHT);
+      powerup = new Powerup(pType, powerups.get((int)random(0, powerups.size())), size);
     }
   }
 }

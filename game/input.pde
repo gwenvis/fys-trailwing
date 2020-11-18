@@ -19,7 +19,6 @@ public static class Input {
   private static HashMap<Integer, Boolean> frameKeyCodeDict = new HashMap<Integer, Boolean>();
   private static HashMap<Integer, Boolean> frameMouseDict = new HashMap<Integer, Boolean>();
 
-
   /*
    *  Check if key is currently down.
    */
@@ -70,7 +69,7 @@ public static class Input {
    */
   public static boolean keyCodeClicked(int keyCode) {
     if(frameKeyCodeDict.containsKey(keyCode)) {
-      return frameKeyCodeDict.containsKey(keyCode);
+      return frameKeyCodeDict.get(keyCode);
     }
     
     return false;
@@ -80,6 +79,10 @@ public static class Input {
    *  Check if the mouse button was clicked this frame.
    */
   public static boolean mouseButtonClicked(int mouseButton) {
+      if(frameMouseDict.containsKey(mouseButton)) {
+      return frameMouseDict.get(mouseButton);
+    }
+
     return false;
   }
   
@@ -89,7 +92,7 @@ public static class Input {
     // if the key has been released, remove it from the frame dependent
     // hashmaps, otherwise add it.
     if(!pressed) frameKeyCodeDict.remove(_keyCode);
-    else frameKeyCodeDict.put(_keyCode, pressed);
+    else if(!frameKeyCodeDict.containsKey(_keyCode)) frameKeyCodeDict.put(_keyCode, pressed);
   }
 
   private static void keyUpdate(char _key, boolean pressed) {
@@ -98,7 +101,7 @@ public static class Input {
     // if the key has been released, remove it from the frame dependent
     // hashmaps, otherwise add it.
     if(!pressed) frameKeyDict.remove(_key);
-    else frameKeyDict.put(_key, pressed);
+    else if(!frameKeyDict.containsKey(_key)) frameKeyDict.put(_key, pressed);
   }
 
   /*
