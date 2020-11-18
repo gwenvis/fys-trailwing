@@ -42,7 +42,6 @@ void keyPressed() {
   //send pressed key to input class
 
   Input.keyPressed(key, CODED, keyCode);
-  start.keyPress();
   login.keyPress();
 }
 

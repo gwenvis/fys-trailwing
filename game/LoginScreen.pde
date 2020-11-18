@@ -50,6 +50,11 @@ class LoginScreen {
     } else {
       text(nickName, loginRectX-loginRectW/2+20, loginRectY+5);
     }
+    
+    if(Input.keyClicked(ENTER) || Input.keyClicked(RETURN))
+    {
+      gameState = "START";
+    }
   }
 
   void keyPress() {
@@ -57,8 +62,6 @@ class LoginScreen {
       nickName = nickName + key;
     } else if (key == BACKSPACE) {
       nickName = nickName.substring( 0, nickName.length()-1 );
-    } else if (key == ENTER) {
-      gameState = "START";
     }
   }
 }

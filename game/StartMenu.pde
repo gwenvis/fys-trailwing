@@ -141,13 +141,7 @@ class StartMenu {
 
   //checks what option is selected and when pressed ENTER it changes the gamestate of the selected menu option
   void keyPress() {
-    if (keyCode == ENTER && gameState == "START" && indexSelecter == 0) {
-      gameState = "PLAY";
-    } else if (keyCode == ENTER && gameState == "START" && indexSelecter == 1) {
-      gameState = "HISCORE";
-    } else if (keyCode == ENTER && gameState == "START" && indexSelecter == 2) {
-      exit();
-    }
+    
   }
 
   //void mouseClick(){
@@ -162,6 +156,28 @@ class StartMenu {
 
 
   void menuSelecter() {
+    
+    println("Enter / return clicked:" + (Input.keyClicked(ENTER) || Input.keyClicked(RETURN)));
+    
+    if((Input.keyClicked(ENTER) || Input.keyClicked(RETURN)) && gameState == "START")
+    {
+      switch(indexSelecter)
+      {
+        case 0:
+          gameState = "PLAY";
+          break;
+        case 1:
+          gameState = "HISCORE";
+          break;
+        case 2:
+          exit();
+          break;
+        default:
+          println("An error has occurred in StartMenu: menuSelecter()");
+          break;
+      }
+    }
+    
     //when 's' is clicked, go down in menu, when w is clicked it goes up
     if (Input.keyClicked('s') && indexSelecter < 2 ||Input.keyCodeClicked(DOWN) && indexSelecter < 2) {
       indexSelecter += 1;
