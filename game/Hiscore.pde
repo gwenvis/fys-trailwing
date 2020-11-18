@@ -3,9 +3,9 @@ class Hiscore {
   PImage backIcon;
 
   Hiscore() {
-    background = loadImage("/startMenuBackground.jpg");
+    background = loadImage("startMenuBackground.jpg");
     background.resize(displayWidth, displayHeight);
-    backIcon = loadImage("/backIcon.png");
+    backIcon = loadImage("backIcon.png");
     backIcon.resize(35,30);
   }
 

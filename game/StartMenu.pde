@@ -13,17 +13,17 @@ class StartMenu {
   boolean isSoundMuted;
 
   StartMenu() {
-    background = loadImage("/startMenuBackground.jpg");
+    background = loadImage("./startMenuBackground.jpg");
     background.resize(displayWidth, displayHeight);
     fillStart = color(0, 255, 100);
     fillQuit = color(255);
     fillHiScore = color(255);
     indexSelecter = 0;
     soundIsPlaying = false;
-    soundIconSmall = loadImage("/soundIconSmall.png");
-    soundIconBig = loadImage("/soundIconBig.png");
-    soundIconSmallMuted = loadImage("/soundIconSmallMuted.png");
-    soundIconBigMuted = loadImage("/soundIconBigMuted.png");
+    soundIconSmall = loadImage("soundIconSmall.png");
+    soundIconBig = loadImage("soundIconBig.png");
+    soundIconSmallMuted = loadImage("soundIconSmallMuted.png");
+    soundIconBigMuted = loadImage("soundIconBigMuted.png");
     isSoundMuted = false;
   }
 
