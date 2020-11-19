@@ -16,22 +16,24 @@ class Button {
     this.text = text;
     this.fontSize = fontSize;
     this.index = index;
-    this.w = textWidth(text);
     this.h = fontSize;
+    this.selectedColor = color(255);
+    this.normalColor = color(0);
   }
 
 
   void drawTextButton() {
-    
+    this.w = textWidth(text);
     textSize(fontSize);
-    textAlign(CENTER);
-    fill(255);
-    text(text, x, y);
-  }
+    textAlign(CENTER, CENTER);
 
-  void mouseOverButton() {
-    if (mouseX > x-w/2 && mouseX < x + w/2 && mouseY > y-h/2 && mouseY < y + h/2) {
-      println("nu wel!");
+    if (selected) {
+      fill(selectedColor);
+    } else {
+      fill(normalColor);
     }
+
+    text(text, x, y);
+
   }
 }

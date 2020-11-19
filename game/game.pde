@@ -29,7 +29,8 @@ void setup() {
   backgroundMusicStartScreen = new SoundFile(this, "backgroundMusic.wav");
   hiscore = new Hiscore();
   login = new LoginScreen();
-
+  PFont font = createFont("Arial", 64);
+  textFont(font);
 }
 
 void draw()
@@ -61,10 +62,9 @@ void mouseReleased() {
 
 
 void gameStates() {
-  if(gameState == "LOGIN"){
+  if (gameState == "LOGIN") {
     login.screen();
-  }
-  else if (gameState == "START") {
+  } else if (gameState == "START") {
     start.screen();
     start.menuSelecter();
     start.audioSlider();

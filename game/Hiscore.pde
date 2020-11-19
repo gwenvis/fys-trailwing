@@ -17,8 +17,8 @@ class Hiscore {
   color hiscoresColor; 
   color achievementsColor;
   ArrayList <Button> titleButtons;
-  boolean titleButtonsMade;
-  
+  ButtonManager manager;
+
   Hiscore() {
     this.backgroundX = width/2;
     this.backgroundY = height/2;
@@ -46,7 +46,9 @@ class Hiscore {
     this.hiscoresColor = color(255);
     this.achievementsColor = color(0);
     this.titleButtons = new ArrayList<Button>();
-    this.titleButtons.add(new Button(achievementsX, achievementsY, "Achievements", 40, 0));
+    this.titleButtons.add(new Button(achievementsX, achievementsY, "Achievements", fontSizeTitles, 0));
+    this.titleButtons.add(new Button(hiscoresX, hiscoresY, "Hi-Scores", fontSizeTitles, 1));
+    this.manager = new ButtonManager(titleButtons);
   }
 
 
@@ -67,39 +69,31 @@ class Hiscore {
   }
 
   void scroll() {
-    
-   for(int i = 0; i < titleButtons.size(); i++){
-     titleButtons.get(i).drawTextButton();
-    }
-    
-    if (hiscoresSelected) {
-      hiscoresColor =  color(255);
-      achievementsColor = color(0);
-    } else if (achievementsSelected) {
-      hiscoresColor = color(0);
-      achievementsColor = color(255);
-    }
 
     image(scroll, scrollX, scrollY, scrollW, scrollH);
-    textSize(fontSizeTitles);
-    textAlign(CENTER);
-    //textFont("Charlesworth", fontSizeTitles);
     fill(hiscoresColor);
-    text("Hi-Scores", hiscoresX, hiscoresY);
     fill(achievementsColor);
-    text("Achievements", achievementsX, achievementsY);
+    
+    manager.indexSelecter();
+    
+    for (int i = 0; i < titleButtons.size(); i++) {
+      titleButtons.get(i).drawTextButton();
+      }
 
-  }
+    }
+    
+    
   
+
   //returns true if back icon is clicked
-  boolean backIconClicked(){
-    if(Input.mouseButtonClicked(LEFT) && mouseX > backIconX-backIconW/2 && mouseX < backIconX + backIconW/2 && mouseY > backIconY - backIconH/2 && mouseY < backIconY + backIconH/2){
+  boolean backIconClicked() {
+    if (Input.mouseButtonClicked(LEFT) && mouseX > backIconX-backIconW/2 && mouseX < backIconX + backIconW/2 && mouseY > backIconY - backIconH/2 && mouseY < backIconY + backIconH/2) {
       return true;
     }
     return false;
   }
-  
-  
+
+
   //returns true is achievements is clicked
   //boolean achievementClicked(){
   //  if(Input.mouseButtonClicked(LEFT) && 
