@@ -157,7 +157,6 @@ class StartMenu {
 
   void menuSelecter() {
     
-    println("Enter / return clicked:" + (Input.keyClicked(ENTER) || Input.keyClicked(RETURN)));
     
     if((Input.keyClicked(ENTER) || Input.keyClicked(RETURN)) && gameState == "START")
     {
@@ -218,7 +217,7 @@ class StartMenu {
 
   void audioSlider() {
     distanceBall = (sliderBallX - sliderX1)/100/2;
-    if (mouseX > 0 && mouseX < width/10*1.5 && mouseY > height/10*9 && mouseY < height) {
+    if (mouseX > 0 && mouseX < width/5 && mouseY > height/10*9 && mouseY < height) {
       //sliderline
       stroke(white);
       strokeWeight(sliderStrokeWeight);

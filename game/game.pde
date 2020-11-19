@@ -1,5 +1,4 @@
 import processing.sound.*;
-import processing.video.*;
 
 /*import processing.sound.*;
  SoundFile file;*/
@@ -30,6 +29,7 @@ void setup() {
   backgroundMusicStartScreen = new SoundFile(this, "backgroundMusic.wav");
   hiscore = new Hiscore();
   login = new LoginScreen();
+
 }
 
 void draw()
@@ -42,7 +42,6 @@ void keyPressed() {
   //send pressed key to input class
 
   Input.keyPressed(key, CODED, keyCode);
-  login.keyPress();
 }
 
 void keyReleased() {
