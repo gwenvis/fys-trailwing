@@ -1,5 +1,4 @@
 import processing.sound.*;
-import processing.video.*;
 
 /*import processing.sound.*;
  SoundFile file;*/
@@ -13,11 +12,12 @@ String gameState;
 Enemy enemy;
 PlayGame play;
 StartMenu start;
+LoginScreen login;
 Hiscore hiscore;
 SoundFile backgroundMusicStartScreen;
 
 void setup() {
-  gameState = "START";
+  gameState = "LOGIN";
   background(255);
   fullScreen(P2D);
   frameRate(60);
@@ -28,6 +28,9 @@ void setup() {
   enemy = new Enemy(player);
   backgroundMusicStartScreen = new SoundFile(this, "backgroundMusic.wav");
   hiscore = new Hiscore();
+  login = new LoginScreen();
+  PFont font = createFont("Arial", 64);
+  textFont(font);
 }
 
 void draw()
@@ -38,8 +41,8 @@ void draw()
 
 void keyPressed() {
   //send pressed key to input class
+
   Input.keyPressed(key, CODED, keyCode);
-  start.keyPress();
 }
 
 void keyReleased() {
@@ -59,17 +62,15 @@ void mouseReleased() {
 
 
 void gameStates() {
-  if (gameState == "START") {
+  if (gameState == "LOGIN") {
+    login.screen();
+  } else if (gameState == "START") {
     start.screen();
     start.menuSelecter();
+    start.audioSlider();
   } else if (gameState == "PLAY") {
     play.playGame();
-  } else if( gameState == "HISCORE"){
-    hiscore.screen(); 
+  } else if ( gameState == "HISCORE") {
+    hiscore.screen();
   }
 }
-
-void movieEvent(Movie backgroundVideo){
- backgroundVideo.read(); 
- 
- }
