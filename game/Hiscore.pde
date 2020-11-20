@@ -16,7 +16,7 @@ class Hiscore {
   boolean achievementsSelected;
   color hiscoresColor; 
   color achievementsColor;
-  ArrayList <Button> titleButtons;
+  ArrayList <TextButton> titleButtons;
   ButtonManager manager;
 
   Hiscore() {
@@ -45,9 +45,9 @@ class Hiscore {
     this.achievementsSelected = false;
     this.hiscoresColor = color(255);
     this.achievementsColor = color(0);
-    this.titleButtons = new ArrayList<Button>();
-    this.titleButtons.add(new Button(achievementsX, achievementsY, "Achievements", fontSizeTitles, 0));
-    this.titleButtons.add(new Button(hiscoresX, hiscoresY, "Hi-Scores", fontSizeTitles, 1));
+    this.titleButtons = new ArrayList<TextButton>();
+    this.titleButtons.add(new TextButton(achievementsX, achievementsY, "Achievements", fontSizeTitles,color(0), color(255), 0));
+    this.titleButtons.add(new TextButton(hiscoresX, hiscoresY, "Hi-Scores", fontSizeTitles,color(0), color(255), 1));
     this.manager = new ButtonManager(titleButtons);
   }
 
@@ -66,6 +66,7 @@ class Hiscore {
     } else if (backIconClicked()) {
       gameState = "START";
     }
+    
   }
 
   void scroll() {
@@ -74,11 +75,17 @@ class Hiscore {
     fill(hiscoresColor);
     fill(achievementsColor);
     
-    manager.indexSelecter();
+    manager.indexSelecterMouse();
+    manager.indexSelectedKeysHorizontal();
     
     for (int i = 0; i < titleButtons.size(); i++) {
       titleButtons.get(i).drawTextButton();
       }
+      
+      fill(0,50);
+      rectMode(CENTER);
+      rect(scrollX,scrollY-scrollH/2+scrollH/10*5.3,scrollW/10*6,scrollH/2,10,10,10,10);
+      
 
     }
     

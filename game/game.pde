@@ -1,7 +1,6 @@
 import processing.sound.*;
 
-/*import processing.sound.*;
- SoundFile file;*/
+ //SoundFile file;
 TileManager manager;
 Player player;
 float circleX = 2000;
@@ -17,7 +16,7 @@ Hiscore hiscore;
 SoundFile backgroundMusicStartScreen;
 
 void setup() {
-  gameState = "LOGIN";
+  gameState = "HISCORE";
   background(255);
   fullScreen(P2D);
   frameRate(60);
