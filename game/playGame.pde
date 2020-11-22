@@ -3,6 +3,8 @@ class PlayGame {
   boolean commentOverlayEnabled = false;
   CommentOverlay commentOverlay;
   int distance = 0;
+  int currentCommentLoadDistance = 0;
+  ArrayList<ScreenComment> screenComments = new ArrayList<ScreenComment>();
 
   PlayGame(){ }
 
@@ -22,7 +24,24 @@ class PlayGame {
       manager.speed += Config.CAMERA_SPEED_UP_SPEED;
     }
     manager.speedCap = player.currentArmourSpeedMultiplier;
+
     distance++;
+    if(currentCommentLoadDistance < distance)
+    {
+      currentCommentLoadDistance = distance + Config.MAX_COMMENT_LOAD_DISTANCE;
+      ArrayList<Comment> comments = commentDatabase.getComments(distance, currentCommentLoadDistance);
+      print("yo" + random(0, 5));
+      if(comments != null)
+      {
+        screenComments = new ArrayList<ScreenComment>();
+        for(Comment comment : comments)
+        {
+          screenComments.add(new ScreenComment(comment));
+        }
+        println(String.format("Loaded %d comments", screenComments.size()));
+      }
+    }
+
 
     manager.moveGroups();
     enemy.attack();
@@ -35,6 +54,21 @@ class PlayGame {
     if(Input.keyClicked('o'))
     {
       commentOverlayEnabled = true;
+    }
+  }
+
+  private void drawScreenComments()
+  {
+    if(screenComments == null) return;
+
+    for(ScreenComment comment : screenComments)
+    {
+      if(comment.shouldAppear(distance)) 
+      {
+        comment.appear();
+      }
+      if(!commentOverlayEnabled) comment.update();
+      comment.draw();
     }
   }
 
@@ -56,6 +90,7 @@ class PlayGame {
   void draw()
   {
     background(255);
+    drawScreenComments();
     manager.drawGroups();
     player.draw();
     enemy.draw();

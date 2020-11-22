@@ -12,7 +12,7 @@ public class CommentsDatabase
    */
   public ArrayList<Comment> getComments(int minRange, int maxRange) 
   {
-    Table commentTable = database.runQuery("SELECT location, content FROM Comment");
+    Table commentTable = database.runQuery(String.format("SELECT location, content FROM Comment WHERE location BETWEEN %d AND %d", minRange, maxRange));
     if(commentTable.getRowCount() == 0) return null;
 
     ArrayList<Comment> comments = new ArrayList<Comment>();
