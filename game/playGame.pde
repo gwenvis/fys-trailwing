@@ -47,7 +47,7 @@ class PlayGame {
       commentOverlayEnabled = false;
       Comment comment = new Comment(commentOverlay.getCommentInput(), distance); // fill out score
       println("Comment placed: \"" + comment.getContent() + "\" at distance: " + comment.getDistance());
-      // Upload the message to the database
+      commentDatabase.addComment(comment);
       commentOverlay = null;
     }
     if(commentOverlay != null) commentOverlay.draw();

@@ -17,6 +17,7 @@ StartMenu start;
 LoginScreen login;
 Hiscore hiscore;
 SoundFile backgroundMusicStartScreen;
+CommentsDatabase commentDatabase;
 
 void setup() {
   gameState = "LOGIN";
@@ -31,6 +32,7 @@ void setup() {
   backgroundMusicStartScreen = new SoundFile(this, "backgroundMusic.wav");
   hiscore = new Hiscore();
   login = new LoginScreen();
+  commentDatabase = new CommentsDatabase();
   PFont font = createFont("Arial", 64);
   textFont(font);
 }

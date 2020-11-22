@@ -25,9 +25,14 @@ public class Database
     }
   }
 
-  public void runQuery(String query)
+  public Table runQuery(String query)
   {
-    getDatabase().runQuery(query);
+    return getDatabase().runQuery(query);
+  }
+
+  public void updateQuery(String query)
+  {
+    getDatabase().updateQuery(query);
   }
 
   public SQLConnection getDatabase()
