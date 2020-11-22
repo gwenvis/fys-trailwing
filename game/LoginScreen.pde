@@ -86,16 +86,6 @@ class LoginScreen {
   }
 
   void keyInput() {
-    char[] alphabet = {'a', 'b', 'c', 'd', 'e', 'f', 'g', 'h', 'i', 'j', 'k', 'l', 'm', 'n', 'o', 'p', 'q', 'r', 's', 't', 'u', 'v', 'w', 'x', 'y', 'z'};
-    char[] alphabetCaps = {'A', 'B', 'C', 'D', 'E', 'F', 'G', 'H', 'I', 'J', 'K', 'L', 'M', 'N', 'O', 'P', 'Q', 'R', 'S', 'T', 'U', 'V', 'W', 'X', 'Y', 'Z'};
-    for (int i = 0; i < alphabet.length; i++) {
-      if (Input.keyClicked(alphabet[i])) {
-        nickName = nickName + alphabet[i];
-      } else if (Input.keyClicked(alphabetCaps[i])) {
-        nickName = nickName + alphabetCaps[i];
-      } else if (Input.keyClicked(BACKSPACE) && nickName.length()>0) {
-        nickName = nickName.substring( 0, nickName.length()-1 );
-      }
-    }
+    nickName = Keyboard.update(nickName);
   }
 }
