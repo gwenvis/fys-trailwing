@@ -30,7 +30,6 @@ class PlayGame {
     {
       currentCommentLoadDistance = distance + Config.MAX_COMMENT_LOAD_DISTANCE;
       ArrayList<Comment> comments = commentDatabase.getComments(distance, currentCommentLoadDistance);
-      print("yo" + random(0, 5));
       if(comments != null)
       {
         screenComments = new ArrayList<ScreenComment>();
