@@ -1,34 +1,64 @@
 class PlayGame {
- PlayGame(){
-   
- }
- 
- 
- void playGame(){
-  backgroundMusicStartScreen.stop();
-  background(255);
-  player.manager = manager;
-  player.init();
-  manager.listener();
-  if (manager.speed <= manager.speedCap) {
-    manager.speed += Config.CAMERA_SPEED_UP_SPEED;
+
+  boolean commentOverlayEnabled = false;
+  CommentOverlay commentOverlay;
+  int distance = 0;
+
+  PlayGame(){ }
+
+  void update()
+  {
+    // if the comment overlay is enabled, stop updating the game
+    if(commentOverlayEnabled)
+    {
+      return;
+    }
+
+    backgroundMusicStartScreen.stop();
+    player.manager = manager;
+    player.update();
+    manager.listener();
+    if (manager.speed <= manager.speedCap) {
+      manager.speed += Config.CAMERA_SPEED_UP_SPEED;
+    }
+    manager.speedCap = player.currentArmourSpeedMultiplier;
+    distance++;
+
+    manager.moveGroups();
+    enemy.attack();
+    enemy.movement();
+    TileCollision collision = manager.checkCollision(player.playerPos, player.size);
+    player.obstacle = manager.ObstacleCheckCollision(player.playerPos, player.size);
+    player.tileCollision = collision; 
+
+    // debug keybind for enabling comment overlay
+    if(Input.keyClicked('o'))
+    {
+      commentOverlayEnabled = true;
+    }
   }
-  manager.speedCap = player.currentArmourSpeedMultiplier;
 
-  manager.moveGroups();
-  manager.drawGroups();
+  void drawCommentOverlay()
+  {
+    if(commentOverlay == null) commentOverlay = new CommentOverlay();
 
-  enemy.attack();
+    if(commentOverlay.update())
+    {
+      commentOverlayEnabled = false;
+      Comment comment = new Comment(commentOverlay.getCommentInput(), distance); // fill out score
+      println("Comment placed: \"" + comment.getContent() + "\" at distance: " + comment.getDistance());
+      // Upload the message to the database
+      commentOverlay = null;
+    }
+    if(commentOverlay != null) commentOverlay.draw();
+  }
 
-  enemy.draw();
-  enemy.movement();
+  void draw()
+  {
+    background(255);
+    manager.drawGroups();
+    player.draw();
+    enemy.draw();
+  }
 
-  //print(manager.ObstacleCheckCollision(player.playerPos, new PVector(100, 100)));
-  TileCollision collision = manager.checkCollision(player.playerPos, player.size);
-  //print(collision.direction);
-  //print("\n");
-  player.obstacle = manager.ObstacleCheckCollision(player.playerPos, player.size);
-  player.tileCollision = collision; 
- }
-  
 }

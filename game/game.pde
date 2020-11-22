@@ -1,3 +1,5 @@
+import samuelal.squelized.*;
+import java.util.Properties;
 import processing.sound.*;
 
 /*import processing.sound.*;
@@ -69,7 +71,13 @@ void gameStates() {
     start.menuSelecter();
     start.audioSlider();
   } else if (gameState == "PLAY") {
-    play.playGame();
+    play.update();
+    play.draw();
+    
+    if(play.commentOverlayEnabled)
+    {
+      play.drawCommentOverlay();
+    }
   } else if ( gameState == "HISCORE") {
     hiscore.screen();
   }
