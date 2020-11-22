@@ -75,15 +75,21 @@ class Player {
   void update() {
     //print(playerPos);
     //print("\n");
-    if (tileCollision.direction.y == 0) {
+    if (tileCollision.direction.y != -1) {
       gravityPull++;
+    }
+    
+    if (tileCollision.direction.y == 1) {
+      //gravityPull++;
+      jumpBoost = false;
+      gravityPull = 25;
     }
 
     if (tileCollision.direction.y == Config.DOWN && gravityPull != 0) {
       playerPos.y = tileCollision.position.y;
       gravityPull = 0;
       jump = false;
-    } else if (jump) {
+    } else if (jump && tileCollision.direction.y != Config.UP) {
       jump();
     }
 
