@@ -1,5 +1,5 @@
 import processing.sound.*;
-import processing.video.*;
+//import processing.video.*;
 
 /*import processing.sound.*;
  SoundFile file;*/
@@ -68,8 +68,8 @@ void gameStates() {
     hiscore.screen(); 
   }
 }
-
+/*
 void movieEvent(Movie backgroundVideo){
  backgroundVideo.read(); 
  
- }
+ }*/

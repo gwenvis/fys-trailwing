@@ -28,7 +28,9 @@ class PlayGame {
   //print(collision.direction);
   //print("\n");
   player.obstacle = manager.ObstacleCheckCollision(player.playerPos, player.size);
-  player.tileCollision = collision; 
+  player.tileCollision = collision;
+  
+  manager.playerLocation(player);
  }
   
 }

@@ -5,13 +5,16 @@
 
 class TileManager {
   ArrayList<TileGroup> tileGroups = new ArrayList<TileGroup>();
+  JSONArray chunkPool;
+  int chunkpool = 0;
   float defaultGroupWidth = Config.DEFAULT_GROUP_WIDTH;
   float speed;
   float speedCap;
   int startingGroups = Config.MIN_STARTING_CHUNKS;
   float bottomOffset = Config.CHUNK_BOTTOM_OFFSET;
 
-  JSONArray chunks;
+  ArrayList<JSONArray> chunks = new ArrayList<JSONArray>();
+  //JSONArray chunks;
   int chunkAmount;
 
   /**
@@ -22,16 +25,14 @@ class TileManager {
   TileManager(float movementSpeed) {    
     speed = movementSpeed;
 
+    chunkPool = loadJSONArray("json/chunks.json");
     //load chunks form json
-    chunks = loadJSONArray("json/chunks.json");
-    chunkAmount = chunks.size();
 
-    //create the minimal amount of chunks
     for (int i = 0; i < startingGroups; i++) {
       //create a new chunk to the right of the most right chunk
       TileGroup newGroup = new TileGroup(new PVector(i * defaultGroupWidth, height - bottomOffset));
       //add the tile positions of a random chunk to the new chunk
-      newGroup.loadGroup(chunks, (int)random(0, chunkAmount));
+      newGroup.loadGroup(chunkPool.getJSONArray(chunkpool).getJSONObject(Math.round(random(0, chunkPool.getJSONArray(chunkpool).size() - 1))));
       //add the chunk to the manager list
       tileGroups.add(newGroup);
     }
@@ -145,16 +146,33 @@ class TileManager {
         //delete the most left chunk
         tileGroups.remove(0);
 
-        //get the most right chunk
+
         TileGroup lastGroup = tileGroups.get(tileGroups.size() - 1);
 
         //create a new chunk to the right of the most right chunk
         TileGroup newGroup = new TileGroup(new PVector(lastGroup.position.x + defaultGroupWidth, height - bottomOffset));
         //add the tile positions of a random chunk to the new chunk
-        newGroup.loadGroup(chunks, (int)random(0, chunkAmount));
+        newGroup.loadGroup(chunkPool.getJSONArray(chunkpool).getJSONObject(Math.round(random(0, chunkPool.getJSONArray(chunkpool).size() - 1))));
         //add the chunk to the manager list
         tileGroups.add(newGroup);
       }
+    }
+  }
+
+  void playerLocation(Player player) {
+    if (player.playerPos.y > height) {
+      player.playerPos = new PVector(width / 4, 0);
+      
+      chunkpool++;
+      tileGroups = new ArrayList<TileGroup>();
+      for (int i = 0; i < startingGroups; i++) {
+      //create a new chunk to the right of the most right chunk
+      TileGroup newGroup = new TileGroup(new PVector(i * defaultGroupWidth, height - bottomOffset));
+      //add the tile positions of a random chunk to the new chunk
+      newGroup.loadGroup(chunkPool.getJSONArray(chunkpool).getJSONObject(Math.round(random(0, chunkPool.getJSONArray(chunkpool).size() - 1))));
+      //add the chunk to the manager list
+      tileGroups.add(newGroup);
+    }
     }
   }
 }
