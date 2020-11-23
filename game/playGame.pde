@@ -48,6 +48,8 @@ class PlayGame {
     TileCollision collision = manager.checkCollision(player.playerPos, player.size);
     player.obstacle = manager.ObstacleCheckCollision(player.playerPos, player.size);
     player.tileCollision = collision; 
+  
+  manager.playerLocation(player);
 
     // debug keybind for enabling comment overlay
     if(Input.keyClicked('o'))

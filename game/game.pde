@@ -1,6 +1,7 @@
 import samuelal.squelized.*;
 import java.util.Properties;
 import processing.sound.*;
+//import processing.video.*;
 
 /*import processing.sound.*;
  SoundFile file;*/
