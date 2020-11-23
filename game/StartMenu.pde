@@ -22,11 +22,15 @@ class StartMenu {
   float sliderBallX, sliderBallY, sliderBallR;
   float sliderStrokeWeight;
   float distanceBall;
+  PFont font;
+
 
   ArrayList<TextButton> menuButtons;
   ButtonManager manager;
 
   StartMenu() {
+
+
     background = loadImage("/startMenuBackground.jpg");
     background.resize(displayWidth, displayHeight);
 
@@ -42,6 +46,7 @@ class StartMenu {
     hiscoreY = height/2;
     quitX = width/2;
     quitY = height/2+100;
+    font = createFont("Arial", 64);
 
     //SOUND STUFF
     soundIsPlaying = false;
@@ -70,6 +75,7 @@ class StartMenu {
     menuButtons.add(new TextButton(startX, startY, "Start", menuFontSize, color(white), color(green), 0));
     menuButtons.add(new TextButton(hiscoreX, hiscoreY, "Hi-Scores", menuFontSize, color(white), color(green), 1));
     menuButtons.add(new TextButton(quitX, quitY, "Quit", menuFontSize, color(white), color(red), 2));
+
     manager = new ButtonManager(menuButtons);
 
     // constructor for buttons = float x, float y, String text, int fontSize
@@ -77,6 +83,7 @@ class StartMenu {
 
 
   void screen() {
+
     //Starts the audio
     if (!soundIsPlaying && gameState == "START") { 
       backgroundMusicStartScreen.loop();
@@ -89,7 +96,7 @@ class StartMenu {
     imageMode(CENTER);
     image(background, width/2, height/2);
 
-
+    textFont(font);
     for (int i = 0; i < menuButtons.size(); i++) {
       menuButtons.get(i).drawTextButton();
     }
@@ -164,17 +171,17 @@ class StartMenu {
       stroke(white);
       fill(black);
       ellipse(sliderBallX, sliderBallY, sliderBallR, sliderBallR);
-    }
 
-    if (Input.mouseButtonPressed(LEFT)) {
-      sliderBallX = mouseX;
+      if (Input.mouseButtonPressed(LEFT)) {
+        sliderBallX = mouseX;
 
-      //keeps sliderball in bounds
-      if (sliderBallX < sliderX1) {
-        sliderBallX = sliderX1;
-      }
-      if (sliderBallX > sliderX2) {
-        sliderBallX = sliderX2;
+        //keeps sliderball in bounds
+        if (sliderBallX < sliderX1) {
+          sliderBallX = sliderX1;
+        }
+        if (sliderBallX > sliderX2) {
+          sliderBallX = sliderX2;
+        }
       }
     }
   }

@@ -22,6 +22,8 @@ class ButtonManager {
     }
   }
 
+
+
   void indexSelecterKeysVertical() {
     if ((Input.keyClicked('s')||Input.keyCodeClicked(DOWN)) && index < indexMax) {
       index += 1;

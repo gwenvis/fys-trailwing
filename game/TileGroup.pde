@@ -57,13 +57,13 @@ class TileGroup {
 
     //gets the obstacles of the chunk
     JSONArray chunkObstacles = chunk.getJSONArray("obstacles");
-    //loop through the  //<>//
+    //loop through the  //<>// //<>//
     for (int n = 0; n < chunkObstacles.size(); n++) {
       //get the single obstacles as an object
       JSONObject obstacle = chunkObstacles.getJSONObject(n);
 
       //add the tile with its variables to the tile array
-      obstacles.add(new Obstacle(obstacle.getString("sprite"),  //<>//
+      obstacles.add(new Obstacle(obstacle.getString("sprite"),  //<>// //<>//
         new PVector(obstacle.getFloat("width"), obstacle.getFloat("height")), 
         new PVector(obstacle.getFloat("x"), obstacle.getFloat("y")), 1, obstacle.getString("layer")));
     }

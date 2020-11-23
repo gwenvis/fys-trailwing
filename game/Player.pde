@@ -132,7 +132,6 @@ class Player {
     if(jumpBoost)
     {
       playerPos.y+=playerJump*Config.POWERUP_JUMP_BOOST;
-      println("yo jump boost");
     }
     else
       playerPos.y+=playerJump;

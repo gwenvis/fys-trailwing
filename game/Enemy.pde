@@ -17,7 +17,7 @@ class Enemy {
   int fireBallTimer, fireBallDurationCooldown;
   Player player;
   boolean attack;
-  float fireBallX, fireBallY;
+  float fireBallX, fireBallY, fireBallW, fireBallH;
   float fireBallSpeed;
 
 
@@ -47,9 +47,11 @@ class Enemy {
     this.fireBallTimer = 0;
     this.fireBallDurationCooldown = 3200;  //Time  it takes to shoot the fireBall WHEN angry. (fireBall duration = attackDurationCooldown - fireBallDurationCooldown)
     this.attack = false;
-    this.fireBallX = x;
+    this.fireBallX = x + size/2;
     this.fireBallY = y;
     this.fireBallSpeed = 6;
+    this.fireBallW = fireBall.width/6;
+    this.fireBallH = fireBall.height/6;
   }
 
   void draw() {
@@ -74,7 +76,7 @@ class Enemy {
 
   void attack() {
 
-    imageMode(CORNER);
+    imageMode(CENTER);
 
 
     // timer that changes angry to true and draws the fireBall when angry. 
@@ -98,10 +100,21 @@ class Enemy {
     }
     
     if (attack){
-     image(fireBall, fireBallX-size/2, fireBallY,fireBall.width/6, fireBall.height/6 );
-     fireBallX += fireBallSpeed;
+     image(fireBall, fireBallX, fireBallY,fireBallW, fireBallH );
+     fireBallX += fireBallSpeed*0.6;
     }
     
+    
+  }
+  
+  
+  void collision(){
+
+    //checks collision between fireball and player
+    if(fireBallX + fireBallW/2 > player.playerPos.x - player.size.x/2 && fireBallX - fireBallW/2 < player.playerPos.x + player.size.x/2 && fireBallY + fireBallH/2 > player.playerPos.y - player.size.y/2 && fireBallY - fireBallH/2 < player.playerPos.y + player.size.y/2){
+      fireBallX = 10000;
+      //player.damage();
+    }
     
   }
 

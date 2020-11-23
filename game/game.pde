@@ -1,3 +1,5 @@
+import samuelal.squelized.*;
+import java.util.Properties;
 import processing.sound.*;
 
  //SoundFile file;
@@ -13,10 +15,12 @@ PlayGame play;
 StartMenu start;
 LoginScreen login;
 Hiscore hiscore;
+GameOver gameOver;
 SoundFile backgroundMusicStartScreen;
+SoundFile backgroundMusicGameOverScreen;
 
 void setup() {
-  gameState = "HISCORE";
+  gameState = "LOGIN";
   background(255);
   fullScreen(P2D);
   frameRate(60);
@@ -26,10 +30,14 @@ void setup() {
   player = new Player(width/2, height - Config.PLAYER_BOTTOM_OFFSET);
   enemy = new Enemy(player);
   backgroundMusicStartScreen = new SoundFile(this, "backgroundMusic.wav");
+  backgroundMusicGameOverScreen = new SoundFile(this, "gameOver.wav");
   hiscore = new Hiscore();
   login = new LoginScreen();
+  gameOver = new GameOver();
   PFont font = createFont("Arial", 64);
   textFont(font);
+  
+  
 }
 
 void draw()
@@ -71,5 +79,7 @@ void gameStates() {
     play.playGame();
   } else if ( gameState == "HISCORE") {
     hiscore.screen();
+  } else if(gameState == "GAMEOVER"){
+    gameOver.screen();
   }
 }

@@ -19,7 +19,7 @@ class PlayGame {
   manager.drawGroups();
 
   enemy.attack();
-
+  enemy.collision();
   enemy.draw();
   enemy.movement();
 
@@ -29,6 +29,6 @@ class PlayGame {
   //print("\n");
   player.obstacle = manager.ObstacleCheckCollision(player.playerPos, player.size);
   player.tileCollision = collision; 
+
  }
-  
 }
