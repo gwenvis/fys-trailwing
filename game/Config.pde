@@ -31,4 +31,6 @@ static class Config {
     "invincibility.png",
     "super_jump.png"
   };
+
+  final static int MAX_COMMENT_LOAD_DISTANCE = 500;
 }

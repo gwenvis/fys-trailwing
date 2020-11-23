@@ -61,20 +61,14 @@ class Player {
     currentArmourSpeedMultiplier = armourLevels.get(currentArmourLevel);
   }
 
-  void init() {
-    draw();
-    move();
-  }
-
   void draw() {
-    update();
     imageMode(CENTER);
     image(image, playerPos.x, playerPos.y);
   }
 
   void update() {
-    //print(playerPos);
-    //print("\n");
+    
+    move();
     if (tileCollision.direction.y != -1) {
       gravityPull++;
     }
