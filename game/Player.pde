@@ -4,13 +4,13 @@ import java.util.concurrent.Executors;
 import java.util.concurrent.TimeUnit;
 
 class Player {
-  private int shieldDurability, shieldAmount, currentArmourLevel, coinAmount, currentShield, score;
+  private int shieldDurability, shieldAmount, currentArmourLevel, coinAmount, currentShield;
   private PVector playerPos, shieldPos;
   private float playerSpeed, jumpPower, jumpGravity, playerJump, gravityPull, currentArmourSpeedMultiplier, playerVelocity;
   boolean jump, barrierLeft, barrierRight, shieldIsUp, shieldLeft, shieldRight;
   boolean jumpBoost = false;
   boolean invincibility = false;
-  float currentPowerupTimer = 0;
+  float currentPowerupTimer = 0, score;
   PImage playerImage, shieldLeftBlueImage, shieldRightBlueImage, shieldLeftGreenImage, shieldRightGreenImage, shieldLeftRedImage, shieldRightRedImage;
   PVector size = Config.PLAYER_SIZE;
 
