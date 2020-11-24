@@ -7,7 +7,7 @@ class Player {
   private int shieldDurability, shieldAmount, currentArmourLevel, coinAmount, currentShield;
   private PVector playerPos, shieldPos;
   private float playerSpeed, jumpPower, jumpGravity, playerJump, gravityPull, currentArmourSpeedMultiplier, playerVelocity;
-  boolean jump, barrierLeft, barrierRight, shieldIsUp, shieldLeft, shieldRight;
+  boolean jump, barrierLeft, barrierRight, shieldIsUpLeft, shieldIsUpRight, shieldLeft, shieldRight;
   boolean jumpBoost = false;
   boolean invincibility = false;
   float currentPowerupTimer = 0, score;
@@ -42,8 +42,8 @@ class Player {
     shieldAmount = 2;
     shieldDurability = 3;
 
-    shieldIsUp=false;
-    shieldIsUp=false;
+    shieldIsUpLeft=false;
+    shieldIsUpRight=false;
 
     jumpPower = Config.PLAYER_JUMP_POWER;
     jumpGravity = Config.PLAYER_JUMP_GRAVITY;
@@ -61,6 +61,9 @@ class Player {
     shieldRightGreenImage = loadImage("ShieldRightGreen.png");
     shieldLeftRedImage = loadImage("ShieldLeftRed.png");
     shieldRightRedImage = loadImage("ShieldRightRed.png");
+    
+    
+    shields();
 
     //command that has to be excecuted infinitily until end is reached, which isn't specified in this case
     Runnable speedUp = new Runnable() {
@@ -74,24 +77,23 @@ class Player {
 
     currentArmourLevel = 0;
     armourLevelsList();
-    shields();
     currentArmourSpeedMultiplier = armourLevels.get(currentArmourLevel);
   }
 
   void draw() {
     imageMode(CENTER);
     image(playerImage, playerPos.x, playerPos.y);
-    println(shieldPos.x, shieldPos.y);
-    if (shieldIsUp) {
+
+    if (shieldIsUpLeft||shieldIsUpRight) {
       image(shields.get(currentShield), shieldPos.x, shieldPos.y);
-      shieldIsUp = false;
+      //shieldIsUp = false;
     }
   }
 
   void update() {
 
     //cutscene? -cartoon vallen
-    if (playerPos.y>=height-(Config.PLAYER_SIZE.y/2)) {
+    if (playerPos.y >= height - (Config.PLAYER_SIZE.y/2)) {
       fallPositionChange();
     }
 
@@ -122,13 +124,17 @@ class Player {
     }
 
     if (obstacle != null && obstacle.layer.equals("obstacle")) {
-      if (!shieldIsUp) {
-        currentArmourLevel += obstacle.damage;
+      if (shieldIsUpLeft||shieldIsUpRight) {
+        if (shieldDurability <= 1) {
+          shieldAmount -= 1;
+          shieldDurability = 3;
+        } else {
+          shieldDurability -= 1;
+        }
       } else {
-        shieldDurability-=1;
+        currentArmourLevel += obstacle.damage;
+        currentArmourSpeedMultiplier = armourLevels.get(currentArmourLevel > armourLevels.size() - 1 ? armourLevels.size() - 1 : currentArmourLevel);
       }
-      currentArmourSpeedMultiplier = armourLevels.get(currentArmourLevel > armourLevels.size() - 1 ? armourLevels.size() - 1 : currentArmourLevel);
-
       obstacle = null;
     }
 
@@ -142,8 +148,7 @@ class Player {
     barrierRight = playerBarrierRight();
 
     playerPos.y += gravityPull*jumpGravity;
-    shields();
-
+    coins();
     shield();
     move();
   }
@@ -162,12 +167,16 @@ class Player {
     if (Input.keyCodePressed(DOWN)) {
       shieldRight = false;
       shieldLeft = true;
-      shieldIsUp = true;
-    }    
+      shieldIsUpLeft = true;
+    } else {
+      shieldIsUpLeft = false;
+    }
     if (Input.keyCodePressed(UP)) {
       shieldRight = true;
       shieldLeft = false;
-      shieldIsUp = true;
+      shieldIsUpRight = true;
+    } else {
+      shieldIsUpRight = false;
     }
   }  
 
