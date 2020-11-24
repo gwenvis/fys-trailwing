@@ -10,12 +10,15 @@ class Enemy {
   float attackW, attackH;
   PImage dragonSprite;
   PImage angryDragonSprite;
-  PImage laser;
+  PImage fireBall;
   boolean angry;
-  int attackTimer, attackCooldown;
-  int attackDurationTimer, attackDurationCooldown;
-  int laserTimer, laserDurationCooldown;
+  int angryTimer, angryCooldown;
+  int AngryDurationTimer, attackDurationCooldown;
+  int fireBallTimer, fireBallDurationCooldown;
   Player player;
+  boolean attack;
+  float fireBallX, fireBallY;
+  float fireBallSpeed;
 
 
 
@@ -24,9 +27,9 @@ class Enemy {
     this.player = player;
     this.dragonSprite = loadImage("dragonSprite.png");
     this.angryDragonSprite= loadImage("angryDragonSprite.png");
-    this.laser = loadImage("Laser.png");
+    this.fireBall = loadImage("fireBall.png");
 
-    //Size & pos
+    //Size & pos Enemy+
     this.x = 150;
     this.y = player.playerPos.y -5;
     this.speed = 4;
@@ -37,12 +40,16 @@ class Enemy {
 
     //attackvariables
     this.angry = false;
-    this.attackTimer = 0;
-    this.attackCooldown = 8000; //  Time in ms he takes to get angry
-    this.attackDurationTimer = 0;
+    this.angryTimer = 0;
+    this.angryCooldown = 8000; //  Time in ms he takes to get angry
+    this.AngryDurationTimer = 0;
     this.attackDurationCooldown = 4000;  //  Time in ms he stays angry
-    this.laserTimer = 0;
-    this.laserDurationCooldown = 3200;  //Time  it takes to shoot the laser WHEN angry. (Laser duration = attackDurationCooldown - laserDurationCooldown)
+    this.fireBallTimer = 0;
+    this.fireBallDurationCooldown = 3200;  //Time  it takes to shoot the fireBall WHEN angry. (fireBall duration = attackDurationCooldown - fireBallDurationCooldown)
+    this.attack = false;
+    this.fireBallX = x;
+    this.fireBallY = y;
+    this.fireBallSpeed = 6;
   }
 
   void draw() {
@@ -70,25 +77,32 @@ class Enemy {
     imageMode(CORNER);
 
 
-    // timer that changes angry to true and draws the laser when angry. 
-    if (millis()-attackTimer > attackCooldown  ) {
+    // timer that changes angry to true and draws the fireBall when angry. 
+    if (millis()-angryTimer > angryCooldown  ) {
       angry = true;
-      laserTimer = millis();
+      fireBallTimer = millis();
 
 
 
-      attackTimer = millis();
-      attackDurationTimer = millis();
-    } else if (angry && millis()-attackDurationTimer > attackDurationCooldown) {
-      attackDurationTimer = millis();
-      attackTimer = millis();
+      angryTimer = millis();
+      AngryDurationTimer = millis();
+    } else if (angry && millis()-AngryDurationTimer > attackDurationCooldown) {
+      AngryDurationTimer = millis();
       angry = false;
     }
 
-    if (angry && millis()-laserTimer > laserDurationCooldown) {
-      this.distance = player.playerPos.x - x;
-      image(laser, x+size/2, y, distance-size/2, attackH);
+    if (angry && millis()-fireBallTimer > fireBallDurationCooldown) {
+      attack = true;
+      fireBallX = x;
+
     }
+    
+    if (attack){
+     image(fireBall, fireBallX-size/2, fireBallY,fireBall.width/6, fireBall.height/6 );
+     fireBallX += fireBallSpeed;
+    }
+    
+    
   }
 
 

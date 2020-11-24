@@ -14,6 +14,13 @@ class TileGroup {
   TileGroup(PVector tempPos) {
     position = tempPos;
   }
+  
+  void copyPosition(TileGroup group) {
+    tiles = group.tiles;
+    obstacles = group.obstacles;
+    powerups = group.powerups;
+    powerup = group.powerup;
+  }
 
   // Loops through all tiles in the array and draws it relative to the tiles that are already drawn. (Patrick Eikema)
   void drawGroup() {
@@ -37,9 +44,8 @@ class TileGroup {
    * @param int this is the array index of the needed chunk
    * @returns void
    */
-  void loadGroup(JSONArray chunks, int chunkIndex) {
+  void loadGroup(JSONObject chunk) {
     //get a single chunk by the given index
-    JSONObject chunk = chunks.getJSONObject(chunkIndex);
 
     //gets the tiles of the chunk
     JSONArray chunkTiles = chunk.getJSONArray("tiles");
@@ -51,13 +57,13 @@ class TileGroup {
       //add the tile with its variables to the tile array
       tiles.add(new Tile(tile.getString("sprite"), 
         new PVector(tile.getFloat("width"), tile.getFloat("height")), 
-        new PVector(tile.getFloat("x"), tile.getFloat("y")), 
+        new PVector(tile.getFloat("x"), tile.getFloat("y")),  //<>//
         tile.getString("layer")));
     }
 
     //gets the obstacles of the chunk
     JSONArray chunkObstacles = chunk.getJSONArray("obstacles");
-    //loop through the  //<>//
+    //loop through the  //<>// //<>//
     for (int n = 0; n < chunkObstacles.size(); n++) {
       //get the single obstacles as an object
       JSONObject obstacle = chunkObstacles.getJSONObject(n);

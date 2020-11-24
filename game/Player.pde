@@ -78,13 +78,7 @@ class Player {
     currentArmourSpeedMultiplier = armourLevels.get(currentArmourLevel);
   }
 
-  void init() {
-    draw();
-    move();
-  }
-
   void draw() {
-    update();
     imageMode(CENTER);
     image(playerImage, playerPos.x, playerPos.y);
     println(shieldPos.x, shieldPos.y);
@@ -101,15 +95,21 @@ class Player {
       fallPositionChange();
     }
 
-    if (tileCollision.direction.y == 0) {
+    if (tileCollision.direction.y != -1) {
       gravityPull++;
+    }
+
+    if (tileCollision.direction.y == 1) {
+      //gravityPull++;
+      jumpBoost = false;
+      gravityPull = 25;
     }
 
     if (tileCollision.direction.y == Config.DOWN && gravityPull != 0) {
       playerPos.y = tileCollision.position.y;
       gravityPull = 0;
       jump = false;
-    } else if (jump) {
+    } else if (jump && tileCollision.direction.y != Config.UP) {
       jump();
     }
 
@@ -122,8 +122,10 @@ class Player {
     }
 
     if (obstacle != null && obstacle.layer.equals("obstacle")) {
-      if (shieldIsUp) {
+      if (!shieldIsUp) {
         currentArmourLevel += obstacle.damage;
+      } else {
+        shieldDurability-=1;
       }
       currentArmourSpeedMultiplier = armourLevels.get(currentArmourLevel > armourLevels.size() - 1 ? armourLevels.size() - 1 : currentArmourLevel);
 
@@ -143,6 +145,7 @@ class Player {
     shields();
 
     shield();
+    move();
   }
 
   void move() {
