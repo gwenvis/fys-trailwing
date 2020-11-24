@@ -49,7 +49,7 @@ class Enemy {
     this.attack = false;
     this.fireBallX = x + size/2;
     this.fireBallY = y+size/2;
-    this.fireBallSpeed = 6;
+    this.fireBallSpeed = 15;
     this.fireBallW = fireBall.width/6;
     this.fireBallH = fireBall.height/6;
   }
@@ -98,7 +98,7 @@ class Enemy {
     }
 
     if (attack) {
-      fireBallX += fireBallSpeed*0.6;
+      fireBallX += fireBallSpeed;
     }
   }
 
