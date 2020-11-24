@@ -18,6 +18,7 @@ class PlayGame {
 
     backgroundMusicStartScreen.stop();
     player.manager = manager;
+    player.score = manager.score;
     player.update();
     manager.listener();
     if (manager.speed <= manager.speedCap) {

@@ -4,6 +4,7 @@ import java.util.concurrent.Executors;
 import java.util.concurrent.TimeUnit;
 
 class Player {
+  float score;
   private int playerHP, currentArmourLevel;
   private PVector playerPos;
   private float playerSpeed, jumpPower, jumpGravity, playerJump, gravityPull, currentArmourSpeedMultiplier, playerVelocity, speedUp;
@@ -132,7 +133,6 @@ class Player {
     if(jumpBoost)
     {
       playerPos.y+=playerJump*Config.POWERUP_JUMP_BOOST;
-      println("yo jump boost");
     }
     else
       playerPos.y+=playerJump;
