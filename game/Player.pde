@@ -61,8 +61,6 @@ class Player {
     shieldRightGreenImage = loadImage("ShieldRightGreen.png");
     shieldLeftRedImage = loadImage("ShieldLeftRed.png");
     shieldRightRedImage = loadImage("ShieldRightRed.png");
-    
-    
     shields();
 
     //command that has to be excecuted infinitily until end is reached, which isn't specified in this case
@@ -119,8 +117,9 @@ class Player {
       playerPos.sub(tileCollision.direction.x * manager.speed, 0);
     }
 
-    if (obstacle != null && obstacle.layer.equals("coins")) {
+    if (obstacle != null && obstacle.layer.equals("coin")) {
       coinAmount++;
+      obstacle = null;
     }
 
     if (obstacle != null && obstacle.layer.equals("obstacle")) {
@@ -146,7 +145,8 @@ class Player {
 
     barrierLeft = playerBarrierLeft();
     barrierRight = playerBarrierRight();
-    
+
+
     score = manager.score + (10 * coinMultiplyer);
     playerPos.y += gravityPull*jumpGravity;
     coins();
@@ -256,6 +256,7 @@ class Player {
       } else {
         coinMultiplyer++;
       }
+      coinAmount = 0;
     }
   }
 
