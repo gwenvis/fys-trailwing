@@ -4,15 +4,14 @@ import java.util.concurrent.Executors;
 import java.util.concurrent.TimeUnit;
 
 class Player {
-  float score;
-  private int playerHP, currentArmourLevel;
-  private PVector playerPos;
-  private float playerSpeed, jumpPower, jumpGravity, playerJump, gravityPull, currentArmourSpeedMultiplier, playerVelocity, speedUp;
-  boolean jump, barrierLeft, barrierRight, shieldIsUp, armourHit;
+  private int shieldDurability, shieldAmount, currentArmourLevel, coinAmount, currentShield;
+  private PVector playerPos, shieldPos;
+  private float playerSpeed, jumpPower, jumpGravity, playerJump, gravityPull, currentArmourSpeedMultiplier, playerVelocity;
+  boolean jump, barrierLeft, barrierRight, shieldIsUpLeft, shieldIsUpRight, shieldLeft, shieldRight;
   boolean jumpBoost = false;
   boolean invincibility = false;
-  float currentPowerupTimer = 0;
-  PImage image;
+  float currentPowerupTimer = 0, score;
+  PImage playerImage, shieldLeftBlueImage, shieldRightBlueImage, shieldLeftGreenImage, shieldRightGreenImage, shieldLeftRedImage, shieldRightRedImage;
   PVector size = Config.PLAYER_SIZE;
 
   TileCollision tileCollision = new TileCollision();
@@ -27,6 +26,7 @@ class Player {
   ScheduledExecutorService executor = Executors.newScheduledThreadPool(1);
 
   ArrayList<Float> armourLevels = new ArrayList<Float>();
+  ArrayList<PImage> shields = new ArrayList<PImage>();
 
   Player(float x, float y) {
     playerPos = new PVector(0, 0);
@@ -34,18 +34,36 @@ class Player {
     playerPos.y = y;
     playerJump = 0;
     gravityPull = 0;
+    coinAmount = 0;
+    currentShield = 0;
+    shieldPos = new PVector(50, 50);
+    shieldPos.x = 0;
+    shieldPos.y = 0;
+    shieldAmount = 2;
+    shieldDurability = 3;
+
+    shieldIsUpLeft=false;
+    shieldIsUpRight=false;
 
     jumpPower = Config.PLAYER_JUMP_POWER;
     jumpGravity = Config.PLAYER_JUMP_GRAVITY;
-    //playerHP = 100;
     playerSpeed = Config.PLAYER_SPEED;
 
-    armourHit=false;
     jump=false;
     barrierLeft=false;
     barrierRight=false;
-    image = loadImage("new_player.png");
-    image.resize((int)size.x, (int)size.y);
+    playerImage = loadImage("new_player.png");
+    playerImage.resize((int)size.x, (int)size.y);
+
+    shieldLeftBlueImage = loadImage("ShieldLeftBlue.png");
+    shieldRightBlueImage = loadImage("ShieldRightBlue.png");
+    shieldLeftGreenImage = loadImage("ShieldLeftGreen.png");
+    shieldRightGreenImage = loadImage("ShieldRightGreen.png");
+    shieldLeftRedImage = loadImage("ShieldLeftRed.png");
+    shieldRightRedImage = loadImage("ShieldRightRed.png");
+    
+    
+    shields();
 
     //command that has to be excecuted infinitily until end is reached, which isn't specified in this case
     Runnable speedUp = new Runnable() {
@@ -64,16 +82,25 @@ class Player {
 
   void draw() {
     imageMode(CENTER);
-    image(image, playerPos.x, playerPos.y);
+    image(playerImage, playerPos.x, playerPos.y);
+
+    if (shieldIsUpLeft||shieldIsUpRight) {
+      image(shields.get(currentShield), shieldPos.x, shieldPos.y);
+      //shieldIsUp = false;
+    }
   }
 
   void update() {
-    
-    move();
+
+    //cutscene? -cartoon vallen
+    if (playerPos.y >= height - (Config.PLAYER_SIZE.y/2)) {
+      fallPositionChange();
+    }
+
     if (tileCollision.direction.y != -1) {
       gravityPull++;
     }
-    
+
     if (tileCollision.direction.y == 1) {
       //gravityPull++;
       jumpBoost = false;
@@ -92,14 +119,27 @@ class Player {
       playerPos.sub(tileCollision.direction.x * manager.speed, 0);
     }
 
+    if (obstacle != null && obstacle.layer.equals("coins")) {
+      coinAmount++;
+    }
+
     if (obstacle != null && obstacle.layer.equals("obstacle")) {
-      currentArmourLevel += obstacle.damage;
-      currentArmourSpeedMultiplier = armourLevels.get(currentArmourLevel > armourLevels.size() - 1 ? armourLevels.size() - 1 : currentArmourLevel);
+      if (shieldIsUpLeft||shieldIsUpRight) {
+        if (shieldDurability <= 1) {
+          shieldAmount -= 1;
+          shieldDurability = 3;
+        } else {
+          shieldDurability -= 1;
+        }
+      } else {
+        currentArmourLevel += obstacle.damage;
+        currentArmourSpeedMultiplier = armourLevels.get(currentArmourLevel > armourLevels.size() - 1 ? armourLevels.size() - 1 : currentArmourLevel);
+      }
       obstacle = null;
     }
-    
+
     currentPowerupTimer--;
-    if(currentPowerupTimer <= 0) {
+    if (currentPowerupTimer <= 0) {
       jumpBoost = false;
       invincibility = false;
     }
@@ -108,56 +148,162 @@ class Player {
     barrierRight = playerBarrierRight();
 
     playerPos.y += gravityPull*jumpGravity;
+    coins();
+    shield();
+    move();
   }
 
   void move() {
     playerVelocity = playerSpeed/**currentArmourSpeedMultiplier*/;
     if (Input.keyCodePressed(LEFT)&&!barrierLeft && tileCollision.direction.x != Config.LEFT) {
-      playerPos.x-=playerVelocity;
+      playerPos.x= playerPos.x - playerVelocity - manager.speed;
     }
     if (Input.keyCodePressed(RIGHT)&&!barrierRight && tileCollision.direction.x != Config.RIGHT) {
       playerPos.x+=playerVelocity;
     }
-    if (Input.keyCodePressed(UP) && tileCollision.direction.y == Config.DOWN) {
-      // if keypressed is arrow up then jump is true
+    if (Input.keyPressed(' ') && tileCollision.direction.y == Config.DOWN) {
       jump = true;
     }    
     if (Input.keyCodePressed(DOWN)) {
-      //ATTENTION change to hit by enemy, pressed=> multiplier changes to much
-      armourHit = true;
+      shieldRight = false;
+      shieldLeft = true;
+      shieldIsUpLeft = true;
+    } else {
+      shieldIsUpLeft = false;
+    }
+    if (Input.keyCodePressed(UP)) {
+      shieldRight = true;
+      shieldLeft = false;
+      shieldIsUpRight = true;
+    } else {
+      shieldIsUpRight = false;
+    }
+  }  
+
+  void shield() {
+    whichShield();
+
+    shieldPos.y = playerPos.y;
+    if (currentShield==0||currentShield==2||currentShield==4) {
+      shieldPos.x = playerPos.x - (2*Config.PLAYER_SIZE.x/3);
+    } 
+
+    if (currentShield==1||currentShield==3||currentShield==5) {
+      shieldPos.x = playerPos.x + (2*Config.PLAYER_SIZE.x/3);
+    }
+
+    if (obstacle != null && obstacle.layer.equals("shield")) {
+      if (shieldAmount>=5) {
+        shieldAmount++;
+      }
+    }
+  }
+
+  void whichShield() {
+    if (shieldDurability==1) {
+      if (shieldLeft) {
+        currentShield = 4;
+      }
+      if (shieldRight) {
+        currentShield = 5;
+      }
+    } else if (shieldDurability==2) {
+      if (shieldLeft) {
+        currentShield = 2;
+      }
+      if (shieldRight) {
+        currentShield = 3;
+      }
+    } else {
+      if (shieldLeft) {
+        currentShield = 0;
+      }
+      if (shieldRight) {
+        currentShield = 1;
+      }
+    }
+  }
+
+  void shieldHit() {
+    if (shieldRight&&obstacle != null && obstacle.layer.equals("obstacle")) {
+      shieldDurability = shieldDurability - int(obstacle.damage);
+      obstacle = null;
+    }
+
+    if ((shieldLeft&&shieldDurability>1)||(shieldRight&&shieldDurability>1)) {
+      shieldDurability = shieldDurability-1;
+    }
+
+    if (shieldDurability<=1) {
+      shieldAmount -= 1;
+      shieldDurability = 3;
+    }
+  }
+
+  void damage() {
+    if (currentArmourLevel == 6) {
+      death();
+    } else {
       currentArmourLevel++;
     }
   }
 
+  void coins() {
+    if (coinAmount == Config.MAX_COIN_AMOUNT) {
+      if (shieldAmount>=5) {
+        shieldAmount++;
+      } else {
+        score += 10;
+      }
+    }
+  }
+
+  void death() {
+    //gamestate == "DEATH";
+  }
+
+  void fallPositionChange() {
+    playerPos.y = 0 - (Config.PLAYER_SIZE.y/2);
+  }
+
+
   void jump() {
-    if(jumpBoost)
+    if (jumpBoost)
     {
       playerPos.y+=playerJump*Config.POWERUP_JUMP_BOOST;
-    }
-    else
+    } else
       playerPos.y+=playerJump;
     playerJump = jumpPower + (gravityPull*jumpGravity);
   }
 
   void givePowerUp(PowerupType type) {
     switch(type) {
-      case INVINCIBILITY:
-        invincibility = true;
-        break;
-      case SUPER_JUMP:
-        jumpBoost = true;
-        break;
+    case INVINCIBILITY:
+      invincibility = true;
+      break;
+    case SUPER_JUMP:
+      jumpBoost = true;
+      break;
     }
 
     currentPowerupTimer = Config.POWERUP_ACTIVE_TIMER * frameRate;
   }
 
   void armourLevelsList() {
+    armourLevels.add(1f);
     armourLevels.add(5f);
     armourLevels.add(10f);
     armourLevels.add(15f);
     armourLevels.add(20f);
     armourLevels.add(25f);
+  }
+  void shields() {
+    shields.add(shieldLeftBlueImage);
+    shields.add(shieldRightBlueImage);
+    shields.add(shieldLeftGreenImage);
+    shields.add(shieldRightGreenImage);
+    shields.add(shieldLeftRedImage);
+    shields.add(shieldRightRedImage);
   }
 
   void speedingUp() {
@@ -177,6 +323,10 @@ class Player {
     if (playerPos.x + 50>= rightBarrier) {
       return true;
     }
+    return false;
+  }
+
+  boolean shieldRaised() {
     return false;
   }
 }
