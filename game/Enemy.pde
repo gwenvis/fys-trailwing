@@ -95,7 +95,7 @@ class Enemy {
 
     if (angry && millis()-fireBallTimer > fireBallDurationCooldown) {
       attack = true;
-      fireBallX = x;
+      fireBallX = x + size/2;
 
     }
     

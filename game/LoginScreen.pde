@@ -61,9 +61,16 @@ class LoginScreen {
     textAlign(CORNER);
 
     if (nickName.length() == 0) {
+      if (nickNameHint == "|") {
+        fill(0);
+      } else {
+        fill(150);
+      }
       text(nickNameHint, loginRectX-loginRectW/2+20, loginRectY+5);
     } else {
+      fill(0);
       text(nickName, loginRectX-loginRectW/2+20, loginRectY+5);
+      fill(150);
       text("Press Enter to continue.", loginRectX-20, loginRectY + loginRectH*1.2);
     }
 
@@ -93,15 +100,15 @@ class LoginScreen {
       }
       if (millis()-hintTimer < hintCD) {
         nickNameHint = "|";
-      } else if(millis()-hintTimer > hintCD && millis()-hintTimer < hintCD*2){
-        nickNameHint = ""; 
+      } else if (millis()-hintTimer > hintCD && millis()-hintTimer < hintCD*2) {
+        nickNameHint = "";
       } else {
-        hintTimerSet = false; 
+        hintTimerSet = false;
       }
       keyInput();
     }
   }
-  
+
   //if the user writes a letter when the textbox is selected, its copied to String: nickName
   void keyInput() {
     char[] alphabet = {'a', 'b', 'c', 'd', 'e', 'f', 'g', 'h', 'i', 'j', 'k', 'l', 'm', 'n', 'o', 'p', 'q', 'r', 's', 't', 'u', 'v', 'w', 'x', 'y', 'z'};
@@ -115,12 +122,10 @@ class LoginScreen {
         removeLetter = true;
       }
     }
-    
-    if(removeLetter){
-        nickName = nickName.substring( 0, nickName.length()-1 );
-        removeLetter = false;
-        }
-    
+
+    if (removeLetter) {
+      nickName = nickName.substring( 0, nickName.length()-1 );
+      removeLetter = false;
+    }
   }
-  
 }
