@@ -4,6 +4,7 @@
  */
 
 class TileManager {
+  float score;
   ArrayList<TileGroup> tileGroups = new ArrayList<TileGroup>();
   JSONArray chunkPool;
   int chunkpool = 0;
@@ -14,7 +15,6 @@ class TileManager {
   float bottomOffset = Config.CHUNK_BOTTOM_OFFSET;
 
   ArrayList<JSONArray> chunks = new ArrayList<JSONArray>();
-  //JSONArray chunks;
   int chunkAmount;
 
   /**
@@ -43,6 +43,8 @@ class TileManager {
     for (int i = 0; i < tileGroups.size(); i++) {
       tileGroups.get(i).position.x -= speed;
     }
+
+    score += speed / frameRate;
   }
 
   //Draw all the tiles. (Patrick Eikema)
@@ -55,6 +57,7 @@ class TileManager {
   /**
    * @author Cody Bolleboom
    * Checks the collision and returns the collision direction as a boolean
+   * collison in this context are the tiles the player can walk on
    *
    * @return void
    */
@@ -91,7 +94,8 @@ class TileManager {
 
   /**
    * @author Cody Bolleboom
-   * Checks the collision and returns the collision direction as a boolean
+   * Checks the collision of obstacles and returns the collision direction as a boolean
+   * Collision exists in layers and the layers say what type of collision it is for example: obstacle, coin and shield
    *
    * @return void
    */
@@ -116,9 +120,7 @@ class TileManager {
             collision.x = 0;
           }
 
-          if (!obstacle.layer.equals("shop")) {
-            tileGroup.obstacles.remove(i);
-          }
+          tileGroup.obstacles.remove(i);
           return obstacle;
         }
 
@@ -159,20 +161,23 @@ class TileManager {
     }
   }
 
+  /**
+   * This loads a new chunk pool if the player fell down
+   */
   void playerLocation(Player player) {
     if (player.playerPos.y > height) {
       player.playerPos = new PVector(width / 4, 0);
-      
+
       chunkpool++;
       tileGroups = new ArrayList<TileGroup>();
       for (int i = 0; i < startingGroups; i++) {
-      //create a new chunk to the right of the most right chunk
-      TileGroup newGroup = new TileGroup(new PVector(i * defaultGroupWidth, height - bottomOffset));
-      //add the tile positions of a random chunk to the new chunk
-      newGroup.loadGroup(chunkPool.getJSONArray(chunkpool).getJSONObject(Math.round(random(0, chunkPool.getJSONArray(chunkpool).size() - 1))));
-      //add the chunk to the manager list
-      tileGroups.add(newGroup);
-    }
+        //create a new chunk to the right of the most right chunk
+        TileGroup newGroup = new TileGroup(new PVector(i * defaultGroupWidth, height - bottomOffset));
+        //add the tile positions of a random chunk to the new chunk
+        newGroup.loadGroup(chunkPool.getJSONArray(chunkpool).getJSONObject(Math.round(random(0, chunkPool.getJSONArray(chunkpool).size() - 1))));
+        //add the chunk to the manager list
+        tileGroups.add(newGroup);
+      }
     }
   }
 }
