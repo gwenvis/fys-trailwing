@@ -20,7 +20,7 @@ class Enemy {
   float fireBallX, fireBallY, fireBallW, fireBallH;
   float fireBallSpeed;
 
-
+  
 
   Enemy(Player player) {
     //initialisation
@@ -48,7 +48,7 @@ class Enemy {
     this.fireBallDurationCooldown = 3200;  //Time  it takes to shoot the fireBall WHEN angry. (fireBall duration = attackDurationCooldown - fireBallDurationCooldown)
     this.attack = false;
     this.fireBallX = x + size/2;
-    this.fireBallY = y;
+    this.fireBallY = y+size/2;
     this.fireBallSpeed = 6;
     this.fireBallW = fireBall.width/6;
     this.fireBallH = fireBall.height/6;
@@ -76,7 +76,6 @@ class Enemy {
 
   void attack() {
 
-    imageMode(CENTER);
 
 
     // timer that changes angry to true and draws the fireBall when angry. 
@@ -115,6 +114,7 @@ class Enemy {
 
   void drawAttack() {
     if (attack) {
+      imageMode(CENTER);
       image(fireBall, fireBallX, fireBallY, fireBallW, fireBallH );
     }
   }

@@ -1,11 +1,11 @@
 class Hiscore {
+  //stuff in background
   PImage background;
   PImage backIcon;
   PImage scroll;
   float backgroundX, backgroundY;
   int backgroundW, backgroundH;
   float backIconX, backIconY, backIconW, backIconH;
-  
   
   //things in scroll
   float scrollX, scrollY, scrollW, scrollH;
@@ -24,11 +24,16 @@ class Hiscore {
 
 
   //database stuff
-  Properties props; 
   Table highscoreTable;
+  
+  Database highscoredb;
+  
+  
 
+  
 
   Hiscore() {
+    //Background stuff
     this.backgroundX = width/2;
     this.backgroundY = height/2;
     this.backgroundW = displayWidth;
@@ -41,6 +46,8 @@ class Hiscore {
     this.backIconH = backIcon.width/10*3;
     this.backIconX = backIconW/2;
     this.backIconY = 80;
+    
+    //Everything in the scroll
     this.scrollX = width/2;
     this.scrollY = height/2;
     this.scrollW = scroll.width*1.7;
@@ -61,14 +68,10 @@ class Hiscore {
     
     scrollFont = createFont("highscoreFont.ttf",60);
     
-
-    props = new Properties();
-    props.setProperty ("user", "eikemap");
-    props.setProperty("password", "AqUSO0RutI/93vGU");
-    SQLConnection myConnection = new MySQLConnection("jdbc:mysql://oege.ie.hva.nl/zeikemap?serverTimezone=UTC", props);
-
-    highscoreTable = myConnection.getTable("highscore");
-    highscoreTable = myConnection.runQuery("SELECT player_id, highscore, date_achieved FROM highscore ORDER BY highscore DESC");
+    //Database stuff
+    
+    highscoredb = new Database("jdbc:mysql://oege.ie.hva.nl/zeikemap?serverTimezone=UTC", false, "eikemap", "AqUSO0RutI/93vGU");
+    highscoreTable = highscoredb.runQuery("SELECT player_id, highscore, date_achieved FROM highscore ORDER BY highscore DESC LIMIT 10");
   }
 
 

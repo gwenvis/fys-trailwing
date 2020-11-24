@@ -14,6 +14,8 @@ class LoginScreen {
   int hintTimer, hintCD;
   boolean hintTimerSet;
   boolean removeLetter;
+  
+  Database db;
 
   LoginScreen() {
     this.loginTextX = width/2;
@@ -37,6 +39,9 @@ class LoginScreen {
     //colors
     black = color(10);
     white = color(#FAFAFA);
+    
+    //db
+    db = new Database("jdbc:mysql://oege.ie.hva.nl/zeikemap?serverTimezone=UTC", false, "eikemap", "AqUSO0RutI/93vGU");
   }
 
   void screen() {
@@ -76,6 +81,8 @@ class LoginScreen {
 
     if ((Input.keyClicked(ENTER) || Input.keyClicked(RETURN)) && nickName != "" && nickName != "|")
     {
+      String date = String.valueOf(year())+"-"+String.valueOf(month()+"-"+String.valueOf(day()));
+      db.updateQuery(String.format("INSERT INTO player(name, created_on) VALUES('%s','%s')", nickName, date));
       gameState = "START";
     }
 
