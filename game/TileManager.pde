@@ -160,8 +160,7 @@ class TileManager {
   }
 
   void playerLocation(Player player) {
-    if (player.playerPos.y > height) {
-      player.playerPos = new PVector(width / 4, 0);
+    if (player.playerPos.y>=height-(Config.PLAYER_SIZE.y/2)) {
       
       chunkpool++;
       tileGroups = new ArrayList<TileGroup>();
