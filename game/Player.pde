@@ -4,13 +4,13 @@ import java.util.concurrent.Executors;
 import java.util.concurrent.TimeUnit;
 
 class Player {
-  private int shieldDurability, shieldAmount, currentArmourLevel, coinAmount, currentShield;
+  int shieldDurability, shieldAmount, currentArmourLevel, coinAmount, currentShield;
   private PVector playerPos, shieldPos;
   private float playerSpeed, jumpPower, jumpGravity, playerJump, gravityPull, currentArmourSpeedMultiplier, playerVelocity;
   boolean jump, barrierLeft, barrierRight, shieldIsUpLeft, shieldIsUpRight, shieldLeft, shieldRight;
   boolean jumpBoost = false;
   boolean invincibility = false;
-  float currentPowerupTimer = 0, score;
+  float currentPowerupTimer = 0, score, coinMultiplyer;
   PImage playerImage, shieldLeftBlueImage, shieldRightBlueImage, shieldLeftGreenImage, shieldRightGreenImage, shieldLeftRedImage, shieldRightRedImage;
   PVector size = Config.PLAYER_SIZE;
 
@@ -41,6 +41,7 @@ class Player {
     shieldPos.y = 0;
     shieldAmount = 2;
     shieldDurability = 3;
+    coinMultiplyer = 0;
 
     shieldIsUpLeft=false;
     shieldIsUpRight=false;
@@ -61,8 +62,6 @@ class Player {
     shieldRightGreenImage = loadImage("ShieldRightGreen.png");
     shieldLeftRedImage = loadImage("ShieldLeftRed.png");
     shieldRightRedImage = loadImage("ShieldRightRed.png");
-    
-    
     shields();
 
     //command that has to be excecuted infinitily until end is reached, which isn't specified in this case
@@ -119,8 +118,9 @@ class Player {
       playerPos.sub(tileCollision.direction.x * manager.speed, 0);
     }
 
-    if (obstacle != null && obstacle.layer.equals("coins")) {
+    if (obstacle != null && obstacle.layer.equals("coin")) {
       coinAmount++;
+      obstacle = null;
     }
 
     if (obstacle != null && obstacle.layer.equals("obstacle")) {
@@ -133,6 +133,7 @@ class Player {
         }
       } else {
         currentArmourLevel += obstacle.damage;
+        damage();
         currentArmourSpeedMultiplier = armourLevels.get(currentArmourLevel > armourLevels.size() - 1 ? armourLevels.size() - 1 : currentArmourLevel);
       }
       obstacle = null;
@@ -147,6 +148,8 @@ class Player {
     barrierLeft = playerBarrierLeft();
     barrierRight = playerBarrierRight();
 
+
+    score = manager.score + (10 * coinMultiplyer);
     playerPos.y += gravityPull*jumpGravity;
     coins();
     shield();
@@ -241,7 +244,7 @@ class Player {
   }
 
   void damage() {
-    if (currentArmourLevel == 6) {
+    if (currentArmourLevel >= 6) {
       death();
     } else {
       currentArmourLevel++;
@@ -253,13 +256,14 @@ class Player {
       if (shieldAmount>=5) {
         shieldAmount++;
       } else {
-        score += 10;
+        coinMultiplyer++;
       }
+      coinAmount = 0;
     }
   }
 
   void death() {
-    //gamestate == "DEATH";
+    gameState = "GAMEOVER";
   }
 
   void fallPositionChange() {

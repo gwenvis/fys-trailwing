@@ -20,9 +20,10 @@ GameOver gameOver;
 SoundFile backgroundMusicStartScreen;
 CommentsDatabase commentDatabase;
 SoundFile backgroundMusicGameOverScreen;
+HUD hud;
 
 void setup() {
-  gameState = "LOGIN";
+  gameState = "PLAY";
   background(255);
   fullScreen(P2D);
   frameRate(60);
@@ -39,6 +40,7 @@ void setup() {
   commentDatabase = new CommentsDatabase();
   PFont font = createFont("Arial", 64);
   textFont(font);
+  hud = new HUD();
   
   
 }
