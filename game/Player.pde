@@ -10,7 +10,7 @@ class Player {
   boolean jump, barrierLeft, barrierRight, shieldIsUpLeft, shieldIsUpRight, shieldLeft, shieldRight;
   boolean jumpBoost = false;
   boolean invincibility = false;
-  float currentPowerupTimer = 0, score;
+  float currentPowerupTimer = 0, score, coinMultiplyer;
   PImage playerImage, shieldLeftBlueImage, shieldRightBlueImage, shieldLeftGreenImage, shieldRightGreenImage, shieldLeftRedImage, shieldRightRedImage;
   PVector size = Config.PLAYER_SIZE;
 
@@ -146,7 +146,8 @@ class Player {
 
     barrierLeft = playerBarrierLeft();
     barrierRight = playerBarrierRight();
-
+    
+    score = manager.score + (10 * coinMultiplyer);
     playerPos.y += gravityPull*jumpGravity;
     coins();
     shield();
@@ -253,7 +254,7 @@ class Player {
       if (shieldAmount>=5) {
         shieldAmount++;
       } else {
-        score += 10;
+        coinMultiplyer++;
       }
     }
   }
