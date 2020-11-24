@@ -15,13 +15,6 @@ class TileGroup {
     position = tempPos;
   }
   
-  void copyPosition(TileGroup group) {
-    tiles = group.tiles;
-    obstacles = group.obstacles;
-    powerups = group.powerups;
-    powerup = group.powerup;
-  }
-
   // Loops through all tiles in the array and draws it relative to the tiles that are already drawn. (Patrick Eikema)
   void drawGroup() {
     for (int i = 0; i < tiles.size(); i ++ ) {
