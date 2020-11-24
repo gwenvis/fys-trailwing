@@ -43,7 +43,7 @@ class TileManager {
     for (int i = 0; i < tileGroups.size(); i++) {
       tileGroups.get(i).position.x -= speed;
     }
-    
+
     score += speed / frameRate;
   }
 
@@ -120,6 +120,7 @@ class TileManager {
             collision.x = 0;
           }
 
+          tileGroup.obstacles.remove(i);
           return obstacle;
         }
 
