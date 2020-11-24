@@ -29,9 +29,7 @@ class StartMenu {
   ButtonManager manager;
 
   StartMenu() {
-
-
-    background = loadImage("/startMenuBackground.jpg");
+    background = loadImage("./startMenuBackground.jpg");
     background.resize(displayWidth, displayHeight);
 
     //MENU OPTIONS
@@ -50,10 +48,10 @@ class StartMenu {
 
     //SOUND STUFF
     soundIsPlaying = false;
-    soundIconSmall = loadImage("/soundIconSmall.png");
-    soundIconBig = loadImage("/soundIconBig.png");
-    soundIconSmallMuted = loadImage("/soundIconSmallMuted.png");
-    soundIconBigMuted = loadImage("/soundIconBigMuted.png");
+    soundIconSmall = loadImage("soundIconSmall.png");
+    soundIconBig = loadImage("soundIconBig.png");
+    soundIconSmallMuted = loadImage("soundIconSmallMuted.png");
+    soundIconBigMuted = loadImage("soundIconBigMuted.png");
     isSoundMuted = false;
     smallSoundIconW = 50;
     smallSoundIconH = 39;

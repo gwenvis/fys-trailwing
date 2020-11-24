@@ -14,6 +14,13 @@ class TileGroup {
   TileGroup(PVector tempPos) {
     position = tempPos;
   }
+  
+  void copyPosition(TileGroup group) {
+    tiles = group.tiles;
+    obstacles = group.obstacles;
+    powerups = group.powerups;
+    powerup = group.powerup;
+  }
 
   void drawGroup() {
     for (int i = 0; i < tiles.size(); i ++ ) {
@@ -36,9 +43,8 @@ class TileGroup {
    * @param int this is the array index of the needed chunk
    * @returns void
    */
-  void loadGroup(JSONArray chunks, int chunkIndex) {
+  void loadGroup(JSONObject chunk) {
     //get a single chunk by the given index
-    JSONObject chunk = chunks.getJSONObject(chunkIndex);
 
     //gets the tiles of the chunk
     JSONArray chunkTiles = chunk.getJSONArray("tiles");
@@ -50,7 +56,7 @@ class TileGroup {
       //add the tile with its variables to the tile array
       tiles.add(new Tile(tile.getString("sprite"), 
         new PVector(tile.getFloat("width"), tile.getFloat("height")), 
-        new PVector(tile.getFloat("x"), tile.getFloat("y")), 
+        new PVector(tile.getFloat("x"), tile.getFloat("y")),  //<>//
         tile.getString("layer")));
     }
 

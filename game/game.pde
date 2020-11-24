@@ -1,6 +1,7 @@
 import samuelal.squelized.*;
 import java.util.Properties;
 import processing.sound.*;
+//import processing.video.*;
 
  //SoundFile file;
 TileManager manager;
@@ -17,6 +18,7 @@ LoginScreen login;
 Hiscore hiscore;
 GameOver gameOver;
 SoundFile backgroundMusicStartScreen;
+CommentsDatabase commentDatabase;
 SoundFile backgroundMusicGameOverScreen;
 
 void setup() {
@@ -34,6 +36,7 @@ void setup() {
   hiscore = new Hiscore();
   login = new LoginScreen();
   gameOver = new GameOver();
+  commentDatabase = new CommentsDatabase();
   PFont font = createFont("Arial", 64);
   textFont(font);
   
@@ -76,7 +79,13 @@ void gameStates() {
     start.menuSelecter();
     start.audioSlider();
   } else if (gameState == "PLAY") {
-    play.playGame();
+    play.update();
+    play.draw();
+    
+    if(play.commentOverlayEnabled)
+    {
+      play.drawCommentOverlay();
+    }
   } else if ( gameState == "HISCORE") {
     hiscore.screen();
   } else if(gameState == "GAMEOVER"){

@@ -96,28 +96,28 @@ class Enemy {
     if (angry && millis()-fireBallTimer > fireBallDurationCooldown) {
       attack = true;
       fireBallX = x + size/2;
+    }
 
+    if (attack) {
+      fireBallX += fireBallSpeed*0.6;
     }
-    
-    if (attack){
-     image(fireBall, fireBallX, fireBallY,fireBallW, fireBallH );
-     fireBallX += fireBallSpeed*0.6;
-    }
-    
-    
   }
-  
-  
-  void collision(){
+
+
+  void collision() {
 
     //checks collision between fireball and player
-    if(fireBallX + fireBallW/2 > player.playerPos.x - player.size.x/2 && fireBallX - fireBallW/2 < player.playerPos.x + player.size.x/2 && fireBallY + fireBallH/2 > player.playerPos.y - player.size.y/2 && fireBallY - fireBallH/2 < player.playerPos.y + player.size.y/2){
+    if (fireBallX + fireBallW/2 > player.playerPos.x - player.size.x/2 && fireBallX - fireBallW/2 < player.playerPos.x + player.size.x/2 && fireBallY + fireBallH/2 > player.playerPos.y - player.size.y/2 && fireBallY - fireBallH/2 < player.playerPos.y + player.size.y/2) {
       fireBallX = 10000;
       //player.damage();
     }
-    
   }
 
+  void drawAttack() {
+    if (attack) {
+      image(fireBall, fireBallX, fireBallY, fireBallW, fireBallH );
+    }
+  }
 
   /* 
    TO DO: 

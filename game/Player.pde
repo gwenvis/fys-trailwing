@@ -61,29 +61,29 @@ class Player {
     currentArmourSpeedMultiplier = armourLevels.get(currentArmourLevel);
   }
 
-  void init() {
-    draw();
-    move();
-  }
-
   void draw() {
-    update();
     imageMode(CENTER);
     image(image, playerPos.x, playerPos.y);
   }
 
   void update() {
-    //print(playerPos);
-    //print("\n");
-    if (tileCollision.direction.y == 0) {
+    
+    move();
+    if (tileCollision.direction.y != -1) {
       gravityPull++;
+    }
+    
+    if (tileCollision.direction.y == 1) {
+      //gravityPull++;
+      jumpBoost = false;
+      gravityPull = 25;
     }
 
     if (tileCollision.direction.y == Config.DOWN && gravityPull != 0) {
       playerPos.y = tileCollision.position.y;
       gravityPull = 0;
       jump = false;
-    } else if (jump) {
+    } else if (jump && tileCollision.direction.y != Config.UP) {
       jump();
     }
 
