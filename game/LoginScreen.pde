@@ -118,6 +118,6 @@ class LoginScreen {
 
   //if the user writes a letter when the textbox is selected, its copied to String: nickName
   void keyInput() {
-    nickName = Keyboard.update(nickName);
+    nickName = Keyboard.update(nickName, 11);
   }
 }
