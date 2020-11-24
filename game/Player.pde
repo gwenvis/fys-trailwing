@@ -154,7 +154,7 @@ class Player {
       playerPos.x= playerPos.x - playerVelocity - manager.speed;
     }
     if (Input.keyCodePressed(RIGHT)&&!barrierRight && tileCollision.direction.x != Config.RIGHT) {
-      playerPos.x+=playerVelocity;
+      playerPos.x+=playerVelocity + manager.speed;
     }
     if (Input.keyPressed(' ') && tileCollision.direction.y == Config.DOWN) {
       jump = true;
