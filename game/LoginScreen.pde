@@ -1,4 +1,4 @@
-class LoginScreen {
+class LoginScreen implements IKeyboardCallback {
   PImage background;
   float loginTextX, loginTextY;
   float loginRectX, loginRectY, loginRectW, loginRectH;
@@ -11,6 +11,7 @@ class LoginScreen {
   color nickNameColor;
   int nickNameFontSize;
   boolean rectSelected;
+  KeyboardHUD keyboardHud; 
 
   LoginScreen() {
     this.loginTextX = width/2;
@@ -30,6 +31,23 @@ class LoginScreen {
     //colors
     black = color(10);
     white = color(#FAFAFA);
+
+    keyboardHud = new KeyboardHUD(this, new PVector(width/2-150, height - 450), 10);
+  }
+
+  public void onSubmit(String submittedString)
+  {
+    gameState = "START";
+  }
+
+  public void onValueChanged(String value)
+  {
+    nickName = value;
+  }
+
+  public void onDiscard()
+  {
+    nickName = "";
   }
 
   void screen() {
@@ -39,6 +57,9 @@ class LoginScreen {
     fill(white);
     text("Login", loginTextX, loginTextY);
 
+    keyboardHud.update();
+    keyboardHud.draw();
+    
     //NicknameRect
     rectMode(CENTER);
     fill(white);
@@ -60,7 +81,7 @@ class LoginScreen {
       text("Press Enter to continue.", loginRectX-20, loginRectY + loginRectH*1.2);
     }
 
-    if ((Input.keyClicked(ENTER) || Input.keyClicked(RETURN)) && nickName != "" && nickName != "|")
+    if (false &&(Input.keyClicked(ENTER) || Input.keyClicked(RETURN)) && nickName != "" && nickName != "|")
     {
       gameState = "START";
     }
