@@ -108,7 +108,7 @@ class Enemy {
     //checks collision between fireball and player
     if (fireBallX + fireBallW/2 > player.playerPos.x - player.size.x/2 && fireBallX - fireBallW/2 < player.playerPos.x + player.size.x/2 && fireBallY + fireBallH/2 > player.playerPos.y - player.size.y/2 && fireBallY - fireBallH/2 < player.playerPos.y + player.size.y/2) {
       fireBallX = 10000;
-      player.damage();
+      player.fireballHit();
     }
   }
 

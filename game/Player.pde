@@ -1,13 +1,13 @@
-
-import java.util.concurrent.ScheduledExecutorService;
-import java.util.concurrent.Executors;
-import java.util.concurrent.TimeUnit;
+//import java.util.concurrent.ScheduledExecutorService;
+//import java.util.concurrent.Executors;
+//import java.util.concurrent.TimeUnit;
 
 class Player {
-  int shieldDurability, shieldAmount, currentArmourLevel, coinAmount, currentShield;
+  int shieldDurability, shieldAmount, hudArmourlvl, coinAmount, currentShield;
+  private int currentArmourLevel, speedUpTimer, speedUpCoolDown, armourLoss;
   private PVector playerPos, shieldPos;
   private float playerSpeed, jumpPower, jumpGravity, playerJump, gravityPull, currentArmourSpeedMultiplier, playerVelocity;
-  boolean jump, barrierLeft, barrierRight, shieldIsUpLeft, shieldIsUpRight, shieldLeft, shieldRight;
+  boolean jump, barrierLeft, barrierRight, shieldIsUpLeft, shieldIsUpRight, shieldLeft, shieldRight, timerSet;
   boolean jumpBoost = false;
   boolean invincibility = false;
   float currentPowerupTimer = 0, score, coinMultiplyer;
@@ -23,12 +23,16 @@ class Player {
    excecuterservice submits tasks with a delay (0 is possible) 
    newScheduledThreadPool(1) creates a new threadpool to excecute
    */
-  ScheduledExecutorService executor = Executors.newScheduledThreadPool(1);
+  //ScheduledExecutorService executor = Executors.newScheduledThreadPool(1);
 
   ArrayList<Float> armourLevels = new ArrayList<Float>();
   ArrayList<PImage> shields = new ArrayList<PImage>();
 
   Player(float x, float y) {
+    speedUpTimer = 0;
+    speedUpCoolDown = 3000;
+    timerSet = false;
+
     playerPos = new PVector(0, 0);
     playerPos.x = x;
     playerPos.y = y;
@@ -36,7 +40,7 @@ class Player {
     gravityPull = 0;
     coinAmount = 0;
     currentShield = 0;
-    shieldPos = new PVector(50, 50);
+    shieldPos = new PVector(0, 0);
     shieldPos.x = 0;
     shieldPos.y = 0;
     shieldAmount = 2;
@@ -65,31 +69,44 @@ class Player {
     shields();
 
     //command that has to be excecuted infinitily until end is reached, which isn't specified in this case
-    Runnable speedUp = new Runnable() {
-      public void run() {
-        speedingUp();
-      }
-    };
+    /*Runnable speedUp = new Runnable() {
+     public void run() {
+     speedingUp();
+     }
+     };*/
 
     //speedingUp() first excecuted after 0 seconds, excecuted every 3 seconds
-    executor.scheduleAtFixedRate(speedUp, 0, 3, TimeUnit.SECONDS);
+    //executor.scheduleAtFixedRate(speedUp, 0, 3, TimeUnit.SECONDS);
 
+    armourLoss = 4;
     currentArmourLevel = 0;
+    hudArmourlvl = 9 - currentArmourLevel;
+
     armourLevelsList();
     currentArmourSpeedMultiplier = armourLevels.get(currentArmourLevel);
   }
 
   void draw() {
     imageMode(CENTER);
+    playerImage.resize((int)size.x,(int)size.y);
     image(playerImage, playerPos.x, playerPos.y);
 
-    if (shieldIsUpLeft||shieldIsUpRight) {
+    if (shieldAmount != 0 && (shieldIsUpLeft||shieldIsUpRight)) {
       image(shields.get(currentShield), shieldPos.x, shieldPos.y);
       //shieldIsUp = false;
     }
   }
 
   void update() {
+    if (!timerSet) {
+      speedUpTimer = millis(); 
+      timerSet = true;
+    }
+
+    if (millis() - speedUpTimer > speedUpCoolDown) {
+      playerSpeed = playerSpeed * .8f;
+      timerSet = false;
+    }
 
     //cutscene? -cartoon vallen
     if (playerPos.y >= height - (Config.PLAYER_SIZE.y/2)) {
@@ -105,7 +122,7 @@ class Player {
       jumpBoost = false;
       gravityPull = 25;
     }
-
+    //
     if (tileCollision.direction.y == Config.DOWN && gravityPull != 0) {
       playerPos.y = tileCollision.position.y;
       gravityPull = 0;
@@ -124,7 +141,7 @@ class Player {
     }
 
     if (obstacle != null && obstacle.layer.equals("obstacle")) {
-      if (shieldIsUpLeft||shieldIsUpRight) {
+      if (shieldIsUpRight) {
         if (shieldDurability <= 1) {
           shieldAmount -= 1;
           shieldDurability = 3;
@@ -133,7 +150,7 @@ class Player {
         }
       } else {
         currentArmourLevel += obstacle.damage;
-        damage();
+        size.x -= obstacle.damage * armourLoss;
         currentArmourSpeedMultiplier = armourLevels.get(currentArmourLevel > armourLevels.size() - 1 ? armourLevels.size() - 1 : currentArmourLevel);
       }
       obstacle = null;
@@ -148,9 +165,12 @@ class Player {
     barrierLeft = playerBarrierLeft();
     barrierRight = playerBarrierRight();
 
-
+    hudArmourlvl = 9 - currentArmourLevel;
     score = manager.score + (10 * coinMultiplyer);
-    playerPos.y += gravityPull*jumpGravity;
+    playerPos.y += gravityPull * jumpGravity;
+
+
+
     coins();
     shield();
     move();
@@ -162,7 +182,7 @@ class Player {
       playerPos.x= playerPos.x - playerVelocity - manager.speed;
     }
     if (Input.keyCodePressed(RIGHT)&&!barrierRight && tileCollision.direction.x != Config.RIGHT) {
-      playerPos.x+=playerVelocity + manager.speed;
+      playerPos.x += playerVelocity + manager.speed;
     }
     if (Input.keyPressed(' ') && tileCollision.direction.y == Config.DOWN) {
       jump = true;
@@ -243,11 +263,20 @@ class Player {
     }
   }
 
+  void fireballHit() {
+    if (shieldIsUpLeft && shieldLeft) {
+      shieldHit();
+    } else {
+      damage();
+    }
+  }
+
   void damage() {
-    if (currentArmourLevel >= 6) {
+    if (currentArmourLevel >= 8) {
       death();
     } else {
       currentArmourLevel++;
+      size.x -= armourLoss;
     }
   }
 
@@ -274,9 +303,9 @@ class Player {
   void jump() {
     if (jumpBoost)
     {
-      playerPos.y+=playerJump*Config.POWERUP_JUMP_BOOST;
+      playerPos.y += playerJump*Config.POWERUP_JUMP_BOOST;
     } else
-      playerPos.y+=playerJump;
+      playerPos.y += playerJump;
     playerJump = jumpPower + (gravityPull*jumpGravity);
   }
 
@@ -295,11 +324,14 @@ class Player {
 
   void armourLevelsList() {
     armourLevels.add(1f);
-    armourLevels.add(5f);
-    armourLevels.add(10f);
-    armourLevels.add(15f);
-    armourLevels.add(20f);
-    armourLevels.add(25f);
+    armourLevels.add(1.005f);
+    armourLevels.add(1.10f);
+    armourLevels.add(1.15f);
+    armourLevels.add(1.20f);
+    armourLevels.add(1.25f);
+    armourLevels.add(1.30f);
+    armourLevels.add(1.35f);
+    armourLevels.add(1.40f);
   }
   void shields() {
     shields.add(shieldLeftBlueImage);
@@ -309,22 +341,21 @@ class Player {
     shields.add(shieldLeftRedImage);
     shields.add(shieldRightRedImage);
   }
-
+  /*
   void speedingUp() {
-    playerSpeed = playerSpeed * .8f;
-  }
-
+   playerSpeed = playerSpeed * .8f;
+   }
+   */
   Boolean playerBarrierLeft() {
     float leftBarrier = width/100 * 20;
-    if (playerPos.x <= leftBarrier) {
+    if (playerPos.x - (Config.PLAYER_SIZE.x/2)<= leftBarrier) {
       return true;
     }
     return false;
   }
   Boolean playerBarrierRight() {
     float rightBarrier = width/100 * 80;
-    //playerWidth is 100
-    if (playerPos.x + 50>= rightBarrier) {
+    if (playerPos.x + (Config.PLAYER_SIZE.x/2)>= rightBarrier) {
       return true;
     }
     return false;
