@@ -132,6 +132,8 @@ class Player {
         }
       } else {
         currentArmourLevel += obstacle.damage;
+        damage();
+        println(currentArmourLevel);
         currentArmourSpeedMultiplier = armourLevels.get(currentArmourLevel > armourLevels.size() - 1 ? armourLevels.size() - 1 : currentArmourLevel);
       }
       obstacle = null;
@@ -242,7 +244,7 @@ class Player {
   }
 
   void damage() {
-    if (currentArmourLevel == 6) {
+    if (currentArmourLevel >= 6) {
       death();
     } else {
       currentArmourLevel++;
@@ -251,7 +253,7 @@ class Player {
 
   void coins() {
     if (coinAmount == Config.MAX_COIN_AMOUNT) {
-      if (shieldAmount>=5) {
+      if (shieldAmount<=5) {
         shieldAmount++;
       } else {
         coinMultiplyer++;
