@@ -26,7 +26,7 @@ ButtonLayout buttonLayout;
 void setup() {
   gameState = "START";
   background(255);
-  size(1920, 1080);
+  size(1920, 1080, P2D);
   frameRate(60);
   play = new PlayGame();
   start = new StartMenu();
