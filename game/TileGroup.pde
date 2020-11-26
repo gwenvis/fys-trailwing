@@ -16,6 +16,13 @@ class TileGroup {
   }
   
   // Loops through all tiles in the array and draws it relative to the tiles that are already drawn. (Patrick Eikema)
+  void copyPosition(TileGroup group) {
+    tiles = group.tiles;
+    obstacles = group.obstacles;
+    powerups = group.powerups;
+    powerup = group.powerup;
+  }
+
   void drawGroup() {
     for (int i = 0; i < tiles.size(); i ++ ) {
       tiles.get(i).drawTileRelative(position);
@@ -62,7 +69,7 @@ class TileGroup {
       JSONObject obstacle = chunkObstacles.getJSONObject(n);
 
       //add the tile with its variables to the tile array
-      obstacles.add(new Obstacle(obstacle.getString("sprite"),  //<>//
+      obstacles.add(new Obstacle(obstacle.getString("sprite"),  //<>// //<>//
         new PVector(obstacle.getFloat("width"), obstacle.getFloat("height")), 
         new PVector(obstacle.getFloat("x"), obstacle.getFloat("y")), 1, obstacle.getString("layer")));
     }

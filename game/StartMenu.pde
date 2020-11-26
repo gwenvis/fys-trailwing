@@ -4,18 +4,13 @@ class StartMenu {
   PImage background;
   //MENU OPTIONS
   float startX, startY;
-  float hiScoreX, hiScoreY;
+  float hiscoreX, hiscoreY;
   float quitX, quitY;
   color green;
   color red;
   color white;
   color black;
-  color fillStart;
-  color fillQuit;
-  color fillHiScore;
-  int indexSelecter;
-  int textFont;
-  float menuOptionH, startW, hiScoreW, quitW;
+  int menuFontSize;
   //SOUND STUFF 
   boolean soundIsPlaying;
   PImage soundIconSmall, soundIconBig;
@@ -27,31 +22,29 @@ class StartMenu {
   float sliderBallX, sliderBallY, sliderBallR;
   float sliderStrokeWeight;
   float distanceBall;
+  PFont font;
 
-  //ArrayList<Button> buttons;
-  // constructor for buttons = float x, float y, String text, int fontSize, int index
+
+  ArrayList<TextButton> menuButtons;
+  ButtonManager manager;
 
   StartMenu() {
     background = loadImage("./startMenuBackground.jpg");
     background.resize(displayWidth, displayHeight);
 
     //MENU OPTIONS
-    textFont = 60;
+    menuFontSize = 50;
     green = color(0, 255, 100);
     red = color(245, 42, 42);
     white = color(255);
     black = color(0);
-    fillStart = color(green);
-    fillQuit = color(255);
-    fillHiScore = color(255);
-    indexSelecter = 0;
     startX = width/2;
     startY = height/2-100;
-    hiScoreX = width/2;
-    hiScoreY = height/2;
+    hiscoreX = width/2;
+    hiscoreY = height/2;
     quitX = width/2;
     quitY = height/2+100;
-    menuOptionH = 60;
+    font = createFont("Arial", 64);
 
     //SOUND STUFF
     soundIsPlaying = false;
@@ -76,39 +69,35 @@ class StartMenu {
     distanceBall = 1;
 
 
-    //buttons = new ArrayList<Button>();
-    //buttons.add(new Button(100,100, "START", 60, 1));
+    menuButtons = new ArrayList<TextButton>();
+    menuButtons.add(new TextButton(startX, startY, "Start", menuFontSize, color(white), color(green), 0));
+    menuButtons.add(new TextButton(hiscoreX, hiscoreY, "Hi-Scores", menuFontSize, color(white), color(green), 1));
+    menuButtons.add(new TextButton(quitX, quitY, "Quit", menuFontSize, color(white), color(red), 2));
+
+    manager = new ButtonManager(menuButtons);
+
+    // constructor for buttons = float x, float y, String text, int fontSize
   }
 
 
   void screen() {
+
     //Starts the audio
     if (!soundIsPlaying && gameState == "START") { 
       backgroundMusicStartScreen.loop();
       soundIsPlaying = true;
     }  
-
+    manager.indexSelecterMouse();
+    manager.indexSelecterKeysVertical();
 
     //background image
     imageMode(CENTER);
     image(background, width/2, height/2);
 
-    //draws the start or quit menu options
-    textSize(textFont);
-    textAlign(CENTER);
-    fill(fillStart);
-    text("Start", startX, startY); 
-    fill(fillHiScore);
-    text("Hi-Scores", hiScoreX, hiScoreY);
-    fill(fillQuit);
-    text("Quit", quitX, quitY);
-    startW = textWidth("Start");
-    hiScoreW = textWidth("Hi-Scores");
-    quitW = textWidth("Quit");
-
-    //for(int i = 0; i < buttons.size(); i++){
-    //  buttons.get(i).drawTextButton();
-    //  }
+    textFont(font);
+    for (int i = 0; i < menuButtons.size(); i++) {
+      menuButtons.get(i).drawTextButton();
+    }
 
 
 
@@ -140,78 +129,31 @@ class StartMenu {
   } 
 
   //checks what option is selected and when pressed ENTER it changes the gamestate of the selected menu option
-  void keyPress() {
-    
-  }
-
-  //void mouseClick(){
-  //  if (Input.mouseButtonClicked(LEFT) && gameState == "START" && indexSelecter == 0) {
-  //    gameState = "PLAY";
-  //  } else if (Input.mouseButtonClicked(LEFT) && gameState == "START" && indexSelecter == 1) {
-  //    gameState = "HISCORE";
-  //  } else if (Input.mouseButtonClicked(LEFT) && gameState == "START" && indexSelecter == 2) {
-  //    exit();
-  //  }
-  //}
-
-
   void menuSelecter() {
-    
-    
-    if((Input.keyClicked(ENTER) || Input.keyClicked(RETURN)) && gameState == "START")
+
+
+    if ((Input.keyClicked(ENTER) || Input.keyClicked(RETURN)) && gameState == "START")
     {
-      switch(indexSelecter)
-      {
-        case 0:
-          gameState = "PLAY";
-          break;
-        case 1:
-          gameState = "HISCORE";
-          break;
-        case 2:
-          exit();
-          break;
-        default:
-          println("An error has occurred in StartMenu: menuSelecter()");
-          break;
+      for (int i = 0; i < menuButtons.size(); i++) {
+        if (menuButtons.get(i).selected == true) {
+          switch(menuButtons.get(i).index)
+          {
+          case 0:
+            gameState = "PLAY";
+            break;
+          case 1:
+            gameState = "HISCORE";
+            break;
+          case 2:
+            exit();
+            break;
+          default:
+            println("An error has occurred in StartMenu: menuSelecter()");
+            break;
+          }
+        }
       }
     }
-    
-    //when 's' is clicked, go down in menu, when w is clicked it goes up
-    if (Input.keyClicked('s') && indexSelecter < 2 ||Input.keyCodeClicked(DOWN) && indexSelecter < 2) {
-      indexSelecter += 1;
-    } else if (Input.keyClicked('w') && indexSelecter > 0|| Input.keyCodeClicked(UP) && indexSelecter > 0) {
-      indexSelecter -= 1;
-    }
-
-    //changes color based on what is selected
-    if (indexSelecter == 0) {
-      fillStart = color(green);
-    } else {
-      fillStart = color(white);
-    }
-
-    if (indexSelecter == 1) {
-      fillHiScore = color(green);
-    } else {
-      fillHiScore = color(white);
-    }
-
-    if (indexSelecter == 2) {
-      fillQuit = color(red);
-    } else {
-
-      fillQuit = color(white);
-    }
-
-
-    //      if(mouseX > startX-startW/2 && mouseX < startX + startW/2 && mouseY > startY - menuOptionH/2 && mouseY < startY + menuOptionH/2){
-    //    indexSelecter = 0;
-    //  } else if(mouseX > hiScoreX-hiScoreW/2 && mouseX < hiScoreX + hiScoreW/2 && mouseY > hiScoreY - menuOptionH/2 && mouseY < hiScoreY + menuOptionH/2){
-    //   indexSelecter =1; 
-    //  } else if(mouseX > quitX-quitW/2 && mouseX < quitX + quitW/2 && mouseY > quitY - menuOptionH/2 && mouseY < quitY + menuOptionH/2){
-    //    indexSelecter =2;
-    //  }
   }
 
 
@@ -227,17 +169,17 @@ class StartMenu {
       stroke(white);
       fill(black);
       ellipse(sliderBallX, sliderBallY, sliderBallR, sliderBallR);
-    }
 
-    if (Input.mouseButtonPressed(LEFT)) {
-      sliderBallX = mouseX;
+      if (Input.mouseButtonPressed(LEFT)) {
+        sliderBallX = mouseX;
 
-      //keeps sliderball in bounds
-      if (sliderBallX < sliderX1) {
-        sliderBallX = sliderX1;
-      }
-      if (sliderBallX > sliderX2) {
-        sliderBallX = sliderX2;
+        //keeps sliderball in bounds
+        if (sliderBallX < sliderX1) {
+          sliderBallX = sliderX1;
+        }
+        if (sliderBallX > sliderX2) {
+          sliderBallX = sliderX2;
+        }
       }
     }
   }

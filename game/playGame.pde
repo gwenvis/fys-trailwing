@@ -6,12 +6,13 @@ class PlayGame {
   int currentCommentLoadDistance = 0;
   ArrayList<ScreenComment> screenComments = new ArrayList<ScreenComment>();
 
-  PlayGame(){ }
+  PlayGame() {
+  }
 
   void update()
   {
     // if the comment overlay is enabled, stop updating the game
-    if(commentOverlayEnabled)
+    if (commentOverlayEnabled)
     {
       return;
     }
@@ -27,14 +28,14 @@ class PlayGame {
     manager.speedCap = player.currentArmourSpeedMultiplier;
 
     distance++;
-    if(currentCommentLoadDistance < distance)
+    if (currentCommentLoadDistance < distance)
     {
       currentCommentLoadDistance = distance + Config.MAX_COMMENT_LOAD_DISTANCE;
       ArrayList<Comment> comments = commentDatabase.getComments(distance, currentCommentLoadDistance);
-      if(comments != null)
+      if (comments != null)
       {
         screenComments = new ArrayList<ScreenComment>();
-        for(Comment comment : comments)
+        for (Comment comment : comments)
         {
           screenComments.add(new ScreenComment(comment));
         }
@@ -46,39 +47,41 @@ class PlayGame {
     manager.moveGroups();
     enemy.attack();
     enemy.movement();
+    enemy.collision();
     TileCollision collision = manager.checkCollision(player.playerPos, player.size);
     player.obstacle = manager.ObstacleCheckCollision(player.playerPos, player.size);
     player.tileCollision = collision; 
-  
-  manager.playerLocation(player);
+    manager.playerLocation(player);
 
     // debug keybind for enabling comment overlay
-    if(Input.keyClicked('o'))
+    if (Input.keyClicked('o'))
     {
       commentOverlayEnabled = true;
     }
+
+    hud.updateHUD(player.coinAmount, int(player.score), player.currentArmourLevel, player.shieldAmount);
   }
 
   private void drawScreenComments()
   {
-    if(screenComments == null) return;
+    if (screenComments == null) return;
 
-    for(ScreenComment comment : screenComments)
+    for (ScreenComment comment : screenComments)
     {
-      if(comment.shouldAppear(distance)) 
+      if (comment.shouldAppear(distance)) 
       {
         comment.appear();
       }
-      if(!commentOverlayEnabled) comment.update();
+      if (!commentOverlayEnabled) comment.update();
       comment.draw();
     }
   }
 
   void drawCommentOverlay()
   {
-    if(commentOverlay == null) commentOverlay = new CommentOverlay();
+    if (commentOverlay == null) commentOverlay = new CommentOverlay();
 
-    if(commentOverlay.update())
+    if (commentOverlay.update())
     {
       commentOverlayEnabled = false;
       Comment comment = new Comment(commentOverlay.getCommentInput(), distance); // fill out score
@@ -86,7 +89,7 @@ class PlayGame {
       commentDatabase.addComment(comment);
       commentOverlay = null;
     }
-    if(commentOverlay != null) commentOverlay.draw();
+    if (commentOverlay != null) commentOverlay.draw();
   }
 
   void draw()
@@ -96,6 +99,7 @@ class PlayGame {
     manager.drawGroups();
     player.draw();
     enemy.draw();
+    enemy.drawAttack();
+    hud.draw();
   }
-
 }

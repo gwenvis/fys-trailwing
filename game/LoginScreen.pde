@@ -11,6 +11,11 @@ class LoginScreen {
   color nickNameColor;
   int nickNameFontSize;
   boolean rectSelected;
+  int hintTimer, hintCD;
+  boolean hintTimerSet;
+  boolean removeLetter;
+  
+  Database db;
 
   LoginScreen() {
     this.loginTextX = width/2;
@@ -26,10 +31,17 @@ class LoginScreen {
     this.nickNameColor = color(100);
     this.nickNameFontSize = 30;
     this.rectSelected = false;
+    this.hintTimer = 0;
+    this.hintCD = 1000;
+    this.hintTimerSet = false;
+    this.removeLetter = false;
 
     //colors
     black = color(10);
     white = color(#FAFAFA);
+    
+    //db
+    db = new Database("jdbc:mysql://oege.ie.hva.nl/zeikemap?serverTimezone=UTC", false, "eikemap", "AqUSO0RutI/93vGU");
   }
 
   void screen() {
@@ -54,38 +66,58 @@ class LoginScreen {
     textAlign(CORNER);
 
     if (nickName.length() == 0) {
+      if (nickNameHint == "|") {
+        fill(0);
+      } else {
+        fill(150);
+      }
       text(nickNameHint, loginRectX-loginRectW/2+20, loginRectY+5);
     } else {
+      fill(0);
       text(nickName, loginRectX-loginRectW/2+20, loginRectY+5);
+      fill(150);
       text("Press Enter to continue.", loginRectX-20, loginRectY + loginRectH*1.2);
     }
 
     if ((Input.keyClicked(ENTER) || Input.keyClicked(RETURN)) && nickName != "" && nickName != "|")
     {
+      String date = String.valueOf(year())+"-"+String.valueOf(month()+"-"+String.valueOf(day()));
+      db.updateQuery(String.format("INSERT INTO player(name, created_on) VALUES('%s','%s')", nickName, date));
       gameState = "START";
     }
 
     //if click on textfield, highlight it
     if (mouseX >loginRectX - loginRectW/2 && mouseX < loginRectX + loginRectW/2 && mouseY > loginRectY-loginRectH/2 && mouseY < loginRectY +loginRectH/2) {
-      if(Input.mouseButtonClicked(LEFT)){
-      rectSelected = true;
-      nickNameHint = "|";
+      if (Input.mouseButtonClicked(LEFT)) {
+        rectSelected = true;
       }
     } else {
-      if(Input.mouseButtonClicked(LEFT)){
-     nickNameHint = "Type nickname here...";
-     rectSelected = false;
+      if (Input.mouseButtonClicked(LEFT)) {
+        nickNameHint = "Type nickname here...";
+        rectSelected = false;
       }
     }
 
 
-    // CHECKS KEY INPUT
+    // CHECKS KEY INPUT IF textbox is selected & showcases the user that he/she can write with the '|' 
     if (rectSelected) {
+      if (!hintTimerSet) {
+        hintTimer = millis(); 
+        hintTimerSet = true;
+      }
+      if (millis()-hintTimer < hintCD) {
+        nickNameHint = "|";
+      } else if (millis()-hintTimer > hintCD && millis()-hintTimer < hintCD*2) {
+        nickNameHint = "";
+      } else {
+        hintTimerSet = false;
+      }
       keyInput();
     }
   }
 
+  //if the user writes a letter when the textbox is selected, its copied to String: nickName
   void keyInput() {
-    nickName = Keyboard.update(nickName);
+    nickName = Keyboard.update(nickName, 11);
   }
 }
