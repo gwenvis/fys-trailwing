@@ -139,7 +139,7 @@ class StartMenu {
           switch(menuButtons.get(i).index)
           {
           case 0:
-            gameState = "PLAY";
+            gameState = "BUTTONLAYOUT";
             break;
           case 1:
             gameState = "HISCORE";
