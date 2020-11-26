@@ -253,7 +253,7 @@ class Player {
 
   void coins() {
     if (coinAmount == Config.MAX_COIN_AMOUNT) {
-      if (shieldAmount>=5) {
+      if (shieldAmount<=5) {
         shieldAmount++;
       } else {
         coinMultiplyer++;

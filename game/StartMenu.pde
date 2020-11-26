@@ -33,7 +33,7 @@ class StartMenu {
     background.resize(displayWidth, displayHeight);
 
     //MENU OPTIONS
-    menuFontSize = 60;
+    menuFontSize = 50;
     green = color(0, 255, 100);
     red = color(245, 42, 42);
     white = color(255);

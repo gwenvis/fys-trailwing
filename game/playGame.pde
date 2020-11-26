@@ -59,7 +59,7 @@ class PlayGame {
       commentOverlayEnabled = true;
     }
 
-    hud.updateHUD(player.coinAmount, int(player.score), player.currentArmourLevel);
+    hud.updateHUD(player.coinAmount, int(player.score), player.currentArmourLevel, player.shieldAmount);
   }
 
   private void drawScreenComments()

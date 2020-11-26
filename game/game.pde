@@ -3,7 +3,7 @@ import java.util.Properties;
 import processing.sound.*;
 //import processing.video.*;
 
- //SoundFile file;
+//SoundFile file;
 TileManager manager;
 Player player;
 float circleX = 2000;
@@ -21,11 +21,12 @@ SoundFile backgroundMusicStartScreen;
 CommentsDatabase commentDatabase;
 SoundFile backgroundMusicGameOverScreen;
 HUD hud;
+ButtonLayout buttonLayout;
 
 void setup() {
-  gameState = "PLAY";
+  gameState = "START";
   background(255);
-  fullScreen(P2D);
+  size(1920, 1080);
   frameRate(60);
   play = new PlayGame();
   start = new StartMenu();
@@ -37,12 +38,11 @@ void setup() {
   hiscore = new Hiscore();
   login = new LoginScreen();
   gameOver = new GameOver();
+  buttonLayout = new ButtonLayout();
   commentDatabase = new CommentsDatabase();
   PFont font = createFont("Arial", 64);
   textFont(font);
   hud = new HUD();
-  
-  
 }
 
 void draw()
@@ -83,14 +83,17 @@ void gameStates() {
   } else if (gameState == "PLAY") {
     play.update();
     play.draw();
-    
-    if(play.commentOverlayEnabled)
-    {
-      play.drawCommentOverlay();
-    }
+  } else if (gameState == "BUTTONLAYOUT") {
+    buttonLayout.draw(); 
+    buttonLayout.spaceCheck();
+  }
+
+  if (play.commentOverlayEnabled)
+  {
+    play.drawCommentOverlay();
   } else if ( gameState == "HISCORE") {
     hiscore.screen();
-  } else if(gameState == "GAMEOVER"){
+  } else if (gameState == "GAMEOVER") {
     gameOver.screen();
   }
 }
