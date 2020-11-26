@@ -91,7 +91,7 @@ class PlayGame {
 
   void draw()
   {
-    background(255);
+    background(21, 19, 39);
     drawScreenComments();
     manager.drawGroups();
     player.draw();
