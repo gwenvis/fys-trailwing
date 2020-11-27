@@ -29,6 +29,7 @@ class Player {
   ArrayList<PImage> shields = new ArrayList<PImage>();
 
   Player(float x, float y) {
+
     playerPos = new PVector(0, 0);
     playerPos.x = x;
     playerPos.y = y;

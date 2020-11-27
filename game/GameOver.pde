@@ -35,9 +35,6 @@ class GameOver {
 
 
 
-    manager.indexSelecterMouse();
-
-
     if (!timeSet) {
       screenTimer = millis();
       timeSet = true;
@@ -47,7 +44,6 @@ class GameOver {
     backgroundMusicGameOverScreen.amp(0.01);
     backgroundMusicGameOverScreen.play();
     //why does it play an audiofile for 8 seconds?!?!
-    println(backgroundMusicGameOverScreen.duration());
 
 
 

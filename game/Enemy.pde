@@ -32,7 +32,7 @@ class Enemy {
     //Size & pos Enemy+
     this.x = 150;
     this.y = player.playerPos.y -5;
-    this.speed = 4;
+    this.speed = 6;
     this.size = 230;
     this.attackW = (width/10)*3;
     this.attackH = 50;
@@ -66,9 +66,9 @@ class Enemy {
 
 
   void movement() {
-    if (y < player.playerPos.y -20) {
+    if (y < player.playerPos.y -30) {
       y += speed;
-    } else if (y > player.playerPos.y +20) {
+    } else if (y > player.playerPos.y +30) {
       y -= speed;
     }
   }
