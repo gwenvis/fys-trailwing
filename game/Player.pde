@@ -18,13 +18,6 @@ class Player {
   Obstacle obstacle = null;
   TileManager manager;
 
-  /*
-    schedule creates tasks to be excecuted with various delays and return a task object that can be used to cancel or check execution
-   excecuterservice submits tasks with a delay (0 is possible) 
-   newScheduledThreadPool(1) creates a new threadpool to excecute
-   */
-  //ScheduledExecutorService executor = Executors.newScheduledThreadPool(1);
-
   ArrayList<Float> armourLevels = new ArrayList<Float>();
   ArrayList<PImage> shields = new ArrayList<PImage>();
 
@@ -68,16 +61,6 @@ class Player {
     shieldRightRedImage = loadImage("ShieldRightRed.png");
     shields();
 
-    //command that has to be excecuted infinitily until end is reached, which isn't specified in this case
-    /*Runnable speedUp = new Runnable() {
-     public void run() {
-     speedingUp();
-     }
-     };*/
-
-    //speedingUp() first excecuted after 0 seconds, excecuted every 3 seconds
-    //executor.scheduleAtFixedRate(speedUp, 0, 3, TimeUnit.SECONDS);
-
     armourLoss = 4;
     currentArmourLevel = 0;
     hudArmourlvl = 9 - currentArmourLevel;
@@ -88,12 +71,11 @@ class Player {
 
   void draw() {
     imageMode(CENTER);
-    playerImage.resize((int)size.x,(int)size.y);
+    playerImage.resize((int)size.x, (int)size.y);
     image(playerImage, playerPos.x, playerPos.y);
 
     if (shieldAmount != 0 && (shieldIsUpLeft||shieldIsUpRight)) {
       image(shields.get(currentShield), shieldPos.x, shieldPos.y);
-      //shieldIsUp = false;
     }
   }
 
@@ -118,11 +100,10 @@ class Player {
     }
 
     if (tileCollision.direction.y == 1) {
-      //gravityPull++;
       jumpBoost = false;
       gravityPull = 25;
     }
-    //
+
     if (tileCollision.direction.y == Config.DOWN && gravityPull != 0) {
       playerPos.y = tileCollision.position.y;
       gravityPull = 0;
@@ -142,12 +123,7 @@ class Player {
 
     if (obstacle != null && obstacle.layer.equals("obstacle")) {
       if (shieldIsUpRight) {
-        if (shieldDurability <= 1) {
-          shieldAmount -= 1;
-          shieldDurability = 3;
-        } else {
-          shieldDurability -= 1;
-        }
+        shieldHit();
       } else {
         currentArmourLevel += obstacle.damage;
         size.x -= obstacle.damage * armourLoss;
@@ -216,7 +192,7 @@ class Player {
     }
 
     if (obstacle != null && obstacle.layer.equals("shield")) {
-      if (shieldAmount>=5) {
+      if (shieldAmount<5) {
         shieldAmount++;
       }
     }
@@ -248,16 +224,11 @@ class Player {
   }
 
   void shieldHit() {
-    if (shieldRight&&obstacle != null && obstacle.layer.equals("obstacle")) {
-      shieldDurability = shieldDurability - int(obstacle.damage);
-      obstacle = null;
-    }
-
-    if ((shieldLeft&&shieldDurability>1)||(shieldRight&&shieldDurability>1)) {
+    if ((shieldLeft&&shieldDurability>0)||(shieldRight&&shieldDurability>0)) {
       shieldDurability = shieldDurability-1;
     }
 
-    if (shieldDurability<=1) {
+    if (shieldDurability<=0) {
       shieldAmount -= 1;
       shieldDurability = 3;
     }
@@ -272,7 +243,7 @@ class Player {
   }
 
   void damage() {
-    if (currentArmourLevel >= 8) {
+    if (currentArmourLevel >= 9) {
       death();
     } else {
       currentArmourLevel++;
@@ -282,7 +253,7 @@ class Player {
 
   void coins() {
     if (coinAmount == Config.MAX_COIN_AMOUNT) {
-      if (shieldAmount<=5) {
+      if (shieldAmount>=5) {
         shieldAmount++;
       } else {
         coinMultiplyer++;
@@ -298,7 +269,6 @@ class Player {
   void fallPositionChange() {
     playerPos.y = 0 - (Config.PLAYER_SIZE.y/2);
   }
-
 
   void jump() {
     if (jumpBoost)
@@ -341,11 +311,7 @@ class Player {
     shields.add(shieldLeftRedImage);
     shields.add(shieldRightRedImage);
   }
-  /*
-  void speedingUp() {
-   playerSpeed = playerSpeed * .8f;
-   }
-   */
+
   Boolean playerBarrierLeft() {
     float leftBarrier = width/100 * 20;
     if (playerPos.x - (Config.PLAYER_SIZE.x/2)<= leftBarrier) {
@@ -353,15 +319,12 @@ class Player {
     }
     return false;
   }
+
   Boolean playerBarrierRight() {
     float rightBarrier = width/100 * 80;
     if (playerPos.x + (Config.PLAYER_SIZE.x/2)>= rightBarrier) {
       return true;
     }
-    return false;
-  }
-
-  boolean shieldRaised() {
     return false;
   }
 }
