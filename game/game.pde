@@ -17,8 +17,8 @@ PlayGame play;
 StartMenu start;
 LoginScreen login;
 Hiscore hiscore;
-SoundFile backgroundMusicStartScreen;
 CommentsDatabase commentDatabase;
+MusicManager musicManager;
 
 void setup() {
   gameState = "LOGIN";
@@ -30,10 +30,10 @@ void setup() {
   manager = new TileManager(Config.DEFAULT_CAMERA_MOVEMENT_SPEED);
   player = new Player(width/2, height - Config.PLAYER_BOTTOM_OFFSET);
   enemy = new Enemy(player);
-  backgroundMusicStartScreen = new SoundFile(this, "backgroundMusic.wav");
   hiscore = new Hiscore();
   login = new LoginScreen();
   commentDatabase = new CommentsDatabase();
+  musicManager = new MusicManager(this);
   PFont font = createFont("Arial", 64);
   textFont(font);
 }
@@ -41,6 +41,7 @@ void setup() {
 void draw()
 {
   gameStates();
+  musicManager.update();
   Input.update();
 }
 

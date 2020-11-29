@@ -83,12 +83,6 @@ class StartMenu {
 
   void screen() {
     //Starts the audio
-    if (!soundIsPlaying && gameState == "START") { 
-      backgroundMusicStartScreen.loop();
-      soundIsPlaying = true;
-    }  
-
-
     //background image
     imageMode(CENTER);
     image(background, width/2, height/2);
@@ -133,9 +127,9 @@ class StartMenu {
     }
 
     if (isSoundMuted) {
-      backgroundMusicStartScreen.amp(0.0);
+      musicManager.setVolume(0.0);
     } else {
-      backgroundMusicStartScreen.amp(distanceBall);
+      musicManager.setVolume(distanceBall);
     }
   } 
 
