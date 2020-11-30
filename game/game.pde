@@ -1,9 +1,7 @@
 import samuelal.squelized.*;
 import java.util.Properties;
 import processing.sound.*;
-//import processing.video.*;
 
-//SoundFile file;
 TileManager manager;
 Player player;
 float circleX = 2000;
@@ -84,14 +82,14 @@ void gameStates() {
   } else if (gameState == "PLAY") {
     play.update();
     play.draw();
+    
+    if (play.commentOverlayEnabled)
+  	{
+    	play.drawCommentOverlay();
+  	}
   } else if (gameState == "BUTTONLAYOUT") {
     buttonLayout.draw(); 
     buttonLayout.spaceCheck();
-  }
-
-  if (play.commentOverlayEnabled)
-  {
-    play.drawCommentOverlay();
   } else if ( gameState == "HISCORE") {
     hiscore.screen();
   } else if (gameState == "GAMEOVER") {

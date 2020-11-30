@@ -156,7 +156,8 @@ class StartMenu {
 
   void audioSlider() {
     distanceBall = (sliderBallX - sliderX1)/100/2;
-    if (mouseX > 0 && mouseX < width/5 && mouseY > height/10*9 && mouseY < height) {
+    boolean showSlider = mouseX > 0 && mouseX < width/5 && mouseY > height/10*9 && mouseY < height;
+    if (showSlider) {
       //sliderline
       stroke(white);
       strokeWeight(sliderStrokeWeight);
@@ -167,7 +168,7 @@ class StartMenu {
       fill(black);
       ellipse(sliderBallX, sliderBallY, sliderBallR, sliderBallR);
 
-      if (Input.mouseButtonPressed(LEFT)) {
+      if (Input.mouseButtonPressed(LEFT) && showSlider) {
         sliderBallX = mouseX;
 
         //keeps sliderball in bounds
