@@ -1,4 +1,4 @@
-class Button {
+class TextButton {
   float x, y, w, h;
   String text;
   PImage sprite;
@@ -10,15 +10,15 @@ class Button {
   //mouseover sprite
   //mouseover text & clicktext
 
-  Button(float x, float y, String text, int fontSize, int index) {
+  TextButton(float x, float y, String text, int fontSize,color normalColor, color selectedColor, int index) {
     this.x = x;
     this.y = y;
     this.text = text;
     this.fontSize = fontSize;
-    this.index = index;
     this.h = fontSize;
-    this.selectedColor = color(255);
-    this.normalColor = color(0);
+    this.selectedColor = selectedColor;
+    this.normalColor = normalColor;
+    this.index = index;
   }
 
 
@@ -27,13 +27,17 @@ class Button {
     textSize(fontSize);
     textAlign(CENTER, CENTER);
 
+    colorChange();
+
+    text(text, x, y);
+  }
+
+
+  void colorChange() {
     if (selected) {
       fill(selectedColor);
     } else {
       fill(normalColor);
     }
-
-    text(text, x, y);
-
   }
 }
