@@ -32,9 +32,6 @@ class ButtonLayout {
   }
 
   void draw() {
-    
-    backgroundMusicStartScreen.stop();
-
     if (alpha <= 250 && !firstAlphaSet) {
       alpha += 5;
     } else {

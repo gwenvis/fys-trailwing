@@ -1,0 +1,38 @@
+[
+  {
+    "state" : "START",
+    "alias" : [ "HISCORE" ],
+    "songs" : [
+      {
+        "fileName":"music/mainmenu1.wav",
+        "volume": 0.5
+      },
+
+      {
+        "fileName":"music/mainmenu2.wav",
+        "volume": 0.5
+      }
+    ]
+  },
+
+  {
+    "state" : "PLAY",
+    "songs" : [
+      {
+        "fileName" : "music/chase1.wav",
+        "volume" : 0.5
+      }
+    ]
+  },
+
+  {
+    "state" : "GAMEOVER",
+    "loop" : false,
+    "songs" : [
+      {
+        "fileName" : "music/gameOver.wav",
+        "volume" : 0.5
+      }
+    ]
+  }
+]

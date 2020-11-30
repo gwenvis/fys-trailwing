@@ -40,15 +40,6 @@ class GameOver {
       timeSet = true;
     }
 
-    backgroundMusicStartScreen.stop();
-    backgroundMusicGameOverScreen.amp(0.01);
-    backgroundMusicGameOverScreen.play();
-    //why does it play an audiofile for 8 seconds?!?!
-
-
-
-
-
     if (millis() - screenTimer > screenCD) {
       setup();
       draw();

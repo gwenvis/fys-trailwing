@@ -17,7 +17,6 @@ class PlayGame {
       return;
     }
 
-    backgroundMusicStartScreen.stop();
     player.manager = manager;
     player.score = manager.score;
     player.update();

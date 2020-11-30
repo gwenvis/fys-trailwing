@@ -1,4 +1,4 @@
-class LoginScreen {
+class LoginScreen implements IKeyboardCallback {
   PImage background;
   float loginTextX, loginTextY;
   float loginRectX, loginRectY, loginRectW, loginRectH;
@@ -11,6 +11,7 @@ class LoginScreen {
   color nickNameColor;
   int nickNameFontSize;
   boolean rectSelected;
+  KeyboardHUD keyboardHud; 
   int hintTimer, hintCD;
   boolean hintTimerSet;
   boolean removeLetter;
@@ -42,6 +43,24 @@ class LoginScreen {
     
     //db
     db = new Database("jdbc:mysql://oege.ie.hva.nl/zeikemap?serverTimezone=UTC", false, "eikemap", "AqUSO0RutI/93vGU");
+
+    keyboardHud = new KeyboardHUD(this, new PVector(width/2-150, height - 450), 10);
+    keyboardHud.position.x = width/2 - keyboardHud.getWidth() / 2;
+  }
+
+  public void onSubmit(String submittedString)
+  {
+    gameState = "START";
+  }
+
+  public void onValueChanged(String value)
+  {
+    nickName = value;
+  }
+
+  public void onDiscard()
+  {
+    nickName = "";
   }
 
   void screen() {
@@ -51,6 +70,9 @@ class LoginScreen {
     fill(white);
     text("Login", loginTextX, loginTextY);
 
+    keyboardHud.update();
+    keyboardHud.draw();
+    
     //NicknameRect
     rectMode(CENTER);
     fill(white);
@@ -79,7 +101,7 @@ class LoginScreen {
       text("Press Enter to continue.", loginRectX-20, loginRectY + loginRectH*1.2);
     }
 
-    if ((Input.keyClicked(ENTER) || Input.keyClicked(RETURN)) && nickName != "" && nickName != "|")
+    if (false &&(Input.keyClicked(ENTER) || Input.keyClicked(RETURN)) && nickName != "" && nickName != "|")
     {
       String date = String.valueOf(year())+"-"+String.valueOf(month()+"-"+String.valueOf(day()));
       db.updateQuery(String.format("INSERT INTO player(name, created_on) VALUES('%s','%s')", nickName, date));
