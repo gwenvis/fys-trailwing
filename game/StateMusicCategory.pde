@@ -2,11 +2,13 @@ public class StateMusicCategory
 {
   private ArrayList<Song> songs;
   private String[] alias;
+  private boolean loop;
 
-  public StateMusicCategory(ArrayList<Song> songs, String[] alias)
+  public StateMusicCategory(ArrayList<Song> songs, String[] alias, boolean loop)
   {
     this.songs = songs;
     this.alias = alias;
+    this.loop = loop;
   }
 
   public boolean isAlias(String alias)

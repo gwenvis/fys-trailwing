@@ -39,7 +39,7 @@ public class MusicManager
     }
     
     // wait until the current song has ended before picking a new one
-    if(currentSong == null || currentSong.isPlaying()) return;
+    if((currentSong == null || currentSong.isPlaying()) || !currentCategory.loop ) return;
 
     selectNewSong();
     playCurrentSong();
@@ -110,7 +110,8 @@ public class MusicManager
         songs.add(new Song(soundFile, fileName, volume));
       }
 
-      StateMusicCategory stateMusic = new StateMusicCategory(songs, getAlias(stateData));
+      boolean loop = stateData.getBoolean("loop", true);
+      StateMusicCategory stateMusic = new StateMusicCategory(songs, getAlias(stateData), loop);
       music.put(stateName, stateMusic);
     }
 

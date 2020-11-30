@@ -1,7 +1,6 @@
 [
   {
     "state" : "START",
-    "alias" : [ "HISCORE" ],
     "songs" : [
       {
         "fileName":"music/mainmenu1.wav",
