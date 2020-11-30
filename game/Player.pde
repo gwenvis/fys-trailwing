@@ -9,6 +9,7 @@ class Player {
   float currentPowerupTimer = 0, score, coinMultiplyer;
   PImage playerImage, shieldLeftBlueImage, shieldRightBlueImage, shieldLeftGreenImage, shieldRightGreenImage, shieldLeftRedImage, shieldRightRedImage;
   PVector size = Config.PLAYER_SIZE;
+  private Animation playerWalk;
 
   //particlesystem required variables
   String ID = "RunDust", hitID = "Hit";
@@ -44,6 +45,7 @@ class Player {
     shieldAmount = 2;
     shieldDurability = 3;
     coinMultiplyer = 0;
+    playerWalk = animations.PLAYER_WALK;
 
     shieldIsUpLeft=false;
     shieldIsUpRight=false;
@@ -106,8 +108,8 @@ class Player {
 
   void draw() {
     imageMode(CENTER);
-    playerImage.resize((int)size.x, (int)size.y);
-    image(playerImage, playerPos.x, playerPos.y);
+    //image(playerImage, playerPos.x, playerPos.y);
+    playerWalk.draw(playerPos.x, playerPos.y);
 
     if (shieldAmount != 0 && (shieldIsUpLeft||shieldIsUpRight)) {
       image(shields.get(currentShield), shieldPos.x, shieldPos.y);
@@ -274,19 +276,18 @@ class Player {
       dust.toRight = false;
     }
 
-    if (Input.keyPressed(' ') && tileCollision.direction.y == Config.DOWN) {
+    if (Input.keyPressed('x') && tileCollision.direction.y == Config.DOWN) {
       jump = true;
     }    
 
-    if (Input.keyCodePressed(DOWN)) {
+    if (Input.keyPressed('a')) {
       shieldRight = false;
       shieldLeft = true;
       shieldIsUpLeft = true;
     } else {
       shieldIsUpLeft = false;
     }
-
-    if (Input.keyCodePressed(UP)) {
+    if (Input.keyPressed('s')) {
       shieldRight = true;
       shieldLeft = false;
       shieldIsUpRight = true;
