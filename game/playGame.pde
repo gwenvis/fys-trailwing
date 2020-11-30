@@ -8,6 +8,8 @@ class PlayGame {
 
   PlayGame() {
       screenComments = new ArrayList<ScreenComment>();
+      distance = 0;
+      currentCommentLoadDistance = 0;
   }
 
   void update()
