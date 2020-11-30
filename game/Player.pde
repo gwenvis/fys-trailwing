@@ -1,4 +1,3 @@
-
 import java.util.concurrent.ScheduledExecutorService;
 import java.util.concurrent.Executors;
 import java.util.concurrent.TimeUnit;
@@ -13,6 +12,7 @@ class Player {
   float currentPowerupTimer = 0, score, coinMultiplyer;
   PImage playerImage, shieldLeftBlueImage, shieldRightBlueImage, shieldLeftGreenImage, shieldRightGreenImage, shieldLeftRedImage, shieldRightRedImage;
   PVector size = Config.PLAYER_SIZE;
+  private Animation playerWalk;
 
   TileCollision tileCollision = new TileCollision();
   Obstacle obstacle = null;
@@ -43,6 +43,7 @@ class Player {
     shieldAmount = 2;
     shieldDurability = 3;
     coinMultiplyer = 0;
+    playerWalk = animations.PLAYER_WALK;
 
     shieldIsUpLeft=false;
     shieldIsUpRight=false;
@@ -82,7 +83,8 @@ class Player {
 
   void draw() {
     imageMode(CENTER);
-    image(playerImage, playerPos.x, playerPos.y);
+    //image(playerImage, playerPos.x, playerPos.y);
+    playerWalk.draw(playerPos.x, playerPos.y);
 
     if (shieldIsUpLeft||shieldIsUpRight) {
       image(shields.get(currentShield), shieldPos.x, shieldPos.y);

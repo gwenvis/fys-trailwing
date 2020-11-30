@@ -21,9 +21,11 @@ SoundFile backgroundMusicGameOverScreen;
 HUD hud;
 ButtonLayout buttonLayout;
 MusicManager musicManager;
+Animations animations;
 
 void setup() {
   gameState = "LOGIN";
+  animations = new Animations();
   background(255);
   size(1920, 1080, P2D);
   frameRate(60);
