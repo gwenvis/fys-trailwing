@@ -43,7 +43,7 @@ public class KeyboardHUD
   private int selectedKeyX = 0;
   private int selectedKeyY = 0;
 
-  private String value = "";
+  public String value = "";
   private int limit = 0;
 
   public KeyboardHUD(IKeyboardCallback keyboardCallback, PVector position)
@@ -64,6 +64,11 @@ public class KeyboardHUD
   {
     int length = keys[0].length;
     return KEY_WIDTH * length + KEY_MARGIN * length;
+  }
+
+  public int getLimit()
+  {
+    return limit;
   }
 
   public void update()

@@ -29,10 +29,15 @@ public class ScreenComment
     return comment.distance < distance;
   }
 
+  public boolean isDead()
+  {
+    return position.x < -500;
+  }
+
   public void draw()
   {
-    if(!shouldDraw || position.x < -500) return;
-    fill(0);
+    if(!shouldDraw) return;
+    fill(255);
     textAlign(LEFT);
     textSize(textSize);
     text(content, position.x, position.y);

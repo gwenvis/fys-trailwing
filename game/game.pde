@@ -82,17 +82,18 @@ void gameStates() {
   } else if (gameState == "PLAY") {
     play.update();
     play.draw();
-    
-    if (play.commentOverlayEnabled)
-  	{
-    	play.drawCommentOverlay();
-  	}
   } else if (gameState == "BUTTONLAYOUT") {
     buttonLayout.draw(); 
     buttonLayout.spaceCheck();
   } else if ( gameState == "HISCORE") {
     hiscore.screen();
   } else if (gameState == "GAMEOVER") {
-    gameOver.screen();
+    gameOver.update();
+    gameOver.draw();
+
+    if(gameOver.drawCommentOverlay)
+    {
+      gameOver.drawCommentOverlay();
+    }
   }
 }
