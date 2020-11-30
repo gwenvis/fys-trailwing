@@ -129,7 +129,7 @@ class StartMenu {
   void menuSelecter() {
 
 
-    if ((Input.keyClicked(ENTER) || Input.keyClicked(RETURN)) && gameState == "START")
+    if (Input.keyClicked('z') && gameState == "START")
     {
       for (int i = 0; i < menuButtons.size(); i++) {
         if (menuButtons.get(i).selected == true) {
@@ -155,6 +155,18 @@ class StartMenu {
 
 
   void audioSlider() {
+    
+    if(Input.keyCodeClicked(LEFT)) 
+    {
+      sliderBallX -= 10;
+      if(sliderBallX < sliderX1) sliderBallX = sliderX1;
+    }
+    else if(Input.keyCodeClicked(RIGHT))
+    {
+      sliderBallX += 10;
+      if(sliderBallX > sliderX2) sliderBallX = sliderX2;
+    }
+
     distanceBall = (sliderBallX - sliderX1)/100/2;
     boolean showSlider = mouseX > 0 && mouseX < width/5 && mouseY > height/10*9 && mouseY < height;
     if (showSlider) {

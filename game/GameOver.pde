@@ -38,7 +38,7 @@ class GameOver {
     fill(255);
     textAlign(LEFT);
     textSize(commentFontSize);
-    text("Press 'C' to add a death reaction...", textWidth('_'), height - fontSizeYouDied+fontSizeYouDied/8);
+    text("Press 'X' to add a death reaction...", textWidth('_'), height - fontSizeYouDied+fontSizeYouDied/8);
 
     backButton.get(0).drawTextButton();
   }
@@ -57,7 +57,7 @@ class GameOver {
       //draw();
     }
 
-    if(Input.keyPressed('c'))
+    if(Input.keyPressed('x'))
     {
       drawCommentOverlay = true;
     }

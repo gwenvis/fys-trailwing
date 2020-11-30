@@ -27,7 +27,7 @@ void setup() {
   gameState = "LOGIN";
   animations = new Animations();
   background(255);
-  size(1920, 1080, P2D);
+  size(1600, 900, P2D);
   frameRate(60);
   play = new PlayGame();
   start = new StartMenu();
@@ -56,6 +56,8 @@ void keyPressed() {
   //send pressed key to input class
 
   Input.keyPressed(key, CODED, keyCode);
+  if(key == ESC)
+    key = 0;
 }
 
 void keyReleased() {

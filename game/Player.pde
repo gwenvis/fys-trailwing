@@ -167,17 +167,17 @@ class Player {
     if (Input.keyCodePressed(RIGHT)&&!barrierRight && tileCollision.direction.x != Config.RIGHT) {
       playerPos.x+=playerVelocity + manager.speed;
     }
-    if (Input.keyPressed(' ') && tileCollision.direction.y == Config.DOWN) {
+    if (Input.keyPressed('x') && tileCollision.direction.y == Config.DOWN) {
       jump = true;
     }    
-    if (Input.keyCodePressed(DOWN)) {
+    if (Input.keyPressed('a')) {
       shieldRight = false;
       shieldLeft = true;
       shieldIsUpLeft = true;
     } else {
       shieldIsUpLeft = false;
     }
-    if (Input.keyCodePressed(UP)) {
+    if (Input.keyPressed('s')) {
       shieldRight = true;
       shieldLeft = false;
       shieldIsUpRight = true;

@@ -34,7 +34,7 @@ public class CommentOverlay implements IKeyboardCallback
     }
 
     handleKeyboard();
-    if(Input.keyClicked('x') || Input.keyClicked('X') || submitted)
+    if(submitted)
     {
       return CommentOverlayState.SUBMITTED;
     }

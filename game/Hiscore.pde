@@ -83,7 +83,7 @@ class Hiscore {
     scroll();
 
     //Handles keyinputs, first checks if backspace is pressed (goes back)
-    if (Input.keyClicked(BACKSPACE)) {
+    if (Input.keyClicked(ESC) || Input.keyClicked(BACKSPACE)) {
       gameState = "START"; 
       //Checks if back icon is clicked
     } else if (backIconClicked()) {

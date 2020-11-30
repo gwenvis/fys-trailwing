@@ -94,7 +94,7 @@ public class KeyboardHUD
       if(selectedKeyX > keys[selectedKeyY].length - 1) selectedKeyX = 0;
     }
 
-    if(Input.keyClicked(ENTER) || Input.keyClicked(RETURN))
+    if(Input.keyClicked('z') || Input.keyClicked('Z'))
     {
       String k = keys[selectedKeyY][selectedKeyX];
 
