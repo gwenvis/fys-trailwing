@@ -60,6 +60,12 @@ public class KeyboardHUD
     this.limit = limit;
   }
 
+  public float getWidth()
+  {
+    int length = keys[0].length;
+    return KEY_WIDTH * length + KEY_MARGIN * length;
+  }
+
   public void update()
   {
     if(Input.keyCodeClicked(UP))

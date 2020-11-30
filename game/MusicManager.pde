@@ -21,7 +21,6 @@ public class MusicManager
   {
     if(lastState != gameState)
     {
-      println(currentCategory == music.get(gameState));
       if((currentCategory == music.get(gameState)) || (currentCategory != null && currentCategory.isAlias(gameState)))
       {
         lastState = gameState;

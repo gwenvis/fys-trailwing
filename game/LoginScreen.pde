@@ -45,6 +45,7 @@ class LoginScreen implements IKeyboardCallback {
     db = new Database("jdbc:mysql://oege.ie.hva.nl/zeikemap?serverTimezone=UTC", false, "eikemap", "AqUSO0RutI/93vGU");
 
     keyboardHud = new KeyboardHUD(this, new PVector(width/2-150, height - 450), 10);
+    keyboardHud.position.x = width/2 - keyboardHud.getWidth() / 2;
   }
 
   public void onSubmit(String submittedString)
