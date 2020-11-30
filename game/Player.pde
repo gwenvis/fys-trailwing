@@ -7,7 +7,7 @@ class Player {
   private int currentArmourLevel, speedUpTimer, speedUpCoolDown, armourLoss;
   private PVector playerPos, shieldPos;
   private float playerSpeed, jumpPower, jumpGravity, playerJump, gravityPull, currentArmourSpeedMultiplier, playerVelocity;
-  boolean jump, barrierLeft, barrierRight, shieldIsUpLeft, shieldIsUpRight, shieldLeft, shieldRight, timerSet;
+  boolean jump, barrierLeft, barrierRight, shieldIsUpLeft, shieldIsUpRight, shieldLeft, shieldRight, timerSet, shieldHit;
   boolean jumpBoost = false;
   boolean invincibility = false;
   float currentPowerupTimer = 0, score, coinMultiplyer;
@@ -123,6 +123,7 @@ class Player {
 
     if (obstacle != null && obstacle.layer.equals("obstacle")) {
       if (shieldIsUpRight) {
+        shieldHit = true;
         shieldHit();
       } else {
         currentArmourLevel += obstacle.damage;
@@ -224,6 +225,11 @@ class Player {
   }
 
   void shieldHit() {
+    if (shieldHit) {
+      shieldDurability -= obstacle.damage; 
+      shieldHit = false;
+    }
+
     if ((shieldLeft&&shieldDurability>0)||(shieldRight&&shieldDurability>0)) {
       shieldDurability = shieldDurability-1;
     }
