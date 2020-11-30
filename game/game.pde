@@ -24,7 +24,7 @@ HUD hud;
 ButtonLayout buttonLayout;
 
 void setup() {
-  gameState = "BUTTONLAYOUT";
+  gameState = "PLAY";
   background(255);
   size(1920, 1080, P2D);
   frameRate(60);

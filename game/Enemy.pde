@@ -4,12 +4,9 @@ Made by Patrick Eikema
 
 class Enemy {
   float speed;
-  float size;
   float x, y;
   float distance;
   float attackW, attackH;
-  PImage dragonSprite;
-  PImage angryDragonSprite;
   PImage fireBall;
   boolean angry;
   int angryTimer, angryCooldown;
@@ -20,23 +17,28 @@ class Enemy {
   float fireBallX, fireBallY, fireBallW, fireBallH;
   float fireBallSpeed;
 
-  
+  SpriteAnimation dragon; 
+
+
 
   Enemy(Player player) {
+
     //initialisation
     this.player = player;
-    this.dragonSprite = loadImage("dragonSprite.png");
-    this.angryDragonSprite= loadImage("angryDragonSprite.png");
+    dragon = new SpriteAnimation("dragonSprites.png", 3, 8);
     this.fireBall = loadImage("fireBall.png");
 
     //Size & pos Enemy+
     this.x = 150;
-    this.y = player.playerPos.y -5;
+    this.y = player.playerPos.y -50;
     this.speed = 6;
-    this.size = 230;
     this.attackW = (width/10)*3;
     this.attackH = 50;
-    //this.distance = width/2+50;
+
+    for (int i = 0; i < dragon.frameImage.length; i++) {
+      dragon.frameImage[i].resize(dragon.frameImage[i].width/5*4, dragon.frameImage[i].height/5*4);
+    }
+
 
     //attackvariables
     this.angry = false;
@@ -47,8 +49,7 @@ class Enemy {
     this.fireBallTimer = 0;
     this.fireBallDurationCooldown = 3200;  //Time  it takes to shoot the fireBall WHEN angry. (fireBall duration = attackDurationCooldown - fireBallDurationCooldown)
     this.attack = false;
-    this.fireBallX = x + size/2;
-    this.fireBallY = y+size/2;
+    this.fireBallY = y+130;
     this.fireBallSpeed = 15;
     this.fireBallW = fireBall.width/6;
     this.fireBallH = fireBall.height/6;
@@ -57,18 +58,14 @@ class Enemy {
   void draw() {
     imageMode(CENTER);
 
-    if (!angry) {
-      image(dragonSprite, x, y, size, size);
-    } else {
-      image(angryDragonSprite, x, y, size, size);
-    }
+    dragon.draw(x, y);
   }
 
 
   void movement() {
-    if (y < player.playerPos.y -30) {
+    if (y < player.playerPos.y -60) {
       y += speed;
-    } else if (y > player.playerPos.y +30) {
+    } else if (y > player.playerPos.y +60) {
       y -= speed;
     }
   }
@@ -94,7 +91,7 @@ class Enemy {
 
     if (angry && millis()-fireBallTimer > fireBallDurationCooldown) {
       attack = true;
-      fireBallX = x + size/2;
+      fireBallX = x + 130;
     }
 
     if (attack) {
