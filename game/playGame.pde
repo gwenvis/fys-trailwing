@@ -2,20 +2,18 @@ class PlayGame {
 
   boolean commentOverlayEnabled = false;
   CommentOverlay commentOverlay;
-  int distance = 0;
+  public int distance = 0;
   int currentCommentLoadDistance = 0;
   ArrayList<ScreenComment> screenComments = new ArrayList<ScreenComment>();
 
   PlayGame() {
+      screenComments = new ArrayList<ScreenComment>();
+      distance = 0;
+      currentCommentLoadDistance = 0;
   }
 
   void update()
   {
-    // if the comment overlay is enabled, stop updating the game
-    if (commentOverlayEnabled)
-    {
-      return;
-    }
 
     player.manager = manager;
     player.score = manager.score;
@@ -33,7 +31,6 @@ class PlayGame {
       ArrayList<Comment> comments = commentDatabase.getComments(distance, currentCommentLoadDistance);
       if (comments != null)
       {
-        screenComments = new ArrayList<ScreenComment>();
         for (Comment comment : comments)
         {
           screenComments.add(new ScreenComment(comment));
@@ -52,18 +49,14 @@ class PlayGame {
     player.tileCollision = collision; 
     manager.playerLocation(player);
 
-    // debug keybind for enabling comment overlay
-    if (Input.keyClicked('o'))
-    {
-      commentOverlayEnabled = true;
-    }
-
     hud.updateHUD(player.coinAmount, int(player.score), player.currentArmourLevel, player.shieldAmount);
   }
 
   private void drawScreenComments()
   {
     if (screenComments == null) return;
+
+    ArrayList<ScreenComment> deadComments = new ArrayList<ScreenComment>();
 
     for (ScreenComment comment : screenComments)
     {
@@ -72,23 +65,15 @@ class PlayGame {
         comment.appear();
       }
       if (!commentOverlayEnabled) comment.update();
+      if(comment.isDead()) deadComments.add(comment);
       comment.draw();
     }
-  }
 
-  void drawCommentOverlay()
-  {
-    if (commentOverlay == null) commentOverlay = new CommentOverlay();
-
-    if (commentOverlay.update())
+    if(deadComments.size() == 0) return;
+    for(ScreenComment comment : deadComments)
     {
-      commentOverlayEnabled = false;
-      Comment comment = new Comment(commentOverlay.getCommentInput(), distance); // fill out score
-      println("Comment placed: \"" + comment.getContent() + "\" at distance: " + comment.getDistance());
-      commentDatabase.addComment(comment);
-      commentOverlay = null;
+      screenComments.remove(comment);
     }
-    if (commentOverlay != null) commentOverlay.draw();
   }
 
   void draw()
