@@ -22,5 +22,16 @@
         "volume" : 0.5
       }
     ]
+  },
+
+  {
+    "state" : "GAMEOVER",
+    "loop" : false,
+    "songs" : [
+      {
+        "fileName" : "music/gameOver.wav",
+        "volume" : 0.5
+      }
+    ]
   }
 ]

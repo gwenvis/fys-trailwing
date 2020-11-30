@@ -17,10 +17,10 @@ class Enemy {
   int fireBallTimer, fireBallDurationCooldown;
   Player player;
   boolean attack;
-  float fireBallX, fireBallY;
+  float fireBallX, fireBallY, fireBallW, fireBallH;
   float fireBallSpeed;
 
-
+  
 
   Enemy(Player player) {
     //initialisation
@@ -32,7 +32,7 @@ class Enemy {
     //Size & pos Enemy+
     this.x = 150;
     this.y = player.playerPos.y -5;
-    this.speed = 4;
+    this.speed = 6;
     this.size = 230;
     this.attackW = (width/10)*3;
     this.attackH = 50;
@@ -47,9 +47,11 @@ class Enemy {
     this.fireBallTimer = 0;
     this.fireBallDurationCooldown = 3200;  //Time  it takes to shoot the fireBall WHEN angry. (fireBall duration = attackDurationCooldown - fireBallDurationCooldown)
     this.attack = false;
-    this.fireBallX = x;
-    this.fireBallY = y;
-    this.fireBallSpeed = 6;
+    this.fireBallX = x + size/2;
+    this.fireBallY = y+size/2;
+    this.fireBallSpeed = 15;
+    this.fireBallW = fireBall.width/6;
+    this.fireBallH = fireBall.height/6;
   }
 
   void draw() {
@@ -64,9 +66,9 @@ class Enemy {
 
 
   void movement() {
-    if (y < player.playerPos.y -20) {
+    if (y < player.playerPos.y -30) {
       y += speed;
-    } else if (y > player.playerPos.y +20) {
+    } else if (y > player.playerPos.y +30) {
       y -= speed;
     }
   }
@@ -74,7 +76,6 @@ class Enemy {
 
   void attack() {
 
-    imageMode(CORNER);
 
 
     // timer that changes angry to true and draws the fireBall when angry. 
@@ -93,18 +94,30 @@ class Enemy {
 
     if (angry && millis()-fireBallTimer > fireBallDurationCooldown) {
       attack = true;
-      fireBallX = x;
+      fireBallX = x + size/2;
+    }
 
+    if (attack) {
+      fireBallX += fireBallSpeed;
     }
-    
-    if (attack){
-     image(fireBall, fireBallX-size/2, fireBallY,fireBall.width/6, fireBall.height/6 );
-     fireBallX += fireBallSpeed;
-    }
-    
-    
   }
 
+
+  void collision() {
+
+    //checks collision between fireball and player
+    if (fireBallX + fireBallW/2 > player.playerPos.x - player.size.x/2 && fireBallX - fireBallW/2 < player.playerPos.x + player.size.x/2 && fireBallY + fireBallH/2 > player.playerPos.y - player.size.y/2 && fireBallY - fireBallH/2 < player.playerPos.y + player.size.y/2) {
+      fireBallX = 10000;
+      player.damage();
+    }
+  }
+
+  void drawAttack() {
+    if (attack) {
+      imageMode(CENTER);
+      image(fireBall, fireBallX, fireBallY, fireBallW, fireBallH );
+    }
+  }
 
   /* 
    TO DO: 

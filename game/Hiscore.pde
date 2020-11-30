@@ -1,10 +1,12 @@
 class Hiscore {
+  //stuff in background
   PImage background;
   PImage backIcon;
   PImage scroll;
   float backgroundX, backgroundY;
   int backgroundW, backgroundH;
   float backIconX, backIconY, backIconW, backIconH;
+  
   //things in scroll
   float scrollX, scrollY, scrollW, scrollH;
   int fontSizeTitles;
@@ -16,10 +18,22 @@ class Hiscore {
   boolean achievementsSelected;
   color hiscoresColor; 
   color achievementsColor;
-  ArrayList <Button> titleButtons;
+  ArrayList <TextButton> titleButtons;
   ButtonManager manager;
+  PFont scrollFont;
+
+
+  //database stuff
+  Table highscoreTable;
+  
+  Database highscoredb;
+  
+  
+
+  
 
   Hiscore() {
+    //Background stuff
     this.backgroundX = width/2;
     this.backgroundY = height/2;
     this.backgroundW = displayWidth;
@@ -28,14 +42,16 @@ class Hiscore {
     this.background.resize(backgroundW, backgroundH);
     this.backIcon = loadImage("backIcon.png");
     this.scroll = loadImage("hiscores.png");
-    this.backIconX = 40;
-    this.backIconY = 40;
-    this.backIconW = backIcon.width/10;
-    this.backIconH = backIcon.width/11;
+    this.backIconW = backIcon.width/10*3;
+    this.backIconH = backIcon.width/10*3;
+    this.backIconX = backIconW/2;
+    this.backIconY = 80;
+    
+    //Everything in the scroll
     this.scrollX = width/2;
     this.scrollY = height/2;
-    this.scrollW = scroll.width*1.7;
-    this.scrollH = scroll.height*1.7;
+    this.scrollW = scroll.width*1.3;
+    this.scrollH = scroll.height*1.3;
     this.fontSizeTitles = 40;
     this.hiscoresX = scrollX-150;
     this.hiscoresY = scrollY-scrollH/2 + scrollH/4;
@@ -45,10 +61,17 @@ class Hiscore {
     this.achievementsSelected = false;
     this.hiscoresColor = color(255);
     this.achievementsColor = color(0);
-    this.titleButtons = new ArrayList<Button>();
-    this.titleButtons.add(new Button(achievementsX, achievementsY, "Achievements", fontSizeTitles, 0));
-    this.titleButtons.add(new Button(hiscoresX, hiscoresY, "Hi-Scores", fontSizeTitles, 1));
+    this.titleButtons = new ArrayList<TextButton>();
+    this.titleButtons.add(new TextButton(achievementsX, achievementsY, "Achievements", fontSizeTitles, color(0), color(255), 0));
+    this.titleButtons.add(new TextButton(hiscoresX, hiscoresY, "Hi-Scores", fontSizeTitles, color(0), color(255), 1));
     this.manager = new ButtonManager(titleButtons);
+    
+    scrollFont = createFont("highscoreFont.ttf",60);
+    
+    //Database stuff
+    
+    highscoredb = new Database("jdbc:mysql://oege.ie.hva.nl/zeikemap?serverTimezone=UTC", false, "eikemap", "AqUSO0RutI/93vGU");
+    highscoreTable = highscoredb.runQuery("SELECT player_id, highscore, date_achieved FROM highscore ORDER BY highscore DESC LIMIT 10");
   }
 
 
@@ -69,21 +92,29 @@ class Hiscore {
   }
 
   void scroll() {
-
+    textFont(scrollFont);
     image(scroll, scrollX, scrollY, scrollW, scrollH);
     fill(hiscoresColor);
     fill(achievementsColor);
-    
-    manager.indexSelecter();
-    
+
+    //manager.indexSelecterMouse();
+    manager.indexSelectedKeysHorizontal();
+
     for (int i = 0; i < titleButtons.size(); i++) {
       titleButtons.get(i).drawTextButton();
-      }
-
     }
+
+    fill(0, 50);
+    rectMode(CENTER);
+    //rect(scrollX, scrollY-scrollH/2+scrollH/10*5.3, scrollW/10*6, scrollH/2, 10, 10, 10, 10);
     
-    
-  
+    if(titleButtons.get(1).selected == true){
+    printTable(highscoreTable);
+    }
+  }
+
+
+
 
   //returns true if back icon is clicked
   boolean backIconClicked() {
@@ -94,8 +125,20 @@ class Hiscore {
   }
 
 
-  //returns true is achievements is clicked
-  //boolean achievementClicked(){
-  //  if(Input.mouseButtonClicked(LEFT) && 
-  //}
+  void printTable(Table table) {
+    textSize(30);
+    fill(0);
+    textAlign(CENTER);
+    text("NAME", width/2-250, 400);
+    text("HIGHSCORE", width/2, 400);
+    text("DATE", width/2+250, 400);
+
+    textSize(40);
+    for (int i = 0; i < table.getRowCount(); i++) {
+      TableRow row = table.getRow(i);
+      for (int j = 0; j < table.getColumnCount(); j++) {
+        text(row.getString(j), width/2-250 + 250 *j, 500 + 50 * i);
+      }
+    }
+  }
 }

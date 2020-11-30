@@ -32,7 +32,7 @@ class TileManager {
       //create a new chunk to the right of the most right chunk
       TileGroup newGroup = new TileGroup(new PVector(i * defaultGroupWidth, height - bottomOffset));
       //add the tile positions of a random chunk to the new chunk
-      newGroup.loadGroup(chunkPool.getJSONArray(chunkpool).getJSONObject(Math.round(random(0, chunkPool.getJSONArray(chunkpool).size() - 1))));
+      newGroup.loadGroup(chunkPool.getJSONArray(chunkpool).getJSONObject(i));
       //add the chunk to the manager list
       tileGroups.add(newGroup);
     }
