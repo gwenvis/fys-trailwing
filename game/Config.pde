@@ -10,8 +10,8 @@ static class Config {
   final static int MAX_COIN_AMOUNT = 10;
     final static int BONUS_SCORE_COIN = 10;
   final static float PLAYER_BOTTOM_OFFSET = 200;
-  final static float PLAYER_JUMP_POWER = -11f;
-  final static float PLAYER_JUMP_GRAVITY = 0.18f;
+  final static float PLAYER_JUMP_POWER = -15f;
+  final static float PLAYER_JUMP_GRAVITY = 0.25f;
   final static float PLAYER_SPEED = 5;
   //final static float PLAYER_START_HP = 100;
   final static float PLAYER_MAX_SHIELD_AMOUNT = 5;

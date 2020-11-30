@@ -7,7 +7,7 @@ class Player {
   private int currentArmourLevel, speedUpTimer, speedUpCoolDown, armourLoss;
   private PVector playerPos, shieldPos;
   private float playerSpeed, jumpPower, jumpGravity, playerJump, gravityPull, currentArmourSpeedMultiplier, playerVelocity;
-  boolean jump, barrierLeft, barrierRight, shieldIsUpLeft, shieldIsUpRight, shieldLeft, shieldRight, timerSet, shieldHit;
+  boolean jump, barrierLeft, barrierRight, shieldIsUpLeft, shieldIsUpRight, shieldLeft, shieldRight, timerSet, shieldHit, playerHit;
   boolean jumpBoost = false;
   boolean invincibility = false;
   float currentPowerupTimer = 0, score, coinMultiplyer;
@@ -101,9 +101,10 @@ class Player {
 
     if (tileCollision.direction.y == 1) {
       jumpBoost = false;
-      gravityPull = 25;
+      gravityPull = 55;
+      println("Go down");
     }
-
+    println(currentArmourLevel);
     if (tileCollision.direction.y == Config.DOWN && gravityPull != 0) {
       playerPos.y = tileCollision.position.y;
       gravityPull = 0;
@@ -126,7 +127,11 @@ class Player {
         shieldHit = true;
         shieldHit();
       } else {
+        playerHit = true;
         currentArmourLevel += obstacle.damage;
+        if (playerHit) {
+          damage();
+        }
         size.x -= obstacle.damage * armourLoss;
         currentArmourSpeedMultiplier = armourLevels.get(currentArmourLevel > armourLevels.size() - 1 ? armourLevels.size() - 1 : currentArmourLevel);
       }
@@ -145,8 +150,6 @@ class Player {
     hudArmourlvl = 9 - currentArmourLevel;
     score = manager.score + (10 * coinMultiplyer);
     playerPos.y += gravityPull * jumpGravity;
-
-
 
     coins();
     shield();
@@ -251,7 +254,9 @@ class Player {
   void damage() {
     if (currentArmourLevel >= 9) {
       death();
-    } else {
+    } else if (playerHit) {
+      playerHit = false;
+    } else {      
       currentArmourLevel++;
       size.x -= armourLoss;
     }
