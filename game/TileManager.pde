@@ -66,6 +66,7 @@ class TileManager {
       for (Tile tile : tileGroup.tiles) {
         PVector tilePosition = new PVector(tileGroup.position.x + tile.position.x, tileGroup.position.y + tile.position.y);
 
+
         boolean top = tilePosition.y + tile.size.y / 2 >= targetPosition.y - targetSize.y / 2 && tilePosition.y - tile.size.y / 2 - 1 <= targetPosition.y - targetSize.y / 2;
         boolean bottom = tilePosition.y + tile.size.y / 2 >= targetPosition.y + targetSize.y / 2 && tilePosition.y - tile.size.y / 2  <= targetPosition.y + targetSize.y / 2;
 
@@ -82,7 +83,7 @@ class TileManager {
 
           TileCollision col = new TileCollision();
           col.direction = collision;
-          col.position = new PVector(tilePosition.x + tile.size.x * collision.x, tilePosition.y + tile.size.y * collision.y);
+          col.position = new PVector(tilePosition.x + tile.size.x * collision.x, tilePosition.y + ((tile.size.y/2+targetSize.y/2) * collision.y));
 
           return col;
         }
@@ -166,7 +167,7 @@ class TileManager {
    */
   void playerLocation(Player player) {
     if (player.playerPos.y>=height-(Config.PLAYER_SIZE.y/2)) {
-      
+
       chunkpool++;
       tileGroups = new ArrayList<TileGroup>();
       for (int i = 0; i < startingGroups; i++) {

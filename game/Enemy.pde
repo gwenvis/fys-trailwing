@@ -3,40 +3,47 @@ Made by Patrick Eikema
  */
 
 class Enemy {
+  float hitX;
   float speed;
-  float size;
   float x, y;
   float distance;
   float attackW, attackH;
-  PImage dragonSprite;
-  PImage angryDragonSprite;
   PImage fireBall;
-  boolean angry;
+  boolean angry, ToRight;
   int angryTimer, angryCooldown;
   int AngryDurationTimer, attackDurationCooldown;
-  int fireBallTimer, fireBallDurationCooldown;
+  int fireBallTimer, fireBallDurationCooldown, approximateShieldOffset = 15;
+  int particleSystemStartColourR, particleSystemStartColourG, particleSystemStartColourB, particleSystemEndColourR, particleSystemEndColourG, particleSystemEndColourB;
   Player player;
   boolean attack;
-  float fireBallX, fireBallY, fireBallW, fireBallH;
+  float particleSystemX, particleSystemY;
   float fireBallSpeed;
+  String ID;
 
-  
+  ParticleSystem fireballParticleSystem;
+  SpriteAnimation dragon; 
+
+
 
   Enemy(Player player) {
+
     //initialisation
     this.player = player;
-    this.dragonSprite = loadImage("dragonSprite.png");
-    this.angryDragonSprite= loadImage("angryDragonSprite.png");
+    dragon = new SpriteAnimation("dragonSprites.png", 3, 8);
     this.fireBall = loadImage("fireBall.png");
+
 
     //Size & pos Enemy+
     this.x = 150;
-    this.y = player.playerPos.y -5;
+    this.y = player.playerPos.y -50;
     this.speed = 6;
-    this.size = 230;
     this.attackW = (width/10)*3;
     this.attackH = 50;
-    //this.distance = width/2+50;
+
+    for (int i = 0; i < dragon.frameImage.length; i++) {
+      dragon.frameImage[i].resize(dragon.frameImage[i].width/5*4, dragon.frameImage[i].height/5*4);
+    }
+
 
     //attackvariables
     this.angry = false;
@@ -47,28 +54,40 @@ class Enemy {
     this.fireBallTimer = 0;
     this.fireBallDurationCooldown = 3200;  //Time  it takes to shoot the fireBall WHEN angry. (fireBall duration = attackDurationCooldown - fireBallDurationCooldown)
     this.attack = false;
-    this.fireBallX = x + size/2;
-    this.fireBallY = y+size/2;
+    this.particleSystemX = x + dragon.frameImage[0].width/5*4 /2;
+    //this.particleSystemY = y + size/2;
+
+    this.particleSystemY = y;
+
     this.fireBallSpeed = 15;
-    this.fireBallW = fireBall.width/6;
-    this.fireBallH = fireBall.height/6;
+    //this.fireBallW = fireBall.width/6;
+    //this.fireBallH = fireBall.height/6;
+
+    //particlesystem fireball
+    ID = "Fireball";
+
+    particleSystemStartColourR = 255;
+    particleSystemStartColourG = 255;
+    particleSystemStartColourB = 0;
+
+    particleSystemEndColourR = 255;
+    particleSystemEndColourG = 0;
+    particleSystemEndColourB = 0;
+
+    fireballParticleSystem = new ParticleSystem(ID, particleSystemStartColourR, particleSystemStartColourG, particleSystemStartColourB, particleSystemEndColourR, particleSystemEndColourG, particleSystemEndColourB, particleSystemX, particleSystemY, false);
   }
 
   void draw() {
     imageMode(CENTER);
 
-    if (!angry) {
-      image(dragonSprite, x, y, size, size);
-    } else {
-      image(angryDragonSprite, x, y, size, size);
-    }
+    dragon.draw(x, y);
   }
 
 
   void movement() {
-    if (y < player.playerPos.y -30) {
+    if (y < player.playerPos.y -100) {
       y += speed;
-    } else if (y > player.playerPos.y +30) {
+    } else if (y > player.playerPos.y +100) {
       y -= speed;
     }
   }
@@ -81,6 +100,7 @@ class Enemy {
     // timer that changes angry to true and draws the fireBall when angry. 
     if (millis()-angryTimer > angryCooldown  ) {
       angry = true;
+      fireballParticleSystem.particleID = "Fireball";
       fireBallTimer = millis();
 
 
@@ -94,28 +114,45 @@ class Enemy {
 
     if (angry && millis()-fireBallTimer > fireBallDurationCooldown) {
       attack = true;
-      fireBallX = x + size/2;
+      fireballParticleSystem.draw = true;
+
+      //folow dragono untill shooting
+      particleSystemY = y;
+      particleSystemX = x + dragon.frameImage[0].width/5*4 /2;
     }
 
     if (attack) {
-      fireBallX += fireBallSpeed;
+      particleSystemX += fireBallSpeed;
     }
   }
 
 
   void collision() {
 
+    // if (particleSystemX + fireBallW/2 > player.playerPos.x - player.size.x/2 && particleSystemX - fireBallW/2 < player.playerPos.x + player.size.x/2 && particleSystemY + fireBallH/2 > player.playerPos.y - player.size.y/2 && particleSystemY - fireBallH/2 < player.playerPos.y + player.size.y/2) {
+    if (player.shieldIsUpLeft) {
+      //shield is drawn approximatily 5 pixels from the canvas boarder
+      hitX = player.shieldPos.x - (player.shieldLeftBlueImage.width/2 - approximateShieldOffset);
+    } else {
+      hitX = player.playerPos.x - (player.size.x/2);
+    }
+
     //checks collision between fireball and player
-    if (fireBallX + fireBallW/2 > player.playerPos.x - player.size.x/2 && fireBallX - fireBallW/2 < player.playerPos.x + player.size.x/2 && fireBallY + fireBallH/2 > player.playerPos.y - player.size.y/2 && fireBallY - fireBallH/2 < player.playerPos.y + player.size.y/2) {
-      fireBallX = 10000;
-      player.damage();
+    if (particleSystemX >= hitX && particleSystemX < hitX + player.size.x && particleSystemY >= player.playerPos.y - player.size.y/2 && particleSystemY < player.playerPos.y + player.size.y/2) {
+      particleSystemX = 10000;
+      fireballParticleSystem.particleID = "Hit";
+      fireballParticleSystem.draw =false;
+      player.fireballHit();
     }
   }
 
   void drawAttack() {
     if (attack) {
-      imageMode(CENTER);
-      image(fireBall, fireBallX, fireBallY, fireBallW, fireBallH );
+      //imageMode(CENTER);
+      //image(fireBall, particleSystemX, particleSystemY, fireBallW, fireBallH );
+      fireballParticleSystem.particleSystemStartX = particleSystemX;
+      fireballParticleSystem.particleSystemStartY = particleSystemY;
+      fireballParticleSystem.draw();
     }
   }
 
