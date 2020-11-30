@@ -1,18 +1,23 @@
-//import java.util.concurrent.ScheduledExecutorService;
-//import java.util.concurrent.Executors;
-//import java.util.concurrent.TimeUnit;
-
 class Player {
   int shieldDurability, shieldAmount, hudArmourlvl, coinAmount, currentShield;
   private int currentArmourLevel, speedUpTimer, speedUpCoolDown, armourLoss;
   private PVector playerPos, shieldPos;
   private float playerSpeed, jumpPower, jumpGravity, playerJump, gravityPull, currentArmourSpeedMultiplier, playerVelocity;
-  boolean jump, barrierLeft, barrierRight, shieldIsUpLeft, shieldIsUpRight, shieldLeft, shieldRight, timerSet, shieldHit, playerHit;
+  boolean jump, barrierLeft, barrierRight, shieldIsUpLeft, shieldIsUpRight, shieldLeft, shieldRight, timerSet, shieldHit, playerHit, landing, running;
   boolean jumpBoost = false;
   boolean invincibility = false;
   float currentPowerupTimer = 0, score, coinMultiplyer;
   PImage playerImage, shieldLeftBlueImage, shieldRightBlueImage, shieldLeftGreenImage, shieldRightGreenImage, shieldLeftRedImage, shieldRightRedImage;
   PVector size = Config.PLAYER_SIZE;
+
+  //particlesystem required variables
+  String ID = "RunDust", hitID = "Hit";
+  int particleSystemStartColourR, particleSystemStartColourG, particleSystemStartColourB, particleSystemEndColourR, particleSystemEndColourG, particleSystemEndColourB, estimatedParticleHeight = 10;
+  int hitStartColourR, hitStartColourG, hitStartColourB, hitEndColourR, hitEndColourG, hitEndColourB, approximateShieldOffset = 15;
+  float particleSystemX, particleSystemY, hitX, hitY;
+  boolean ToRight = true, particlePresent, hitParticlePresent, hitParticleHitShield, hitParticleHitPlayer, onGround, barrel;
+  ParticleSystem dust;
+  ParticleSystem hitObstacle;
 
   TileCollision tileCollision = new TileCollision();
   Obstacle obstacle = null;
@@ -67,6 +72,36 @@ class Player {
 
     armourLevelsList();
     currentArmourSpeedMultiplier = armourLevels.get(currentArmourLevel);
+
+    //particlesystem dust
+    ID = "RunDust";
+    hitID = "Hit";
+    ToRight = true;
+
+    particleSystemStartColourR = 255;
+    particleSystemStartColourG = 255;
+    particleSystemStartColourB = 255;
+
+    particleSystemEndColourR = 255;
+    particleSystemEndColourG = 255;
+    particleSystemEndColourB = 255;
+
+    particleSystemX = playerPos.x - (size.x / 2);
+    particleSystemY = playerPos.y + (size.x / 2);
+
+    hitStartColourR = 102;
+    hitStartColourG = 51;
+    hitStartColourB = 0;
+
+    hitEndColourR = 153;
+    hitEndColourG = 76;
+    hitEndColourB = 0;
+
+    hitX = playerPos.x + (size.x / 2);
+    hitY = playerPos.y;
+
+    dust = new ParticleSystem(ID, particleSystemStartColourR, particleSystemStartColourG, particleSystemStartColourB, particleSystemEndColourR, particleSystemEndColourG, particleSystemEndColourB, particleSystemX, particleSystemY, false);
+    hitObstacle = new ParticleSystem(hitID, hitStartColourR, hitStartColourG, hitStartColourB, hitEndColourR, hitEndColourG, hitEndColourB, hitX, hitY, ToRight);
   }
 
   void draw() {
@@ -77,9 +112,34 @@ class Player {
     if (shieldAmount != 0 && (shieldIsUpLeft||shieldIsUpRight)) {
       image(shields.get(currentShield), shieldPos.x, shieldPos.y);
     }
+
+    if (landing || onGround || particlePresent) {
+      if (landing) {
+        dust.particleID = "LandDust";
+      } else if (running && onGround) {
+        dust.particleID = "RunDust";
+      } else {
+      }
+      dust.draw();
+    }
+
+    if ((barrel && (hitParticleHitPlayer || hitParticleHitShield)) || hitParticlePresent ) {
+      hitObstacle.draw();
+      hitParticleHitPlayer = false;
+      hitParticleHitShield = false;
+      hitObstacle.draw = false;
+    }
   }
 
   void update() {
+
+    if (dust.particles.isEmpty()) {
+      particlePresent = false;
+    }
+    if (hitObstacle.particles.isEmpty()) {
+      hitParticlePresent = false;
+    }
+
     if (!timerSet) {
       speedUpTimer = millis(); 
       timerSet = true;
@@ -97,20 +157,28 @@ class Player {
 
     if (tileCollision.direction.y != -1) {
       gravityPull++;
+
+      onGround = false;
+      dust.draw = false;
     }
 
     if (tileCollision.direction.y == 1) {
       jumpBoost = false;
       gravityPull = 55;
-      println("Go down");
     }
-    println(currentArmourLevel);
     if (tileCollision.direction.y == Config.DOWN && gravityPull != 0) {
       playerPos.y = tileCollision.position.y;
+
+      particlePresent = true;
+      onGround = true;
+      dust.draw = true;
+
       gravityPull = 0;
       jump = false;
     } else if (jump && tileCollision.direction.y != Config.UP) {
       jump();
+
+      dust.draw = false;
     }
 
     if (tileCollision.direction.y != Config.DOWN && gravityPull == 0) {
@@ -123,17 +191,26 @@ class Player {
     }
 
     if (obstacle != null && obstacle.layer.equals("obstacle")) {
+      hitParticlePresent = true;
+
+      hitObstacle.draw = true;
+
       if (shieldIsUpRight) {
+        hitParticleHitShield = true;
         shieldHit = true;
         shieldHit();
       } else {
+        hitParticleHitPlayer = true;
         playerHit = true;
-        currentArmourLevel += obstacle.damage;
         if (playerHit) {
           damage();
+        }        
+        if (playerPos.y >= height - (Config.CHUNK_BOTTOM_OFFSET+(Config.PLAYER_SIZE.y/2))) {
+        } else {
+          currentArmourLevel += obstacle.damage;
+          size.x -= obstacle.damage * armourLoss;
+          currentArmourSpeedMultiplier = armourLevels.get(currentArmourLevel > armourLevels.size() - 1 ? armourLevels.size() - 1 : currentArmourLevel);
         }
-        size.x -= obstacle.damage * armourLoss;
-        currentArmourSpeedMultiplier = armourLevels.get(currentArmourLevel > armourLevels.size() - 1 ? armourLevels.size() - 1 : currentArmourLevel);
       }
       obstacle = null;
     }
@@ -151,22 +228,56 @@ class Player {
     score = manager.score + (10 * coinMultiplyer);
     playerPos.y += gravityPull * jumpGravity;
 
-    coins();
-    shield();
-    move();
+    if (!dust.toRight) {
+      dust.particleSystemStartX = playerPos.x - (size.x / 2);
+    } else {
+      dust.particleSystemStartX = playerPos.x + (size.x / 2);
+    }
+    dust.particleSystemStartY = playerPos.y + (size.y / 2) - estimatedParticleHeight;
+
+    if (hitParticleHitShield) {
+      hitObstacle.particleSystemStartX = shieldPos.x + shieldLeftBlueImage.width/2 + approximateShieldOffset;
+      hitObstacle.particleSystemStartY = shieldPos.y - shieldLeftBlueImage.height/3 *1;
+    } else {        
+      hitObstacle.particleSystemStartX  = playerPos.x + size.x/2;
+      hitObstacle.particleSystemStartY = playerPos.y;
+
+      if (playerPos.y >= height - (Config.CHUNK_BOTTOM_OFFSET+(Config.PLAYER_SIZE.y/2))) {
+        hitParticlePresent = false;
+        barrel = false;
+      } else {
+        barrel = true;
+      }
+
+      coins();
+      shield();
+      move();
+    }
   }
 
   void move() {
     playerVelocity = playerSpeed/**currentArmourSpeedMultiplier*/;
     if (Input.keyCodePressed(LEFT)&&!barrierLeft && tileCollision.direction.x != Config.LEFT) {
       playerPos.x= playerPos.x - playerVelocity - manager.speed;
+
+      dust.toRight = true;
     }
+
     if (Input.keyCodePressed(RIGHT)&&!barrierRight && tileCollision.direction.x != Config.RIGHT) {
       playerPos.x += playerVelocity + manager.speed;
+
+      dust.toRight = false;
     }
+
+    if (!Input.keyCodePressed(LEFT)&&!Input.keyCodePressed(RIGHT))
+    {
+      dust.toRight = false;
+    }
+
     if (Input.keyPressed(' ') && tileCollision.direction.y == Config.DOWN) {
       jump = true;
     }    
+
     if (Input.keyCodePressed(DOWN)) {
       shieldRight = false;
       shieldLeft = true;
@@ -174,6 +285,7 @@ class Player {
     } else {
       shieldIsUpLeft = false;
     }
+
     if (Input.keyCodePressed(UP)) {
       shieldRight = true;
       shieldLeft = false;
@@ -285,8 +397,9 @@ class Player {
     if (jumpBoost)
     {
       playerPos.y += playerJump*Config.POWERUP_JUMP_BOOST;
-    } else
+    } else {
       playerPos.y += playerJump;
+    }
     playerJump = jumpPower + (gravityPull*jumpGravity);
   }
 

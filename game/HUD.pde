@@ -40,8 +40,7 @@ class HUD {
     this.coin.resize(int(coin.width*0.02), int(coin.height*0.02));
     this.shield = loadImage("shieldHUD.png");
     this.shield.resize(int(shield.width*0.25), int(shield.height*0.25));
-
-    
+    //
   }
 
 
@@ -63,6 +62,9 @@ class HUD {
     this.shieldAmount = shieldAmount;
 
     switch(armorlvl) {
+    case 8:
+      this.currentArmor = armor0;
+      break;
     case 7:
       this.currentArmor = armor1;
       break;
