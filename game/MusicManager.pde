@@ -10,6 +10,7 @@ public class MusicManager
   private float volume = 1.0f;
 
   private Song currentSong = null;
+  private StateMusicCategory currentCategory = null;
 
   public MusicManager(PApplet p)
   {
@@ -20,6 +21,13 @@ public class MusicManager
   {
     if(lastState != gameState)
     {
+      println(currentCategory == music.get(gameState));
+      if((currentCategory == music.get(gameState)) || (currentCategory != null && currentCategory.isAlias(gameState)))
+      {
+        lastState = gameState;
+        return;
+      }
+
       lastSongIndex = -1;
       lastState = gameState;
       stopCurrentSong();
@@ -68,9 +76,10 @@ public class MusicManager
   {
     // select a random song from the current state.
     currentSong = null;
+    currentCategory = null;
     if(!music.containsKey(lastState)) return; // .. if it exists, of course.
 
-    StateMusicCategory currentCategory = music.get(lastState);
+    currentCategory = music.get(lastState);
     int randomIndex = -1;
     int tries = 5;
     do {
@@ -101,77 +110,22 @@ public class MusicManager
         songs.add(new Song(soundFile, fileName, volume));
       }
 
-      StateMusicCategory stateMusic = new StateMusicCategory(songs);
+      StateMusicCategory stateMusic = new StateMusicCategory(songs, getAlias(stateData));
       music.put(stateName, stateMusic);
     }
 
     println(music.get("START").getSongCount());
   }
-}
 
-public class StateMusicCategory
-{
-  private ArrayList<Song> songs;
-
-  public StateMusicCategory(ArrayList<Song> songs)
+  private String[] getAlias(JSONObject o)
   {
-    this.songs = songs;
-  }
-
-  public Song getSong(int index)
-  {
-    return songs.get(index);
-  }
-
-  public int getSongCount() { return songs.size(); }
-
-  public Song getSong(String fileName)
-  {
-    for(Song song : songs)
+    JSONArray alia = o.getJSONArray("alias");
+    if(alia == null || alia.size() == 0) return null;
+    String[] alias = new String[alia.size()];
+    for(int i = 0; i < alias.length; i++)
     {
-      if(song.fileName.equals(fileName)) return song;
+      alias[i] = alia.getString(i);
     }
-
-    return null;
-  }
-}
-
-public class Song
-{
-  public SoundFile sound;
-  public String fileName;
-  public float volume;
-
-  private float calcVolume;
-
-  public Song(SoundFile sound, String fileName, float volume)
-  {
-    this.sound = sound;
-    this.fileName = fileName;
-    this.volume = volume;
-    calcVolume = volume;
-  }
-
-  public void play()
-  {
-    sound.play();
-    sound.amp(volume);
-  }
-
-  public void setVolume(float volume)
-  {
-    if(volume == calcVolume) return;
-    calcVolume = volume * this.volume;
-    sound.amp(calcVolume);
-  }
-
-  public void stop()
-  {
-    sound.stop();
-  }
-
-  public boolean isPlaying()
-  {
-    return sound.isPlaying();
+    return alias;
   }
 }

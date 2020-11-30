@@ -1,10 +1,7 @@
 import samuelal.squelized.*;
 import java.util.Properties;
 import processing.sound.*;
-//import processing.video.*;
 
-/*import processing.sound.*;
- SoundFile file;*/
 TileManager manager;
 Player player;
 float circleX = 2000;
@@ -77,7 +74,7 @@ void gameStates() {
   } else if (gameState == "PLAY") {
     play.update();
     play.draw();
-    
+
     if(play.commentOverlayEnabled)
     {
       play.drawCommentOverlay();
