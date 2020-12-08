@@ -50,8 +50,8 @@ class Hiscore {
     //Everything in the scroll
     this.scrollX = width/2;
     this.scrollY = height/2;
-    this.scrollW = scroll.width*1.3;
-    this.scrollH = scroll.height*1.3;
+    this.scrollW = scroll.width*1.1;
+    this.scrollH = scroll.height*1.1;
     this.fontSizeTitles = 40;
     this.hiscoresX = scrollX-150;
     this.hiscoresY = scrollY-scrollH/2 + scrollH/4;
@@ -129,15 +129,15 @@ class Hiscore {
     textSize(30);
     fill(0);
     textAlign(CENTER);
-    text("NAME", width/2-250, 400);
-    text("HIGHSCORE", width/2, 400);
-    text("DATE", width/2+250, 400);
+    text("NAME", width/2-200, 350);
+    text("HIGHSCORE", width/2, 350);
+    text("DATE", width/2+200, 350);
 
     textSize(40);
     for (int i = 0; i < table.getRowCount(); i++) {
       TableRow row = table.getRow(i);
       for (int j = 0; j < table.getColumnCount(); j++) {
-        text(row.getString(j), width/2-250 + 250 *j, 500 + 50 * i);
+        text(row.getString(j), width/2-200 + 200 *j, 420 + 50 * i);
       }
     }
   }

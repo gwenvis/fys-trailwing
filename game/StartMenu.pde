@@ -129,7 +129,7 @@ class StartMenu {
   void menuSelecter() {
 
 
-    if (Input.keyClicked('z') && gameState == "START")
+    if ((Input.keyClicked('z') || Input.keyClicked('Z')) && gameState == "START")
     {
       for (int i = 0; i < menuButtons.size(); i++) {
         if (menuButtons.get(i).selected == true) {

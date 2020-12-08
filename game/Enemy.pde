@@ -57,7 +57,7 @@ class Enemy {
     this.particleSystemX = x + dragon.frameImage[0].width/5*4 /2;
     //this.particleSystemY = y + size/2;
 
-    this.particleSystemY = y;
+    this.particleSystemY = y+100;
 
     this.fireBallSpeed = 15;
     //this.fireBallW = fireBall.width/6;
@@ -117,7 +117,7 @@ class Enemy {
       fireballParticleSystem.draw = true;
 
       //folow dragono untill shooting
-      particleSystemY = y;
+      particleSystemY = y + 100;
       particleSystemX = x + dragon.frameImage[0].width/5*4 /2;
     }
 

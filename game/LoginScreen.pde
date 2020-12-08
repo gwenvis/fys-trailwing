@@ -44,7 +44,7 @@ class LoginScreen implements IKeyboardCallback {
     //db
     db = new Database("jdbc:mysql://oege.ie.hva.nl/zeikemap?serverTimezone=UTC", false, "eikemap", "AqUSO0RutI/93vGU");
 
-    keyboardHud = new KeyboardHUD(this, new PVector(width/2-150, height - 450), 10);
+    keyboardHud = new KeyboardHUD(this, new PVector(width/2-150, height - 300), 10);
     keyboardHud.position.x = width/2 - keyboardHud.getWidth() / 2;
   }
 
@@ -98,7 +98,7 @@ class LoginScreen implements IKeyboardCallback {
       fill(0);
       text(nickName, loginRectX-loginRectW/2+20, loginRectY+5);
       fill(150);
-      text("Press Enter to continue.", loginRectX-20, loginRectY + loginRectH*1.2);
+      text("Press enter to continue.", loginRectX-110, loginRectY + loginRectH*1.2);
     }
 
     if (false &&(Input.keyClicked(ENTER) || Input.keyClicked(RETURN)) && nickName != "" && nickName != "|")
