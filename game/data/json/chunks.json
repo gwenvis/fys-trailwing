@@ -2,6 +2,7 @@
 	[
 		{
 		"name": "defaultInverse",
+		"available": 0,
 		"obstacles": [
 		],
 		"powerups": [
@@ -22,6 +23,7 @@
 		},
 		{
 		"name": "defaultInverse",
+		"available": 0,
 		"obstacles": [
 			{"sprite": "Tiles/tile63.png", "width": 100, "height": 100, "x": -450, "y": 50, "layer": "obstacle"},
 			{"sprite": "Tiles/tile63.png", "width": 100, "height": 100, "x": -350, "y": 50, "layer": "obstacle"},
@@ -42,6 +44,7 @@
 		},
 		{
 		"name": "defaultInverse",
+		"available": 0,
 		"obstacles": [
 			{"sprite": "Tiles/tile63.png", "width": 100, "height": 100, "x": -450, "y": 50, "layer": "obstacle"},
 			{"sprite": "Tiles/tile63.png", "width": 100, "height": 100, "x": -350, "y": 50, "layer": "obstacle"},
@@ -62,6 +65,7 @@
 		},
 		{
 		"name": "defaultInverse",
+		"available": 0,
 		"obstacles": [
 			{"sprite": "Tiles/tile63.png", "width": 100, "height": 100, "x": 150, "y": 50, "layer": "obstacle"},
 			{"sprite": "Tiles/tile63.png", "width": 100, "height": 100, "x": 50, "y": 50, "layer": "obstacle"},
@@ -82,6 +86,7 @@
 		},
 		{
 		"name": "defaultInverse",
+		"available": 100,
 		"obstacles": [
 			{"sprite": "Tiles/tile63.png", "width": 100, "height": 100, "x": 150, "y": 50, "layer": "obstacle"},
 			{"sprite": "Tiles/tile63.png", "width": 100, "height": 100, "x": 50, "y": 50, "layer": "obstacle"},
@@ -100,11 +105,23 @@
 			{"sprite": "Tiles/tile111.png", "width": 100, "height": 100, "x": -350, "y": 0, "layer": "collision"},
 			{"sprite": "Tiles/tile111.png", "width": 100, "height": 100, "x": -450, "y": 0, "layer": "collision"},
 		]
+		},
+		{
+		"name": "defaultInverse",
+		"available": 100,
+		"obstacles": [
+		],
+		"powerups": [
+			{"x": 400, "y":-100}
+		],
+		"tiles": [
+		]
 		}
 	],
 	[
 		{
 		"name": "defaultInverse",
+		"available": 0,
 		"obstacles": [
 			{"sprite": "Objects/barrel.png", "width": 100, "height": 100, "x": 150, "y": -100, "layer": "obstacle"},
 		],
@@ -122,7 +139,7 @@
 			{"sprite": "Tiles/tile111.png", "width": 100, "height": 100, "x": -250, "y": 0, "layer": "collision"},
 			{"sprite": "Tiles/tile111.png", "width": 100, "height": 100, "x": -350, "y": 0, "layer": "collision"},
 			{"sprite": "Tiles/tile111.png", "width": 100, "height": 100, "x": -450, "y": 0, "layer": "collision"},
-			
+
 			{"sprite": "Tiles/tile21.png", "width": 100, "height": 100, "x": 250, "y": -500, "layer": "collision"},
 			{"sprite": "Tiles/tile21.png", "width": 100, "height": 100, "x": 150, "y": -500, "layer": "collision"},
 			{"sprite": "Tiles/tile21.png", "width": 100, "height": 100, "x": 50, "y": -500, "layer": "collision"},
@@ -131,6 +148,7 @@
 		},
 		{
 		"name": "defaultInverse",
+		"available": 0,
 		"obstacles": [
 		],
 		"powerups": [
@@ -147,7 +165,7 @@
 			{"sprite": "Tiles/tile111.png", "width": 100, "height": 100, "x": -250, "y": 0, "layer": "collision"},
 			{"sprite": "Tiles/tile111.png", "width": 100, "height": 100, "x": -350, "y": 0, "layer": "collision"},
 			{"sprite": "Tiles/tile111.png", "width": 100, "height": 100, "x": -450, "y": 0, "layer": "collision"},
-			
+
 			{"sprite": "Tiles/tile21.png", "width": 100, "height": 100, "x": 350, "y": -300, "layer": "collision"},
 			{"sprite": "Tiles/tile21.png", "width": 100, "height": 100, "x": 250, "y": -300, "layer": "collision"},
 			{"sprite": "Tiles/tile21.png", "width": 100, "height": 100, "x": 150, "y": -300, "layer": "collision"},
@@ -155,6 +173,7 @@
 		},
 		{
 		"name": "defaultInverse",
+		"available": 0,
 		"obstacles": [
 			{"sprite": "Objects/barrel.png", "width": 100, "height": 100, "x": -350, "y": -100, "layer": "obstacle"},
 		],
@@ -178,6 +197,7 @@
 		[
 		{
 		"name": "defaultInverse",
+		"available": 0,
 		"obstacles": [
 		],
 		"powerups": [
