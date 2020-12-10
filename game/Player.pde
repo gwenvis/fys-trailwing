@@ -186,6 +186,10 @@ class Player {
     if (tileCollision.direction.y != Config.DOWN && gravityPull == 0) {
       playerPos.sub(tileCollision.direction.x * manager.speed, 0);
     }
+    
+    if (obstacle != null && obstacle.layer.equals("lava")) {
+      currentArmourLevel = 10000;
+    }
 
     if (obstacle != null && obstacle.layer.equals("coin")) {
       coinAmount++;
