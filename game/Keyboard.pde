@@ -28,7 +28,7 @@ public class KeyboardHUD
   private final int KEY_MARGIN = 5;
   private final int KEY_WIDTH = 30;
   private final int KEY_HEIGHT = 65;
-  private final String RETURN_KEY = "↵";
+  private final String RETURN_KEY = "¶";
   private final String BACKSPACE_KEY = "«";
   private final String DISCARD_KEY = "×";
   private final String SPACE_KEY = "_";
@@ -37,7 +37,7 @@ public class KeyboardHUD
   private IKeyboardCallback keyboardCallback;
   private String[][] keys = {
     {"q", "w", "e", "r", "t", "y", "u", "i", "o", "p"},
-    {"a", "s", "d", "f", "g", "h", "j", "k", "l", "↵"},
+    {"a", "s", "d", "f", "g", "h", "j", "k", "l", "¶"},
     {"z", "x", "c", "v", "b", "n", "m", "_", "×", "«"}
   };
   private int selectedKeyX = 0;
@@ -145,6 +145,12 @@ public class KeyboardHUD
         text(keys[i][j], x + KEY_WIDTH / 2, y + KEY_HEIGHT / 2);
       }
     }
+    
+    fill(255);
+    textSize(12);
+    textAlign(LEFT);
+    text("Press the '" + RETURN_KEY + "' to submit\n" 
+      + "Use the arrow keys to navigate the keyboard and 'Z' to confirm.", position.x, position.y + KEY_HEIGHT * 3 + 14 * 2);
   }
 
   public void discard()
