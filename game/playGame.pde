@@ -1,15 +1,19 @@
 class PlayGame {
-
+  PImage caveBackground;
   boolean commentOverlayEnabled = false;
   CommentOverlay commentOverlay;
   public int distance = 0;
   int currentCommentLoadDistance = 0;
   ArrayList<ScreenComment> screenComments = new ArrayList<ScreenComment>();
+  float x1,x2;
 
   PlayGame() {
-      screenComments = new ArrayList<ScreenComment>();
-      distance = 0;
-      currentCommentLoadDistance = 0;
+    screenComments = new ArrayList<ScreenComment>();
+    distance = 0;
+    currentCommentLoadDistance = 0;
+    caveBackground = loadImage("caveBackground.png");
+    x1 = 0;
+    x2 = width;
   }
 
   void update()
@@ -65,20 +69,39 @@ class PlayGame {
         comment.appear();
       }
       if (!commentOverlayEnabled) comment.update();
-      if(comment.isDead()) deadComments.add(comment);
+      if (comment.isDead()) deadComments.add(comment);
       comment.draw();
     }
 
-    if(deadComments.size() == 0) return;
-    for(ScreenComment comment : deadComments)
+    if (deadComments.size() == 0) return;
+    for (ScreenComment comment : deadComments)
     {
       screenComments.remove(comment);
     }
   }
 
+  void backgroundManager() {
+
+    imageMode(CORNER);
+
+    if (manager.chunkpool == 0) {
+      image(caveBackground, x1, 0, width, height);
+      image(caveBackground, x2, 0, width, height);
+      x1-=2;
+      x2-=2;
+      if (x1 + width < 0) {
+        x1 = width;
+      } else if (x2 + width < 0 ) {
+        x2 = width;
+      }
+    } else {
+      background(0);
+    }
+  }
+
   void draw()
   {
-    background(21, 19, 39);
+    backgroundManager();
     drawScreenComments();
     manager.drawGroups();
     player.draw();
