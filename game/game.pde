@@ -44,6 +44,9 @@ void setup() {
   PFont font = createFont("Arial", 64);
   textFont(font);
   hud = new HUD();
+  
+  SessionDatabase session = new SessionDatabase();
+  print(session.getSessions());
 
   achievementsDb = new Database("jdbc:mysql://oege.ie.hva.nl/zboodtcd?serverTimezone=UTC", true, "boodtcd", "egRabMlz#xM$NI");
 }
