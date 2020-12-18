@@ -15,7 +15,7 @@ class LoginScreen implements IKeyboardCallback {
   int hintTimer, hintCD;
   boolean hintTimerSet;
   boolean removeLetter;
-  
+
   Database db;
 
   LoginScreen() {
@@ -40,9 +40,9 @@ class LoginScreen implements IKeyboardCallback {
     //colors
     black = color(10);
     white = color(#FAFAFA);
-    
+
     //db
-    db = new Database("jdbc:mysql://oege.ie.hva.nl/zeikemap?serverTimezone=UTC", false, "eikemap", "AqUSO0RutI/93vGU");
+    db = new Database("jdbc:mysql://oege.ie.hva.nl:3306/zbottela", true, "bottela", "VKRrXbEOm#Pvqb");
 
     keyboardHud = new KeyboardHUD(this, new PVector(width/2-150, height - 300), 10);
     keyboardHud.position.x = width/2 - keyboardHud.getWidth() / 2;
@@ -50,7 +50,12 @@ class LoginScreen implements IKeyboardCallback {
 
   public void onSubmit(String submittedString)
   {
-    gameState = "START";
+    if (nickName != "" && nickName != "|")
+    {
+      String date = String.valueOf(year())+"-"+String.valueOf(month()+"-"+String.valueOf(day()));
+      db.updateQuery(String.format("INSERT INTO player(name, created_on) VALUES('%s','%s')", nickName, date));
+      gameState = "START";
+    }
   }
 
   public void onValueChanged(String value)
@@ -72,7 +77,7 @@ class LoginScreen implements IKeyboardCallback {
 
     keyboardHud.update();
     keyboardHud.draw();
-    
+
     //NicknameRect
     rectMode(CENTER);
     fill(white);
@@ -101,12 +106,6 @@ class LoginScreen implements IKeyboardCallback {
       text("Press enter to continue.", loginRectX-110, loginRectY + loginRectH*1.2);
     }
 
-    if (false &&(Input.keyClicked(ENTER) || Input.keyClicked(RETURN)) && nickName != "" && nickName != "|")
-    {
-      String date = String.valueOf(year())+"-"+String.valueOf(month()+"-"+String.valueOf(day()));
-      db.updateQuery(String.format("INSERT INTO player(name, created_on) VALUES('%s','%s')", nickName, date));
-      gameState = "START";
-    }
 
     //if click on textfield, highlight it
     if (mouseX >loginRectX - loginRectW/2 && mouseX < loginRectX + loginRectW/2 && mouseY > loginRectY-loginRectH/2 && mouseY < loginRectY +loginRectH/2) {

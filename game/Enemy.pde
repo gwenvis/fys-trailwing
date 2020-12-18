@@ -50,18 +50,16 @@ class Enemy {
     this.angryTimer = 0;
     this.angryCooldown = 8000; //  Time in ms he takes to get angry
     this.AngryDurationTimer = 0;
-    this.attackDurationCooldown = 4000;  //  Time in ms he stays angry
+    this.attackDurationCooldown = 7000;  //  Time in ms he stays angry
     this.fireBallTimer = 0;
     this.fireBallDurationCooldown = 3200;  //Time  it takes to shoot the fireBall WHEN angry. (fireBall duration = attackDurationCooldown - fireBallDurationCooldown)
     this.attack = false;
     this.particleSystemX = x + dragon.frameImage[0].width/5*4 /2;
-    //this.particleSystemY = y + size/2;
 
     this.particleSystemY = y+100;
 
     this.fireBallSpeed = 15;
-    //this.fireBallW = fireBall.width/6;
-    //this.fireBallH = fireBall.height/6;
+
 
     //particlesystem fireball
     ID = "Fireball";
@@ -129,7 +127,6 @@ class Enemy {
 
   void collision() {
 
-    // if (particleSystemX + fireBallW/2 > player.playerPos.x - player.size.x/2 && particleSystemX - fireBallW/2 < player.playerPos.x + player.size.x/2 && particleSystemY + fireBallH/2 > player.playerPos.y - player.size.y/2 && particleSystemY - fireBallH/2 < player.playerPos.y + player.size.y/2) {
     if (player.shieldIsUpLeft) {
       //shield is drawn approximatily 5 pixels from the canvas boarder
       hitX = player.shieldPos.x - (player.shieldLeftBlueImage.width/2 - approximateShieldOffset);
@@ -148,8 +145,6 @@ class Enemy {
 
   void drawAttack() {
     if (attack) {
-      //imageMode(CENTER);
-      //image(fireBall, particleSystemX, particleSystemY, fireBallW, fireBallH );
       fireballParticleSystem.particleSystemStartX = particleSystemX;
       fireballParticleSystem.particleSystemStartY = particleSystemY;
       fireballParticleSystem.draw();
