@@ -1,3 +1,5 @@
+/* Made by Chantal Boodt */
+
 class ParticleSystem {
   String particleID;
   int startingColourR, startingColourG, startingColourB, endingColourR, endingColourG, endingColourB;

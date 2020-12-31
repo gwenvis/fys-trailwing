@@ -11,7 +11,6 @@ float xSpeed = 5;
 int radius = 10;
 boolean ballHit = false;
 String gameState;
-Database achievementsDb;
 Enemy enemy;
 PlayGame play;
 StartMenu start;
@@ -44,8 +43,6 @@ void setup() {
   PFont font = createFont("Arial", 64);
   textFont(font);
   hud = new HUD();
-
-  achievementsDb = new Database("jdbc:mysql://oege.ie.hva.nl/zboodtcd?serverTimezone=UTC", true, "boodtcd", "egRabMlz#xM$NI");
 }
 
 void draw()

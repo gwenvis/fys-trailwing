@@ -1,5 +1,7 @@
+/* Made by Chantal Boodt *///
+
 class Player {
-  int shieldDurability, shieldAmount, hudArmourlvl, coinAmount, currentShield;
+  int shieldDurability, shieldAmount, hudArmourlvl, coinAmount, currentShield, fireball;
   private int currentArmourLevel, speedUpTimer, speedUpCoolDown, armourLoss;
   private PVector playerPos, shieldPos;
   private float playerSpeed, jumpPower, jumpGravity, playerJump, gravityPull, currentArmourSpeedMultiplier, playerVelocity;
@@ -7,7 +9,7 @@ class Player {
   boolean jumpBoost = false;
   boolean invincibility = false;
   float currentPowerupTimer = 0, score, coinMultiplyer;
-  PImage playerImage, shieldLeftBlueImage, shieldRightBlueImage, shieldLeftGreenImage, shieldRightGreenImage, shieldLeftRedImage, shieldRightRedImage;
+  PImage playerImage, shieldLeftBlueImage, shieldRightBlueImage, shieldLeftGreenImage, shieldRightGreenImage, shieldLeftRedImage, shieldRightRedImage, invincibleSignImage;
   PVector size = Config.PLAYER_SIZE;
 
   //particlesystem required variables
@@ -27,6 +29,7 @@ class Player {
   ArrayList<PImage> shields = new ArrayList<PImage>();
 
   Player(float x, float y) {
+    fireball = 0;
     speedUpTimer = 0;
     speedUpCoolDown = 3000;
     timerSet = false;
@@ -55,6 +58,7 @@ class Player {
     jump=false;
     barrierLeft=false;
     barrierRight=false;
+    invincibleSignImage = loadImage("Invincibility_sign.png");
     playerImage = loadImage("new_player.png");
     playerImage.resize((int)size.x, (int)size.y);
 
@@ -106,9 +110,15 @@ class Player {
 
   void draw() {
     imageMode(CENTER);
+
+    if (invincibility) {
+      image(invincibleSignImage, playerPos.x, playerPos.y);
+      tint(#0000AA);
+    }
     playerImage.resize((int)size.x, (int)size.y);
     image(playerImage, playerPos.x, playerPos.y);
 
+    tint(255, 255);
     if (shieldAmount != 0 && (shieldIsUpLeft||shieldIsUpRight)) {
       image(shields.get(currentShield), shieldPos.x, shieldPos.y);
     }
@@ -153,6 +163,7 @@ class Player {
     //cutscene? -cartoon vallen
     if (playerPos.y >= height - (Config.PLAYER_SIZE.y/2)) {
       fallPositionChange();
+      fireball++;
     }
 
     if (tileCollision.direction.y != -1) {
@@ -207,9 +218,11 @@ class Player {
         }        
         if (playerPos.y >= height - (Config.CHUNK_BOTTOM_OFFSET+(Config.PLAYER_SIZE.y/2))) {
         } else {
-          currentArmourLevel += obstacle.damage;
-          size.x -= obstacle.damage * armourLoss;
-          currentArmourSpeedMultiplier = armourLevels.get(currentArmourLevel > armourLevels.size() - 1 ? armourLevels.size() - 1 : currentArmourLevel);
+          if (!invincibility) {
+            currentArmourLevel += obstacle.damage;
+            size.x -= obstacle.damage * armourLoss;
+            currentArmourSpeedMultiplier = armourLevels.get(currentArmourLevel > armourLevels.size() - 1 ? armourLevels.size() - 1 : currentArmourLevel);
+          }
         }
       }
       obstacle = null;
@@ -364,13 +377,15 @@ class Player {
   }
 
   void damage() {
-    if (currentArmourLevel >= 9) {
-      death();
-    } else if (playerHit) {
-      playerHit = false;
-    } else {      
-      currentArmourLevel++;
-      size.x -= armourLoss;
+    if (invincibility) {
+      if (currentArmourLevel >= 9) {
+        death();
+      } else if (playerHit) {
+        playerHit = false;
+      } else {      
+        currentArmourLevel++;
+        size.x -= armourLoss;
+      }
     }
   }
 
