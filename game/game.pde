@@ -23,6 +23,7 @@ HUD hud;
 ButtonLayout buttonLayout;
 MusicManager musicManager;
 Animations animations;
+PlayerDatabase playerdb;
 
 void setup() {
   gameState = "LOGIN";
@@ -46,6 +47,7 @@ void setup() {
   hud = new HUD();
 
   achievementsDb = new Database("jdbc:mysql://oege.ie.hva.nl/zboodtcd?serverTimezone=UTC", true, "boodtcd", "egRabMlz#xM$NI");
+  playerdb = new PlayerDatabase();
 }
 
 void draw()
