@@ -83,10 +83,7 @@ class StartMenu {
   void screen() {
 
     //Starts the audio
-    if (!soundIsPlaying && gameState == "START") { 
-      backgroundMusicStartScreen.loop();
-      soundIsPlaying = true;
-    }  
+
     manager.indexSelecterMouse();
     manager.indexSelecterKeysVertical();
 
@@ -122,9 +119,9 @@ class StartMenu {
     }
 
     if (isSoundMuted) {
-      backgroundMusicStartScreen.amp(0.0);
+      musicManager.setVolume(0.0);
     } else {
-      backgroundMusicStartScreen.amp(distanceBall);
+      musicManager.setVolume(distanceBall);
     }
   } 
 
@@ -132,14 +129,14 @@ class StartMenu {
   void menuSelecter() {
 
 
-    if ((Input.keyClicked(ENTER) || Input.keyClicked(RETURN)) && gameState == "START")
+    if ((Input.keyClicked('z') || Input.keyClicked('Z')) && gameState == "START")
     {
       for (int i = 0; i < menuButtons.size(); i++) {
         if (menuButtons.get(i).selected == true) {
           switch(menuButtons.get(i).index)
           {
           case 0:
-            gameState = "PLAY";
+            gameState = "BUTTONLAYOUT";
             break;
           case 1:
             gameState = "HISCORE";
@@ -158,8 +155,21 @@ class StartMenu {
 
 
   void audioSlider() {
+    
+    if(Input.keyCodeClicked(LEFT)) 
+    {
+      sliderBallX -= 10;
+      if(sliderBallX < sliderX1) sliderBallX = sliderX1;
+    }
+    else if(Input.keyCodeClicked(RIGHT))
+    {
+      sliderBallX += 10;
+      if(sliderBallX > sliderX2) sliderBallX = sliderX2;
+    }
+
     distanceBall = (sliderBallX - sliderX1)/100/2;
-    if (mouseX > 0 && mouseX < width/5 && mouseY > height/10*9 && mouseY < height) {
+    boolean showSlider = mouseX > 0 && mouseX < width/5 && mouseY > height/10*9 && mouseY < height;
+    if (showSlider) {
       //sliderline
       stroke(white);
       strokeWeight(sliderStrokeWeight);
@@ -170,7 +180,7 @@ class StartMenu {
       fill(black);
       ellipse(sliderBallX, sliderBallY, sliderBallR, sliderBallR);
 
-      if (Input.mouseButtonPressed(LEFT)) {
+      if (Input.mouseButtonPressed(LEFT) && showSlider) {
         sliderBallX = mouseX;
 
         //keeps sliderball in bounds

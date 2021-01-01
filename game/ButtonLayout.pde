@@ -32,7 +32,6 @@ class ButtonLayout {
   }
 
   void draw() {
-
     if (alpha <= 250 && !firstAlphaSet) {
       alpha += 5;
     } else {

@@ -1,23 +1,24 @@
 class PlayGame {
-
+  PImage caveBackground;
   boolean commentOverlayEnabled = false;
   CommentOverlay commentOverlay;
-  int distance = 0;
+  public int distance = 0;
   int currentCommentLoadDistance = 0;
   ArrayList<ScreenComment> screenComments = new ArrayList<ScreenComment>();
+  float x1,x2;
 
   PlayGame() {
+    screenComments = new ArrayList<ScreenComment>();
+    distance = 0;
+    currentCommentLoadDistance = 0;
+    caveBackground = loadImage("caveBackground.png");
+    x1 = 0;
+    x2 = width;
   }
 
   void update()
   {
-    // if the comment overlay is enabled, stop updating the game
-    if (commentOverlayEnabled)
-    {
-      return;
-    }
 
-    backgroundMusicStartScreen.stop();
     player.manager = manager;
     player.score = manager.score;
     player.update();
@@ -34,7 +35,6 @@ class PlayGame {
       ArrayList<Comment> comments = commentDatabase.getComments(distance, currentCommentLoadDistance);
       if (comments != null)
       {
-        screenComments = new ArrayList<ScreenComment>();
         for (Comment comment : comments)
         {
           screenComments.add(new ScreenComment(comment));
@@ -53,18 +53,14 @@ class PlayGame {
     player.tileCollision = collision; 
     manager.playerLocation(player);
 
-    // debug keybind for enabling comment overlay
-    if (Input.keyClicked('o'))
-    {
-      commentOverlayEnabled = true;
-    }
-
     hud.updateHUD(player.coinAmount, int(player.score), player.currentArmourLevel, player.shieldAmount);
   }
 
   private void drawScreenComments()
   {
     if (screenComments == null) return;
+
+    ArrayList<ScreenComment> deadComments = new ArrayList<ScreenComment>();
 
     for (ScreenComment comment : screenComments)
     {
@@ -73,28 +69,39 @@ class PlayGame {
         comment.appear();
       }
       if (!commentOverlayEnabled) comment.update();
+      if (comment.isDead()) deadComments.add(comment);
       comment.draw();
+    }
+
+    if (deadComments.size() == 0) return;
+    for (ScreenComment comment : deadComments)
+    {
+      screenComments.remove(comment);
     }
   }
 
-  void drawCommentOverlay()
-  {
-    if (commentOverlay == null) commentOverlay = new CommentOverlay();
+  void backgroundManager() {
 
-    if (commentOverlay.update())
-    {
-      commentOverlayEnabled = false;
-      Comment comment = new Comment(commentOverlay.getCommentInput(), distance); // fill out score
-      println("Comment placed: \"" + comment.getContent() + "\" at distance: " + comment.getDistance());
-      commentDatabase.addComment(comment);
-      commentOverlay = null;
+    imageMode(CORNER);
+
+    if (manager.chunkpool == 0) {
+      image(caveBackground, x1, 0, width, height);
+      image(caveBackground, x2, 0, width, height);
+      x1-=2;
+      x2-=2;
+      if (x1 + width < 0) {
+        x1 = width;
+      } else if (x2 + width < 0 ) {
+        x2 = width;
+      }
+    } else {
+      background(0);
     }
-    if (commentOverlay != null) commentOverlay.draw();
   }
 
   void draw()
   {
-    background(21, 19, 39);
+    backgroundManager();
     drawScreenComments();
     manager.drawGroups();
     player.draw();

@@ -1,9 +1,7 @@
 import samuelal.squelized.*;
 import java.util.Properties;
 import processing.sound.*;
-//import processing.video.*;
 
-//SoundFile file;
 TileManager manager;
 Player player;
 float circleX = 2000;
@@ -22,24 +20,26 @@ CommentsDatabase commentDatabase;
 SoundFile backgroundMusicGameOverScreen;
 HUD hud;
 ButtonLayout buttonLayout;
+MusicManager musicManager;
+Animations animations;
 
 void setup() {
-  gameState = "START";
+  gameState = "LOGIN";
+  animations = new Animations();
   background(255);
-  size(1920, 1080, P2D);
+  size(1600, 900, P2D);
   frameRate(60);
   play = new PlayGame();
   start = new StartMenu();
   manager = new TileManager(Config.DEFAULT_CAMERA_MOVEMENT_SPEED);
   player = new Player(width/2, height - Config.PLAYER_BOTTOM_OFFSET);
   enemy = new Enemy(player);
-  backgroundMusicStartScreen = new SoundFile(this, "backgroundMusic.wav");
-  backgroundMusicGameOverScreen = new SoundFile(this, "gameOver.wav");
   hiscore = new Hiscore();
   login = new LoginScreen();
   gameOver = new GameOver();
   buttonLayout = new ButtonLayout();
   commentDatabase = new CommentsDatabase();
+  musicManager = new MusicManager(this);
   PFont font = createFont("Arial", 64);
   textFont(font);
   hud = new HUD();
@@ -48,6 +48,7 @@ void setup() {
 void draw()
 {
   gameStates();
+  musicManager.update();
   Input.update();
 }
 
@@ -55,6 +56,8 @@ void keyPressed() {
   //send pressed key to input class
 
   Input.keyPressed(key, CODED, keyCode);
+  if(key == ESC)
+    key = 0;
 }
 
 void keyReleased() {
@@ -86,14 +89,15 @@ void gameStates() {
   } else if (gameState == "BUTTONLAYOUT") {
     buttonLayout.draw(); 
     buttonLayout.spaceCheck();
-  }
-
-  if (play.commentOverlayEnabled)
-  {
-    play.drawCommentOverlay();
   } else if ( gameState == "HISCORE") {
     hiscore.screen();
   } else if (gameState == "GAMEOVER") {
-    gameOver.screen();
+    gameOver.update();
+    gameOver.draw();
+
+    if(gameOver.drawCommentOverlay)
+    {
+      gameOver.drawCommentOverlay();
+    }
   }
 }

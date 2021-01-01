@@ -45,7 +45,7 @@ class HUD {
 
 
   void draw() {
-    fill(0);
+    fill(255);
     textSize(20);
     textAlign(LEFT);
     image(coin, coinsX, coinsY);
