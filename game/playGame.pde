@@ -19,11 +19,9 @@ class PlayGame {
     x2 = width;
 
     highscoredb = new SessionDatabase();
-    
-    //session = new Session(0, 0, "00:00", year() + "/" + month() + "/" + day(), 1, "");
+    Session newSession = new Session(0, 0, 0, "00:00", year() + "/" + month() + "/" + day(), 1, "");   
    
-    
-    //Session currentSession = highscoredb.addSession(session);
+    player.session = highscoredb.addSession(newSession);
   }
 
   void update()

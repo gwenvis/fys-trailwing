@@ -22,11 +22,17 @@ public class SessionDatabase
    */
   public Session addSession(Session session)
   {
+    int id = formatDefaultList(String.format("SELECT MAX(`id`) FROM `session`")).get(0).getId() + 1;
+    print(id);
+    
     database.updateQuery(
-      String.format("INSERT INTO `session` (`id`, `coins`, `distance`, `time_played`, `created_on`, `player_id`) VALUES (null, %d, %d, \"%s\", CURRENT_TIMESTAMP, %d);", 
-      null, session.getCoins(), session.getDistance(), session.getDistance(), session.getTimePlayed(), session.getPlayerId()));
+      String.format("INSERT INTO `session` (`id`, `coins`, `distance`, `time_played`, `created_on`, `player_id`) VALUES (%d, %d, %d, \"%s\", CURRENT_TIMESTAMP, %d);", 
+      id, session.getCoins(), session.getDistance(), session.getTimePlayed(), session.getPlayerId()));
       
-      return formatDefaultList(String.format("SELECT last_insert_id() AS `id` FROM `session` GROUP BY last_insert_id();")).get(0);
+      Session last = formatDefaultList(String.format("SELECT * FROM `session` WHERE id = %d", id)).get(0);
+      print(last.id);
+      
+      return last;
   }
 
   /*
@@ -35,8 +41,10 @@ public class SessionDatabase
   public void updateSession(int id, Session session)
   {
     
-    database.runQuery(
-      String.format("UPDATE `session` SET `coins` = %d', `distance` = %d WHERE `session`.`id` = %d;", session.getCoins(), session.getDistance(), id));
+    print("distance: " + session.getDistance());
+    
+    database.updateQuery(
+      String.format("UPDATE `session` SET `coins` = %d, `distance` = %d WHERE `session`.`id` = %d;", session.getCoins(), session.getDistance(), id));
   }
 
   /*
@@ -52,7 +60,7 @@ public class SessionDatabase
 
   public ArrayList<Session> getSessionsPaginated(int page, int amountPerPage) 
   {
-    return formatDefaultList(String.format("SELECT `session`.*, `player`.`name` as name FROM `session` inner join `player` on `session``id` LIMIT %d, %d", page, amountPerPage));
+    return formatDefaultList(String.format("SELECT `session`.*, `player`.`name` as name FROM `session` inner join `player` on `session`.`id` = `player`.id LIMIT %d, %d", page, amountPerPage));
   }
   
   public ArrayList<Session> getBestSessionsPaginated(int page, int amountPerPage) 
@@ -78,7 +86,7 @@ public class SessionDatabase
 
     for (int row = 0; row < sessionTable.getRowCount(); row++)
     {
-      int id = 0;
+      int id = -1;
       int coins = 0;
       int distance = 0;
       String timePlayed = null;
@@ -114,6 +122,7 @@ public class Session
     this.timePlayed = timePlayed;
     this.createdOn = createdOn;
     this.playerId = playerId;
+    this.player = player;
   }
 
   private int id;

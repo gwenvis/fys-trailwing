@@ -70,7 +70,7 @@ class Hiscore {
 
     //Database stuff
     highscoredb = new SessionDatabase();
-    highscoreTable = highscoredb.getSessionsPaginated(0, 10);
+    highscoreTable = highscoredb.getSessionsPaginated(0, 7);
     print("iawhjfuioeshuifhweuishfeuihfeuis" + highscoreTable);
   }
 
@@ -135,9 +135,9 @@ class Hiscore {
 
     textSize(40);
     for (int i = 0; i < table.size(); i++) {
-      text(table.get(0).getPlayer(), width/2-200, 350);
-      text(table.get(0).getDistance(), width/2, 350);
-      text(table.get(0).getCoins(), width/2+200, 350);
+      text(table.get(i).getPlayer(), width/2-200, 420 + 50 * i);
+      text(table.get(i).getDistance(), width/2, 420 + 50 * i);
+      text(table.get(i).getCoins(), width/2+200, 420 + 50 * i);
     }
   }
 }

@@ -30,10 +30,10 @@ void setup() {
   background(255);
   size(1600, 900, P2D);
   frameRate(60);
+  player = new Player(width/2, height - Config.PLAYER_BOTTOM_OFFSET);
   play = new PlayGame();
   start = new StartMenu();
   manager = new TileManager(Config.DEFAULT_CAMERA_MOVEMENT_SPEED);
-  player = new Player(width/2, height - Config.PLAYER_BOTTOM_OFFSET);
   enemy = new Enemy(player);
   hiscore = new Hiscore();
   login = new LoginScreen();
