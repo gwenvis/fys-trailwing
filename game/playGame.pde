@@ -5,7 +5,10 @@ class PlayGame {
   public int distance = 0;
   int currentCommentLoadDistance = 0;
   ArrayList<ScreenComment> screenComments = new ArrayList<ScreenComment>();
-  float x1,x2;
+  float x1, x2;
+  
+  SessionDatabase highscoredb;
+  Session session;
 
   PlayGame() {
     screenComments = new ArrayList<ScreenComment>();
@@ -14,6 +17,13 @@ class PlayGame {
     caveBackground = loadImage("caveBackground.png");
     x1 = 0;
     x2 = width;
+
+    highscoredb = new SessionDatabase();
+    
+    //session = new Session(0, 0, "00:00", year() + "/" + month() + "/" + day(), 1, "");
+   
+    
+    //Session currentSession = highscoredb.addSession(session);
   }
 
   void update()

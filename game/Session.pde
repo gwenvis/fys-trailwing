@@ -20,11 +20,13 @@ public class SessionDatabase
   /*
    * add session
    */
-  public void addSession(Session session)
+  public Session addSession(Session session)
   {
     database.updateQuery(
       String.format("INSERT INTO `session` (`id`, `coins`, `distance`, `time_played`, `created_on`, `player_id`) VALUES (null, %d, %d, \"%s\", CURRENT_TIMESTAMP, %d);", 
-      session.getCoins(), session.getDistance(), session.getDistance(), session.getTimePlayed(), session.getPlayerId()));
+      null, session.getCoins(), session.getDistance(), session.getDistance(), session.getTimePlayed(), session.getPlayerId()));
+      
+      return formatDefaultList(String.format("SELECT last_insert_id() AS `id` FROM `session` GROUP BY last_insert_id();")).get(0);
   }
 
   /*
@@ -32,7 +34,8 @@ public class SessionDatabase
    */
   public void updateSession(int id, Session session)
   {
-    database.updateQuery(
+    
+    database.runQuery(
       String.format("UPDATE `session` SET `coins` = %d', `distance` = %d WHERE `session`.`id` = %d;", session.getCoins(), session.getDistance(), id));
   }
 
@@ -49,7 +52,17 @@ public class SessionDatabase
 
   public ArrayList<Session> getSessionsPaginated(int page, int amountPerPage) 
   {
-    return formatDefaultList(String.format("SELECT * FROM `session` limit %d, %d", page, amountPerPage));
+    return formatDefaultList(String.format("SELECT `session`.*, `player`.`name` as name FROM `session` inner join `player` on `session``id` LIMIT %d, %d", page, amountPerPage));
+  }
+  
+  public ArrayList<Session> getBestSessionsPaginated(int page, int amountPerPage) 
+  {
+    return formatDefaultList(String.format("SELECT * FROM `session` ORDER BY distance DESC LIMIT %d, %d", page, amountPerPage));
+  }
+  
+  public ArrayList<Session> getSessionsByStats(int distance, int coins) 
+  {
+    return formatDefaultList(String.format("SELECT * FROM `session` WHERE `distance` >= %d and coins >= %d ORDER BY distance DESC", distance, coins));
   }
 
   public ArrayList<Session> getSessionsByUsername(String name) 
@@ -71,6 +84,7 @@ public class SessionDatabase
       String timePlayed = null;
       String createdOn = null;
       int playerId = 0;
+      String player = "";
 
       for (int col = 0; col < sessionTable.getColumnCount(); col++)
       {
@@ -80,9 +94,10 @@ public class SessionDatabase
         if (col == 3) timePlayed = sessionTable.getString(row, col);
         if (col == 4) createdOn = sessionTable.getString(row, col);
         if (col == 5) playerId = sessionTable.getInt(row, col);
+        if (col == 6) player = sessionTable.getString(row, col);
       }
 
-      sessions.add(new Session(id, coins, distance, timePlayed, createdOn, playerId));
+      sessions.add(new Session(id, coins, distance, timePlayed, createdOn, playerId, player));
     }
 
     return sessions;
@@ -91,7 +106,7 @@ public class SessionDatabase
 
 public class Session
 {
-  public Session(int id, int coins, int distance, String timePlayed, String createdOn, int playerId)
+  public Session(int id, int coins, int distance, String timePlayed, String createdOn, int playerId, String player)
   {
     this.id = id;
     this.coins = coins;
@@ -107,6 +122,7 @@ public class Session
   private String timePlayed;
   private String createdOn;
   private int playerId;
+  private String player;
 
   public int getId() { 
     return id;
@@ -125,5 +141,8 @@ public class Session
   }
   public int getPlayerId() { 
     return playerId;
+  }
+  public String getPlayer() { 
+    return player;
   }
 }
