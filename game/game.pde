@@ -9,7 +9,6 @@ float xSpeed = 5;
 int radius = 10;
 boolean ballHit = false;
 String gameState;
-Database achievementsDb;
 Enemy enemy;
 PlayGame play;
 StartMenu start;

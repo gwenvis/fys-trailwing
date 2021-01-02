@@ -1,3 +1,5 @@
+/* Made by Chantal Boodt */
+
 class Particle {
   String particleID;
   boolean xAxisDir;
