@@ -5,7 +5,10 @@ class PlayGame {
   public int distance = 0;
   int currentCommentLoadDistance = 0;
   ArrayList<ScreenComment> screenComments = new ArrayList<ScreenComment>();
-  float x1,x2;
+  float x1, x2;
+
+  SessionDatabase highscoredb;
+  Session session;
 
   PlayGame() {
     screenComments = new ArrayList<ScreenComment>();
@@ -14,15 +17,23 @@ class PlayGame {
     caveBackground = loadImage("caveBackground.png");
     x1 = 0;
     x2 = width;
+
+    highscoredb = new SessionDatabase();
+    Session newSession = new Session(0, 0, 0, "00:00", year() + "/" + month() + "/" + day(), 1, "");   
+
+    player.session = highscoredb.addSession(newSession);
   }
 
   void update()
   {
 
+    //updates important variables
     player.manager = manager;
     player.score = manager.score;
     player.update();
     manager.listener();
+    
+    //make the player faster if movement cap is higher
     if (manager.speed <= manager.speedCap) {
       manager.speed += Config.CAMERA_SPEED_UP_SPEED;
     }
@@ -44,6 +55,15 @@ class PlayGame {
     }
 
 
+    move();
+
+    hud.updateHUD(player.coinAmount, int(player.score), player.currentArmourLevel, player.shieldAmount);
+  }
+
+  /**
+  * handles movement and collision
+  */
+  void move() {
     manager.moveGroups();
     enemy.attack();
     enemy.movement();
@@ -52,8 +72,6 @@ class PlayGame {
     player.obstacle = manager.ObstacleCheckCollision(player.playerPos, player.size);
     player.tileCollision = collision; 
     manager.playerLocation(player);
-
-    hud.updateHUD(player.coinAmount, int(player.score), player.currentArmourLevel, player.shieldAmount);
   }
 
   private void drawScreenComments()

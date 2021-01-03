@@ -23,6 +23,12 @@ class TileGroup {
     powerup = group.powerup;
   }
 
+  /**
+   * @author Cody Bolleboom
+   * This function draws the groups relative to the parent position (this way it looks like it moves)
+   *
+   * @returns void
+   */
   void drawGroup() {
     for (int i = 0; i < tiles.size(); i ++ ) {
       tiles.get(i).drawTileRelative(position);
@@ -69,10 +75,14 @@ class TileGroup {
       JSONObject obstacle = chunkObstacles.getJSONObject(n);
 
       //add the tile with its variables to the tile array
-      obstacles.add(new Obstacle(obstacle.getString("sprite"),  //<>// //<>//
+      obstacles.add(new Obstacle(obstacle.getString("sprite"),  //<>//
         new PVector(obstacle.getFloat("width"), obstacle.getFloat("height")), 
         new PVector(obstacle.getFloat("x"), obstacle.getFloat("y")), 1, obstacle.getString("layer")));
     }
+
+    /**
+    * @author Antonio
+    */
 
     JSONArray chunkPowerups = chunk.getJSONArray("powerups");
 

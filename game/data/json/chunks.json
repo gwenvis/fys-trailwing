@@ -2,8 +2,18 @@
 	[	
 		{
 		"name": "lava1",
+		"available": 0,
 		"obstacles": [
-		    
+		    {"sprite": "Tiles/lava2.png", "width": 100, "height": 100, "x": 450, "y": 10, "layer": "lava"},
+			{"sprite": "Tiles/lava2.png", "width": 100, "height": 100, "x": 350, "y": 10, "layer": "lava"},
+			{"sprite": "Tiles/lava2.png", "width": 100, "height": 100, "x": 250, "y": 10, "layer": "lava"},
+			{"sprite": "Tiles/lava2.png", "width": 100, "height": 100, "x": 150, "y": 10, "layer": "lava"},
+			{"sprite": "Tiles/lava2.png", "width": 100, "height": 100, "x": 50, "y": 10, "layer": "lava"},
+			{"sprite": "Tiles/lava2.png", "width": 100, "height": 100, "x": -50, "y": 10, "layer": "lava"},
+			{"sprite": "Tiles/lava2.png", "width": 100, "height": 100, "x": -250, "y": 10, "layer": "lava"},
+			{"sprite": "Tiles/lava2.png", "width": 100, "height": 100, "x": -150, "y": 10, "layer": "lava"},
+			{"sprite": "Tiles/lava2.png", "width": 100, "height": 100, "x": -450, "y": 10, "layer": "lava"},			
+			{"sprite": "Tiles/lava2.png", "width": 100, "height": 100, "x": -350, "y": 10, "layer": "lava"},
 		],
 		"powerups": [
 			{"x": 400, "y":-100}
@@ -11,23 +21,23 @@
 		"tiles": [		
 			{"sprite": "Tiles/tile45.png", "width": 100, "height": 100, "x": 150, "y": -250, "layer": "collision"},
 			{"sprite": "Tiles/tile45.png", "width": 100, "height": 100, "x": -100, "y": -150, "layer": "collision"},
-			{"sprite": "Tiles/tile45.png", "width": 100, "height": 100, "x": -350, "y": -100, "layer": "collision"},	
-            {"sprite": "Tiles/lava2.png", "width": 100, "height": 100, "x": 450, "y": 10, "layer": "collision"},
-			{"sprite": "Tiles/lava2.png", "width": 100, "height": 100, "x": 350, "y": 10, "layer": "collision"},
-			{"sprite": "Tiles/lava2.png", "width": 100, "height": 100, "x": 250, "y": 10, "layer": "collision"},
-			{"sprite": "Tiles/lava2.png", "width": 100, "height": 100, "x": 150, "y": 10, "layer": "collision"},
-			{"sprite": "Tiles/lava2.png", "width": 100, "height": 100, "x": 50, "y": 10, "layer": "collision"},
-			{"sprite": "Tiles/lava2.png", "width": 100, "height": 100, "x": -50, "y": 10, "layer": "collision"},
-			{"sprite": "Tiles/lava2.png", "width": 100, "height": 100, "x": -250, "y": 10, "layer": "collision"},
-			{"sprite": "Tiles/lava2.png", "width": 100, "height": 100, "x": -150, "y": 10, "layer": "collision"},
-			{"sprite": "Tiles/lava2.png", "width": 100, "height": 100, "x": -450, "y": 10, "layer": "collision"},			
-			{"sprite": "Tiles/lava2.png", "width": 100, "height": 100, "x": -350, "y": 10, "layer": "collision"},
+			{"sprite": "Tiles/tile45.png", "width": 100, "height": 100, "x": -350, "y": -100, "layer": "collision"},
 		]
 		},
 		{
 		"name": "lava2",
+		"available": 0,
 		"obstacles": [
-		   
+		    {"sprite": "Tiles/lava2.png", "width": 100, "height": 100, "x": 450, "y": 10, "layer": "lava"},
+			{"sprite": "Tiles/lava2.png", "width": 100, "height": 100, "x": 350, "y": 10, "layer": "lava"},
+			{"sprite": "Tiles/lava2.png", "width": 100, "height": 100, "x": 250, "y": 10, "layer": "lava"},
+			{"sprite": "Tiles/lava2.png", "width": 100, "height": 100, "x": 150, "y": 10, "layer": "lava"},
+			{"sprite": "Tiles/lava2.png", "width": 100, "height": 100, "x": 50, "y": 10, "layer": "lava"},
+			{"sprite": "Tiles/lava2.png", "width": 100, "height": 100, "x": -50, "y": 10, "layer": "lava"},
+			{"sprite": "Tiles/lava2.png", "width": 100, "height": 100, "x": -250, "y": 10, "layer": "lava"},
+			{"sprite": "Tiles/lava2.png", "width": 100, "height": 100, "x": -150, "y": 10, "layer": "lava"},
+			{"sprite": "Tiles/lava2.png", "width": 100, "height": 100, "x": -350, "y": 10, "layer": "lava"},
+			{"sprite": "Tiles/lava2.png", "width": 100, "height": 100, "x": -450, "y": 10, "layer": "lava"},
 		],
 		"powerups": [
 			{"x": 400, "y":-100}
@@ -36,22 +46,11 @@
 			{"sprite": "Tiles/tile45.png", "width": 100, "height": 100, "x": 100, "y": -250, "layer": "collision"},
 			{"sprite": "Tiles/tile45.png", "width": 100, "height": 100, "x": 400, "y": -150, "layer": "collision"},
 			{"sprite": "Tiles/tile45.png", "width": 100, "height": 100, "x": -200, "y": -100, "layer": "collision"},	
-			{"sprite": "Tiles/lava2.png", "width": 100, "height": 100, "x": 450, "y": 10, "layer": "collision"},
-			{"sprite": "Tiles/lava2.png", "width": 100, "height": 100, "x": 350, "y": 10, "layer": "collision"},
-			{"sprite": "Tiles/lava2.png", "width": 100, "height": 100, "x": 250, "y": 10, "layer": "collision"},
-			{"sprite": "Tiles/lava2.png", "width": 100, "height": 100, "x": 150, "y": 10, "layer": "collision"},
-			{"sprite": "Tiles/lava2.png", "width": 100, "height": 100, "x": 50, "y": 10, "layer": "collision"},
-			{"sprite": "Tiles/lava2.png", "width": 100, "height": 100, "x": -50, "y": 10, "layer": "collision"},
-			{"sprite": "Tiles/lava2.png", "width": 100, "height": 100, "x": -250, "y": 10, "layer": "collision"},
-			{"sprite": "Tiles/lava2.png", "width": 100, "height": 100, "x": -150, "y": 10, "layer": "collision"},
-			{"sprite": "Tiles/lava2.png", "width": 100, "height": 100, "x": -350, "y": 10, "layer": "collision"},
-			{"sprite": "Tiles/lava2.png", "width": 100, "height": 100, "x": -450, "y": 10, "layer": "collision"},
-			
-
 		]
 		},
 		{
 		"name": "defaultInverse",
+		"available": 0,
 		"obstacles": [
 			{"sprite": "Objects/barrel.png", "width": 100, "height": 100, "x": 150, "y": -100, "layer": "obstacle"},
 			{"sprite": "Objects/barrel.png", "width": 100, "height": 100, "x": 200, "y": -195, "layer": "obstacle"},
@@ -78,6 +77,7 @@
 		},
 		{
 		"name": "defaultInverse",
+		"available": 0,
 		"obstacles": [
 			{"sprite": "Objects/barrel.png", "width": 100, "height": 100, "x": 150, "y": -100, "layer": "obstacle"},
 		],
