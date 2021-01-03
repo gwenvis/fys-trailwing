@@ -109,6 +109,7 @@ class Hiscore {
     if (titleButtons.get(1).selected == true) {
       printTable(highscoreTable);
     }
+    
   }
 
 

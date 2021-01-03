@@ -117,8 +117,9 @@ class Player {
       image(invincibleSignImage, playerPos.x, playerPos.y);
       tint(#0000AA);
     }
-    playerImage.resize((int)size.x, (int)size.y);
-    image(playerImage, playerPos.x, playerPos.y);
+    //playerImage.resize((int)size.x, (int)size.y);
+    //image(playerImage, playerPos.x, playerPos.y);
+    playerWalk.draw(playerPos.x, playerPos.y);
 
     tint(255, 255);
     if (shieldAmount != 0 && (shieldIsUpLeft||shieldIsUpRight)) {
@@ -382,7 +383,7 @@ class Player {
   }
 
   void damage() {
-    if (invincibility) {
+    if (!invincibility) {
       if (currentArmourLevel >= 9) {
         death();
       } else if (playerHit) {
