@@ -32,7 +32,7 @@ public class Animation {
   {
     int imgWidth = spriteSheetImage.width;
     int imgHeight = spriteSheetImage.height;
-    println(String.format("x: %d y: %d w: %d h: %d", imgWidth/xCells*currentImage+1*currentImage, imgHeight/yCells+1, imgWidth/xCells, imgHeight/yCells));
+    //println(String.format("x: %d y: %d w: %d h: %d", imgWidth/xCells*currentImage+1*currentImage, imgHeight/yCells+1, imgWidth/xCells, imgHeight/yCells));
     PImage spr = spriteSheetImage.get(imgWidth/xCells*currentImage+1*currentImage, 0, imgWidth/xCells, imgHeight/yCells);
    
     if(width == -1 || height == -1)

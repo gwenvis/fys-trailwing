@@ -6,7 +6,7 @@ class Hiscore {
   float backgroundX, backgroundY;
   int backgroundW, backgroundH;
   float backIconX, backIconY, backIconW, backIconH;
-  
+
   //things in scroll
   float scrollX, scrollY, scrollW, scrollH;
   int fontSizeTitles;
@@ -24,12 +24,13 @@ class Hiscore {
 
 
   //database stuff
-  Table highscoreTable;
-  Database highscoredb;
-  
-  
+  ArrayList<Session> highscoreTable;
 
-  
+  SessionDatabase highscoredb;
+
+
+
+
 
   Hiscore() {
     //Background stuff
@@ -64,12 +65,12 @@ class Hiscore {
     this.titleButtons.add(new TextButton(achievementsX, achievementsY, "Achievements", fontSizeTitles, color(0), color(255), 0));
     this.titleButtons.add(new TextButton(hiscoresX, hiscoresY, "Hi-Scores", fontSizeTitles, color(0), color(255), 1));
     this.manager = new ButtonManager(titleButtons);
-    
-    scrollFont = createFont("highscoreFont.ttf",60);
-    
-    //Database stuff    
-    highscoredb = new Database("jdbc:mysql://oege.ie.hva.nl/zeikemap?serverTimezone=UTC", false, "eikemap", "AqUSO0RutI/93vGU");
-    highscoreTable = highscoredb.runQuery("SELECT player_id, highscore, date_achieved FROM highscore ORDER BY highscore DESC LIMIT 10");
+
+    scrollFont = createFont("highscoreFont.ttf", 60);
+
+    //creates database connection and gets the best sessions
+    highscoredb = new SessionDatabase();
+    highscoreTable = highscoredb.getBestSessionsPaginated(0, 7);
   }
 
 
@@ -104,10 +105,13 @@ class Hiscore {
     for (int i = 0; i < titleButtons.size(); i++) {
       titleButtons.get(i).drawTextButton();
     }
-  
-    //if hi-score is selected, print the hi-scores. 
-    if(titleButtons.get(1).selected == true){
-    printTable(highscoreTable);
+
+    fill(0, 50);
+    rectMode(CENTER);
+    //rect(scrollX, scrollY-scrollH/2+scrollH/10*5.3, scrollW/10*6, scrollH/2, 10, 10, 10, 10);
+
+    if (titleButtons.get(1).selected == true) {
+      printTable(highscoreTable);
     }
   }
 
@@ -122,21 +126,23 @@ class Hiscore {
     return false;
   }
 
-  // prints the hi-scores on screen. has  magic numbers, because its just an example.
-  void printTable(Table table) {
+
+  /*
+  * show the best sessions on screen
+  */
+  void printTable(ArrayList<Session> table) {
     textSize(30);
     fill(0);
     textAlign(CENTER);
     text("NAME", width/2-200, 350);
     text("HIGHSCORE", width/2, 350);
-    text("DATE", width/2+200, 350);
+    text("COINS", width/2+200, 350);
 
     textSize(40);
-    for (int i = 0; i < table.getRowCount(); i++) {
-      TableRow row = table.getRow(i);
-      for (int j = 0; j < table.getColumnCount(); j++) {
-        text(row.getString(j), width/2-200 + 200 *j, 420 + 50 * i);
-      }
+    for (int i = 0; i < table.size(); i++) {
+      text(table.get(i).getPlayer(), width/2-200, 420 + 50 * i);
+      text(table.get(i).getDistance(), width/2, 420 + 50 * i);
+      text(table.get(i).getCoins(), width/2+200, 420 + 50 * i);
     }
   }
 }
