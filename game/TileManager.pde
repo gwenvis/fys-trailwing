@@ -54,19 +54,24 @@ class TileManager {
     //exit();
   }
 
-  //Moves all the tiles. (Patrick Eikema)
+  /*
+  * @author Cody
+  * move tile with the player speed
+  */
   void moveGroups() {
     for (int i = 0; i < tileGroups.size(); i++) {
       tileGroups.get(i).position.x -= speed;
     }
 
+    //add distance to score and to distance travled on this elivation
     score += speed / frameRate;
     poolDistance += speed / frameRate;
-    //println(poolDistance);
-    //println(difficultyPool.size());
   }
 
-  //Draw all the tiles. (Patrick Eikema)
+  /*
+  * @author Cody
+  * draw tiles on new position
+  */
   void drawGroups() {
     for (int i = 0; i < tileGroups.size(); i++) {
       tileGroups.get(i).drawGroup();
@@ -154,6 +159,7 @@ class TileManager {
   /**
    * @author Cody Bolleboom
    * Check if a chunk is out of frame and delete it and create a new one
+   * this will also checks if a chunk is available yet (some will be available after a certain distance)
    *
    * @return void
    */
