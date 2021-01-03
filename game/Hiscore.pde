@@ -68,10 +68,9 @@ class Hiscore {
 
     scrollFont = createFont("highscoreFont.ttf", 60);
 
-    //Database stuff
+    //creates database connection and gets the best sessions
     highscoredb = new SessionDatabase();
-    highscoreTable = highscoredb.getSessionsPaginated(0, 7);
-    print("iawhjfuioeshuifhweuishfeuihfeuis" + highscoreTable);
+    highscoreTable = highscoredb.getBestSessionsPaginated(0, 7);
   }
 
 
@@ -125,6 +124,9 @@ class Hiscore {
   }
 
 
+  /*
+  * show the best sessions on screen
+  */
   void printTable(ArrayList<Session> table) {
     textSize(30);
     fill(0);
