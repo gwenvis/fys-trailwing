@@ -16,12 +16,15 @@ LoginScreen login;
 Hiscore hiscore;
 GameOver gameOver;
 SoundFile backgroundMusicStartScreen;
-CommentsDatabase commentDatabase;
 SoundFile backgroundMusicGameOverScreen;
 HUD hud;
 ButtonLayout buttonLayout;
 MusicManager musicManager;
 Animations animations;
+
+
+CommentsDatabase commentDatabase;
+AchievementsDatabase achievementsDb;
 PlayerDatabase playerdb;
 
 void setup() {
@@ -39,13 +42,13 @@ void setup() {
   login = new LoginScreen();
   gameOver = new GameOver();
   buttonLayout = new ButtonLayout();
-  commentDatabase = new CommentsDatabase();
   musicManager = new MusicManager(this);
   PFont font = createFont("Arial", 64);
   textFont(font);
   hud = new HUD();
 
-  achievementsDb = new Database("jdbc:mysql://oege.ie.hva.nl/zboodtcd?serverTimezone=UTC", true, "boodtcd", "egRabMlz#xM$NI");
+  commentDatabase = new CommentsDatabase();
+  achievementsDb = new AchievementsDatabase();
   playerdb = new PlayerDatabase();
 }
 

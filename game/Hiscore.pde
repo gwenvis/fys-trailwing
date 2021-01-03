@@ -6,7 +6,7 @@ class Hiscore {
   float backgroundX, backgroundY;
   int backgroundW, backgroundH;
   float backIconX, backIconY, backIconW, backIconH;
-  
+
   //things in scroll
   float scrollX, scrollY, scrollW, scrollH;
   int fontSizeTitles;
@@ -25,12 +25,11 @@ class Hiscore {
 
   //database stuff
   Table highscoreTable;
-  
   Database highscoredb;
-  
-  
 
-  
+
+
+
 
   Hiscore() {
     //Background stuff
@@ -46,7 +45,7 @@ class Hiscore {
     this.backIconH = backIcon.width/10*3;
     this.backIconX = backIconW/2;
     this.backIconY = 80;
-    
+
     //Everything in the scroll
     this.scrollX = width/2;
     this.scrollY = height/2;
@@ -65,17 +64,17 @@ class Hiscore {
     this.titleButtons.add(new TextButton(achievementsX, achievementsY, "Achievements", fontSizeTitles, color(0), color(255), 0));
     this.titleButtons.add(new TextButton(hiscoresX, hiscoresY, "Hi-Scores", fontSizeTitles, color(0), color(255), 1));
     this.manager = new ButtonManager(titleButtons);
-    
-    scrollFont = createFont("highscoreFont.ttf",60);
-    
-    //Database stuff
-    
+
+    scrollFont = createFont("highscoreFont.ttf", 60);
+
+    //Database stuff    
     highscoredb = new Database("jdbc:mysql://oege.ie.hva.nl/zeikemap?serverTimezone=UTC", false, "eikemap", "AqUSO0RutI/93vGU");
     highscoreTable = highscoredb.runQuery("SELECT player_id, highscore, date_achieved FROM highscore ORDER BY highscore DESC LIMIT 10");
   }
 
 
   void screen() {
+    //draws the background and backicon
     imageMode(CENTER);
     image(background, backgroundX, backgroundY);
     image(backIcon, backIconX, backIconY, backIconW, backIconH);
@@ -91,25 +90,24 @@ class Hiscore {
     }
   }
 
+  //draws the scroll  and text inside of it.
   void scroll() {
     textFont(scrollFont);
     image(scroll, scrollX, scrollY, scrollW, scrollH);
     fill(hiscoresColor);
     fill(achievementsColor);
 
-    //manager.indexSelecterMouse();
+    //manages button selection
     manager.indexSelectedKeysHorizontal();
 
+    //draws the buttons on screen.
     for (int i = 0; i < titleButtons.size(); i++) {
       titleButtons.get(i).drawTextButton();
     }
 
-    fill(0, 50);
-    rectMode(CENTER);
-    //rect(scrollX, scrollY-scrollH/2+scrollH/10*5.3, scrollW/10*6, scrollH/2, 10, 10, 10, 10);
-    
-    if(titleButtons.get(1).selected == true){
-    printTable(highscoreTable);
+    //if hi-score is selected, print the hi-scores. 
+    if (titleButtons.get(1).selected == true) {
+      printTable(highscoreTable);
     }
   }
 
@@ -124,7 +122,7 @@ class Hiscore {
     return false;
   }
 
-
+  // prints the hi-scores on screen. has  magic numbers, because its just an example.
   void printTable(Table table) {
     textSize(30);
     fill(0);

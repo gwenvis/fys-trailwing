@@ -1,10 +1,7 @@
 /*
 Made by Patrick Eikema
- */
 
-/* 
- everything to do with the fireball(s) modified by Chantal 
- everything to do with the particlesystem created by Chantal
+ everything to do with the fireball(s)+particlesystem modified by Chantal 
  */
 
 class Enemy {
@@ -18,7 +15,7 @@ class Enemy {
   int angryTimer, angryCooldown;
   int AngryDurationTimer, attackDurationCooldown;
   int fireBallTimer, fireBallDurationCooldown, approximateShieldOffset = 15;
-  int particleSystemStartColourR, particleSystemStartColourG, particleSystemStartColourB, particleSystemEndColourR, particleSystemEndColourG, particleSystemEndColourB, fireballAmount;
+  int particleSystemStartColourR, particleSystemStartColourG, particleSystemStartColourB, particleSystemEndColourR, particleSystemEndColourG, particleSystemEndColourB, fireballAmount, fireballStartTimeCalc;
   Player player;
   boolean attack;
   float particleSystemX, particleSystemY;
@@ -38,8 +35,6 @@ class Enemy {
     //initialisation
     this.player = player;
     dragon = new SpriteAnimation("dragonSprites.png", 3, 8);
-    this.fireBall = loadImage("fireBall.png");
-
 
     //Size & pos Enemy+
     this.x = 150;
@@ -60,7 +55,6 @@ class Enemy {
     this.AngryDurationTimer = 0;
     this.attackDurationCooldown = 7000;  //  Time in ms he stays angry
     this.fireBallTimer = 0;
-    this.fireBallDurationCooldown = 3200;  //Time  it takes to shoot the fireBall WHEN angry. (fireBall duration = attackDurationCooldown - fireBallDurationCooldown)
     this.attack = false;
     this.particleSystemX = x + dragon.frameImage[0].width/5*4 /2;
 
@@ -79,8 +73,6 @@ class Enemy {
     particleSystemEndColourR = 255;
     particleSystemEndColourG = 0;
     particleSystemEndColourB = 0;
-
-    //fireballParticleSystem = new ParticleSystem(ID, particleSystemStartColourR, particleSystemStartColourG, particleSystemStartColourB, particleSystemEndColourR, particleSystemEndColourG, particleSystemEndColourB, particleSystemX, particleSystemY, false);
   }
 
   void draw() {
@@ -124,15 +116,17 @@ class Enemy {
     if (angry && millis()-fireBallTimer > fireBallDurationCooldown) {
       attack = true;
       for (int i = fireballs.size()-1; i>= 0; i--) {
-        fireBallDurationCooldown = 3200 + (i * 500);
+        fireballStartTimeCalc = i - 1;
+        if(fireballStartTimeCalc == -1){fireballStartTimeCalc = 0;}
+        fireBallDurationCooldown = Config.FIREBALL_STARTING_TIME + (fireballStartTimeCalc * 500);
         ParticleSystem fireball = fireballs.get(i);
         //particleSystemY = particleSystemsY.get(i);
         //particleSystemX = particleSystemsX.get(i);
         fireball.draw = true;
 
         //folow dragono untill shooting
-        particleSystemY = y;
-        particleSystemX = x + size/2;
+        particleSystemY = y + 100;
+        particleSystemX = x + dragon.frameImage[0].width/5*4 /2;
 
         particleSystemsY.set(i, particleSystemY);
         particleSystemsX.set(i, particleSystemX);
@@ -173,8 +167,6 @@ class Enemy {
 
   void drawAttack() {
     if (attack) {
-      //imageMode(CENTER);
-      //image(fireBall, particleSystemX, particleSystemY, fireBallW, fireBallH );
       for (int i = 0; i< fireballs.size(); i++)
       {
         ParticleSystem fireball = fireballs.get(i);
@@ -182,10 +174,6 @@ class Enemy {
         fireball.particleSystemStartY = particleSystemY;
         fireball.draw();
       }
-      /*
-      fireballParticleSystem.particleSystemStartX = particleSystemX;
-       fireballParticleSystem.particleSystemStartY = particleSystemY;
-       fireballParticleSystem.draw();*/
     }
   }
 
@@ -195,12 +183,4 @@ class Enemy {
     particleSystemsX.add(particleSystemX);
   }
 
-  /* 
-   TO DO: 
-   -Make the dragon move more smoothly
-   -Flying dragon sprites??
-   -When the dragon flies through an obstacle, destroy it.
-   -Better angry animation
-   
-   */
 }
