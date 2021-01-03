@@ -23,6 +23,9 @@ class Player {
   TileCollision tileCollision = new TileCollision();
   Obstacle obstacle = null;
   TileManager manager;
+  
+  SessionDatabase highscoredb = new SessionDatabase();
+  Session session;
 
   ArrayList<Float> armourLevels = new ArrayList<Float>();
   ArrayList<PImage> shields = new ArrayList<PImage>();
@@ -387,6 +390,10 @@ class Player {
   }
 
   void death() {
+    session.coins = coinAmount;
+    session.distance = (int)manager.score;
+
+    highscoredb.updateSession(session.getId(), session);
     gameState = "GAMEOVER";
   }
 
