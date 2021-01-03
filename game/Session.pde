@@ -23,14 +23,16 @@ public class SessionDatabase
   public Session addSession(Session session)
   {
     int id = formatDefaultList(String.format("SELECT MAX(`id`) FROM `session`")).get(0).getId() + 1;
-    print(id);
+    print("get add ID");
     
     database.updateQuery(
       String.format("INSERT INTO `session` (`id`, `coins`, `distance`, `time_played`, `created_on`, `player_id`) VALUES (%d, %d, %d, \"%s\", CURRENT_TIMESTAMP, %d);", 
       id, session.getCoins(), session.getDistance(), session.getTimePlayed(), session.getPlayerId()));
       
+      print("Add value");
+      
       Session last = formatDefaultList(String.format("SELECT * FROM `session` WHERE id = %d", id)).get(0);
-      print(last.id);
+      print("get last id");
       
       return last;
   }
