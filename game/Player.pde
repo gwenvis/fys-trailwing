@@ -191,7 +191,7 @@ class Player {
     }
     
     if (obstacle != null && obstacle.layer.equals("lava")) {
-      currentArmourLevel = 10000;
+      death();
     }
 
     if (obstacle != null && obstacle.layer.equals("coin")) {
