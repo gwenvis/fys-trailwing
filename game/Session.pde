@@ -2,6 +2,9 @@ public class SessionDatabase
 {
   Database database;
 
+  /*
+  * make connection to the database
+  */
   SessionDatabase()
   {
     database = new Database("jdbc:mysql://oege.ie.hva.nl:3306/zbottela", true, "bottela", "VKRrXbEOm#Pvqb");
@@ -19,32 +22,26 @@ public class SessionDatabase
 
   /*
    * add session
+   * get the new inset id, then create a new record and return it
    */
   public Session addSession(Session session)
   {
     int id = formatDefaultList(String.format("SELECT MAX(`id`) FROM `session`")).get(0).getId() + 1;
-    print("get add ID");
     
     database.updateQuery(
       String.format("INSERT INTO `session` (`id`, `coins`, `distance`, `time_played`, `created_on`, `player_id`) VALUES (%d, %d, %d, \"%s\", CURRENT_TIMESTAMP, %d);", 
       id, session.getCoins(), session.getDistance(), session.getTimePlayed(), session.getPlayerId()));
       
-      print("Add value");
-      
       Session last = formatDefaultList(String.format("SELECT * FROM `session` WHERE id = %d", id)).get(0);
-      print("get last id");
       
       return last;
   }
 
   /*
-   * update session
+   * update session by id and Session object
    */
   public void updateSession(int id, Session session)
   {
-    
-    print("distance: " + session.getDistance());
-    
     database.updateQuery(
       String.format("UPDATE `session` SET `coins` = %d, `distance` = %d WHERE `session`.`id` = %d;", session.getCoins(), session.getDistance(), id));
   }
@@ -60,26 +57,41 @@ public class SessionDatabase
 
   /* End CRUD */
 
+  /*
+  *  gets a limited amount of sessions (by page)
+  */
   public ArrayList<Session> getSessionsPaginated(int page, int amountPerPage) 
   {
     return formatDefaultList(String.format("SELECT `session`.*, `player`.`name` as name FROM `session` inner join `player` on `session`.`id` = `player`.id LIMIT %d, %d", page, amountPerPage));
   }
   
+  /*
+  *  gets a limited amount of the best sessions (by page)
+  */
   public ArrayList<Session> getBestSessionsPaginated(int page, int amountPerPage) 
   {
-    return formatDefaultList(String.format("SELECT * FROM `session` ORDER BY distance DESC LIMIT %d, %d", page, amountPerPage));
+    return formatDefaultList(String.format("SELECT `session`.*, `player`.`name` as name FROM `session` inner join `player` on `session`.`id` = `player`.id ORDER BY `session`.distance DESC LIMIT %d, %d", page, amountPerPage));
   }
   
+  /*
+  *  gets sessions by distance and coins
+  */
   public ArrayList<Session> getSessionsByStats(int distance, int coins) 
   {
     return formatDefaultList(String.format("SELECT * FROM `session` WHERE `distance` >= %d and coins >= %d ORDER BY distance DESC", distance, coins));
   }
 
+  /*
+  *  gets sessions by name
+  */
   public ArrayList<Session> getSessionsByUsername(String name) 
   {
     return formatDefaultList(String.format("SELECT `session`.* FROM `session` inner join player on `session`.`player_id` = `player`.`id` where `player`.`name` LIKE %s", name));
   }
 
+  /*
+  *  makes a neat ArrayList of the database response
+  */
   private ArrayList<Session> formatDefaultList(String query) {
     Table sessionTable = database.runQuery(query);
     if (sessionTable.getRowCount() == 0) return null;
@@ -114,6 +126,9 @@ public class SessionDatabase
   }
 }
 
+/**
+*  Session object used for easy storage
+*/
 public class Session
 {
   public Session(int id, int coins, int distance, String timePlayed, String createdOn, int playerId, String player)
