@@ -1,7 +1,7 @@
-//Made by Patrick Eikema
+//Made by Patrick Eikema, all comment stuff is made by Anton
 
 class GameOver {
-  color backgroundColor;
+  color backgroundColor, red, white;
   float screenTimer, screenCD;
   boolean timeSet;
   ArrayList<TextButton> backButton;
@@ -25,6 +25,8 @@ class GameOver {
     this.backButton.add(new TextButton(backButtonX, backButtonY, "Back to start", fontSizeBackButton, color(255), color(200), 1));
     this.fontSizeYouDied = 80;
     this.manager = new ButtonManager(backButton);
+    this.red = color(255,0,0);
+    this.white = color(255);
   }
 
   void draw() {
@@ -32,10 +34,10 @@ class GameOver {
     background(backgroundColor);
     textAlign(CENTER);
     textSize(fontSizeYouDied);
-    fill(255, 0, 0);
+    fill(red);
     text("Sebastian died...", width/2, height/2);
 
-    fill(255);
+    fill(white);
     textAlign(LEFT);
     textSize(commentFontSize);
     text("Press 'X' to add a death reaction...", textWidth('_'), height - fontSizeYouDied+fontSizeYouDied/8);
@@ -43,20 +45,22 @@ class GameOver {
     backButton.get(0).drawTextButton();
   }
 
+
   void update()
   {
     if(drawCommentOverlay) return;
-
+    
+    //sets timer to eventually reset to start.
     if (!timeSet) {
       screenTimer = millis();
       timeSet = true;
     }
-
+    //if timer is done, restart the game.
     if (millis() - screenTimer > screenCD) {
       setup();
-      //draw();
     }
-
+    
+    //if X is pressed, give comment overlay.
     if(Input.keyPressed('x'))
     {
       drawCommentOverlay = true;
@@ -64,7 +68,6 @@ class GameOver {
 
     if (backButton.get(0).selected == true) {
       setup();
-      //draw();
     }
   }
 

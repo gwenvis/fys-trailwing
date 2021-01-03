@@ -1,5 +1,5 @@
 /*
-Made by Patrick Eikema
+Made by Patrick Eikema, somewhat changed by Chantal Boodt
  */
 
 class Enemy {
@@ -93,8 +93,6 @@ class Enemy {
 
   void attack() {
 
-
-
     // timer that changes angry to true and draws the fireBall when angry. 
     if (millis()-angryTimer > angryCooldown  ) {
       angry = true;
@@ -151,12 +149,4 @@ class Enemy {
     }
   }
 
-  /* 
-   TO DO: 
-   -Make the dragon move more smoothly
-   -Flying dragon sprites??
-   -When the dragon flies through an obstacle, destroy it.
-   -Better angry animation
-   
-   */
 }

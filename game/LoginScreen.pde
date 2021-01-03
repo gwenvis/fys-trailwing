@@ -1,10 +1,13 @@
+//Made by Patrick, modified by Anton
+
 class LoginScreen implements IKeyboardCallback {
   PImage background;
-  float loginTextX, loginTextY;
-  float loginRectX, loginRectY, loginRectW, loginRectH;
+  float loginTextX, loginTextY, nickNameHintX, nickNameHintY, nickNameTextX, nickNameTextY, pressEnterTextX, pressEnterTextY;
+  float loginRectX, loginRectY, loginRectW, loginRectH, loginStrokeWeight, loginStroke;
   int loginSize;
   color black;
   color white;
+  color grey;
   int cornerRadius;
   String nickName;
   String nickNameHint;
@@ -25,6 +28,14 @@ class LoginScreen implements IKeyboardCallback {
     this.loginRectY = height/3+100;
     this.loginRectW = width/4;
     this.loginRectH = 100;
+    this.nickNameHintX = loginRectX-loginRectW/2+20;
+    this.nickNameHintY = loginRectY+5;
+    this.nickNameTextX = loginRectX-loginRectW/2+20;
+    this.nickNameTextY = loginRectY+5;
+    this.pressEnterTextX = loginRectX-110;
+    this.pressEnterTextY = loginRectY + loginRectH*1.2;
+    this.loginStrokeWeight = 4;
+    this.loginStroke = 150;
     this.loginSize = 50;
     this.cornerRadius = 3;
     this.nickName = "";
@@ -40,11 +51,13 @@ class LoginScreen implements IKeyboardCallback {
     //colors
     black = color(10);
     white = color(#FAFAFA);
+    grey = color(150);
    
     keyboardHud = new KeyboardHUD(this, new PVector(width/2-150, height - 300), 10);
     keyboardHud.position.x = width/2 - keyboardHud.getWidth() / 2;
   }
-
+  
+  //writes nickname to db
   public void onSubmit(String submittedString)
   {
     if (nickName != "" && nickName != "|")
@@ -74,12 +87,12 @@ class LoginScreen implements IKeyboardCallback {
     keyboardHud.update();
     keyboardHud.draw();
 
-    //NicknameRect
+    //textBox
     rectMode(CENTER);
     fill(white);
     if (rectSelected) {
-      strokeWeight(4);
-      stroke(150);
+      strokeWeight(loginStrokeWeight);
+      stroke(loginStroke);
     } else {
       strokeWeight(0);
     }
@@ -88,18 +101,19 @@ class LoginScreen implements IKeyboardCallback {
     textSize(nickNameFontSize);
     textAlign(CORNER);
 
+    // Makes a flashing '|' when textbox is selected, and if not selected gives a hint. also checks if theres a typed nickname and tells how to continue
     if (nickName.length() == 0) {
       if (nickNameHint == "|") {
-        fill(0);
+        fill(black);
       } else {
-        fill(150);
+        fill(grey);
       }
-      text(nickNameHint, loginRectX-loginRectW/2+20, loginRectY+5);
+      text(nickNameHint, nickNameHintX,nickNameHintY);
     } else {
-      fill(0);
-      text(nickName, loginRectX-loginRectW/2+20, loginRectY+5);
-      fill(150);
-      text("Press enter to continue.", loginRectX-110, loginRectY + loginRectH*1.2);
+      fill(black);
+      text(nickName, nickNameTextX,nickNameTextY);
+      fill(grey);
+      text("Press 'z' on empty square to continue.", pressEnterTextX,pressEnterTextY );
     }
 
 

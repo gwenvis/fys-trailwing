@@ -25,7 +25,6 @@ class Hiscore {
 
   //database stuff
   Table highscoreTable;
-  
   Database highscoredb;
   
   
@@ -68,14 +67,14 @@ class Hiscore {
     
     scrollFont = createFont("highscoreFont.ttf",60);
     
-    //Database stuff
-    
+    //Database stuff    
     highscoredb = new Database("jdbc:mysql://oege.ie.hva.nl/zeikemap?serverTimezone=UTC", false, "eikemap", "AqUSO0RutI/93vGU");
     highscoreTable = highscoredb.runQuery("SELECT player_id, highscore, date_achieved FROM highscore ORDER BY highscore DESC LIMIT 10");
   }
 
 
   void screen() {
+    //draws the background and backicon
     imageMode(CENTER);
     image(background, backgroundX, backgroundY);
     image(backIcon, backIconX, backIconY, backIconW, backIconH);
@@ -91,23 +90,22 @@ class Hiscore {
     }
   }
 
+  //draws the scroll  and text inside of it.
   void scroll() {
     textFont(scrollFont);
     image(scroll, scrollX, scrollY, scrollW, scrollH);
     fill(hiscoresColor);
     fill(achievementsColor);
 
-    //manager.indexSelecterMouse();
+    //manages button selection
     manager.indexSelectedKeysHorizontal();
 
+    //draws the buttons on screen.
     for (int i = 0; i < titleButtons.size(); i++) {
       titleButtons.get(i).drawTextButton();
     }
-
-    fill(0, 50);
-    rectMode(CENTER);
-    //rect(scrollX, scrollY-scrollH/2+scrollH/10*5.3, scrollW/10*6, scrollH/2, 10, 10, 10, 10);
-    
+  
+    //if hi-score is selected, print the hi-scores. 
     if(titleButtons.get(1).selected == true){
     printTable(highscoreTable);
     }
@@ -124,7 +122,7 @@ class Hiscore {
     return false;
   }
 
-
+  // prints the hi-scores on screen. has  magic numbers, because its just an example.
   void printTable(Table table) {
     textSize(30);
     fill(0);
