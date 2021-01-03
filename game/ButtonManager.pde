@@ -1,3 +1,11 @@
+/* 
+Made by Patrick Eikema
+
+
+This class needs an array list of Buttons.
+It handles the selection of buttons. 
+*/ 
+
 class ButtonManager {
   ArrayList<TextButton> buttons;
   int index, indexMax;
@@ -8,7 +16,7 @@ class ButtonManager {
     this.indexMax = buttons.size()-1;
   }
 
-
+  // if the left mouse button is clicked on any of the buttons, select them.
   void indexSelecterMouse() {
     for (int i = 0; i < buttons.size(); i++) {
       if (mouseX > buttons.get(i).x-buttons.get(i).w/2 && mouseX < buttons.get(i).x + buttons.get(i).w/2 && mouseY > buttons.get(i).y-buttons.get(i).h/2 && mouseY < buttons.get(i).y + buttons.get(i).h/2 && Input.mouseButtonClicked(LEFT)) {
@@ -23,7 +31,7 @@ class ButtonManager {
   }
 
 
-
+  // handles selection with top and down buttons on keyboard. 
   void indexSelecterKeysVertical() {
     if ((Input.keyClicked('s')||Input.keyCodeClicked(DOWN)) && index < indexMax) {
       index += 1;
@@ -41,7 +49,7 @@ class ButtonManager {
     }
   }
 
-
+  // handles selection with left and right buttons on keyboard.
   void indexSelectedKeysHorizontal() {
     if (Input.keyCodeClicked(LEFT) && index < indexMax) {
       index += 1;

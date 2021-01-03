@@ -46,7 +46,7 @@ class Hiscore {
     this.backIconH = backIcon.width/10*3;
     this.backIconX = backIconW/2;
     this.backIconY = 80;
-
+    
     //Everything in the scroll
     this.scrollX = width/2;
     this.scrollY = height/2;
@@ -75,6 +75,7 @@ class Hiscore {
 
 
   void screen() {
+    //draws the background and backicon
     imageMode(CENTER);
     image(background, backgroundX, backgroundY);
     image(backIcon, backIconX, backIconY, backIconW, backIconH);
@@ -90,15 +91,17 @@ class Hiscore {
     }
   }
 
+  //draws the scroll  and text inside of it.
   void scroll() {
     textFont(scrollFont);
     image(scroll, scrollX, scrollY, scrollW, scrollH);
     fill(hiscoresColor);
     fill(achievementsColor);
 
-    //manager.indexSelecterMouse();
+    //manages button selection
     manager.indexSelectedKeysHorizontal();
 
+    //draws the buttons on screen.
     for (int i = 0; i < titleButtons.size(); i++) {
       titleButtons.get(i).drawTextButton();
     }
