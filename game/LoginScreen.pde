@@ -63,6 +63,7 @@ class LoginScreen implements IKeyboardCallback {
     if (nickName != "" && nickName != "|")
     {
       playerdb.login(nickName);
+      play.createSession();
       gameState = "START";
     }
   }
