@@ -14,6 +14,7 @@ class Hiscore {
   float hiscoresY;
   float achievementsX;
   float achievementsY;
+  boolean achieved;
   boolean hiscoresSelected;
   boolean achievementsSelected;
   color hiscoresColor; 
@@ -25,12 +26,13 @@ class Hiscore {
 
   //database stuff
   ArrayList<Session> highscoreTable;
+  Table achievementsTable;
 
   SessionDatabase highscoredb;
 
+  //
 
 
-  
 
   Hiscore() {
     //Background stuff
@@ -46,7 +48,7 @@ class Hiscore {
     this.backIconH = backIcon.width/10*3;
     this.backIconX = backIconW/2;
     this.backIconY = 80;
-    
+
     //Everything in the scroll
     this.scrollX = width/2;
     this.scrollY = height/2;
@@ -71,6 +73,16 @@ class Hiscore {
     //creates database connection and gets the best sessions
     highscoredb = new SessionDatabase();
     highscoreTable = highscoredb.getBestSessionsPaginated(0, 7);
+
+    achieved = true;
+    //
+
+    //printAchievementTable(achievementsTable);
+  }
+
+  void updateAchievement() {
+    achievementsDb.achievementCheck(0, 0, 0, true);
+    achievementsTable = achievementsDb.readPlayerAchievement();
   }
 
 
@@ -79,6 +91,8 @@ class Hiscore {
     imageMode(CENTER);
     image(background, backgroundX, backgroundY);
     image(backIcon, backIconX, backIconY, backIconW, backIconH);
+
+
 
     scroll();
 
@@ -108,10 +122,18 @@ class Hiscore {
 
     fill(0, 50);
     rectMode(CENTER);
-    //rect(scrollX, scrollY-scrollH/2+scrollH/10*5.3, scrollW/10*6, scrollH/2, 10, 10, 10, 10);
 
     if (titleButtons.get(1).selected == true) {
       printTable(highscoreTable);
+      achieved = true;
+    }
+
+    if (titleButtons.get(0).selected == true) {
+      if (achieved) {
+        achieved = false;
+      }
+
+      printAchievementTable();
     }
   }
 
@@ -129,20 +151,47 @@ class Hiscore {
 
   /*
   * show the best sessions on screen
-  */
+   */
   void printTable(ArrayList<Session> table) {
     textSize(30);
     fill(0);
     textAlign(CENTER);
+
     text("NAME", width/2-200, 350);
     text("HIGHSCORE", width/2, 350);
     text("COINS", width/2+200, 350);
+    text("COINS", width/2+200, 350);
+
 
     textSize(40);
     for (int i = 0; i < table.size(); i++) {
       text(table.get(i).getPlayer(), width/2-200, 420 + 50 * i);
       text(table.get(i).getDistance(), width/2, 420 + 50 * i);
       text(table.get(i).getCoins(), width/2+200, 420 + 50 * i);
+    }
+  }
+
+  void printAchievementTable() {    
+    textSize(30);
+    fill(0);
+    textAlign(CENTER);
+
+    //achievementsDb.achievementCheck(501, 101, 2, false);
+    //achievementsTable = achievementsDb.readPlayerAchievement();
+
+    text("NAME "+ playerdb.nickName, width/2, 350);
+
+    textAlign(LEFT);
+    text("ACHIEVEMENT", width/2-245, 400);
+    text("DATE", width/2+100, 400);
+
+
+    for (int i =0; i< achievementsTable.getRowCount(); i++) {
+      TableRow row = achievementsTable.getRow(i);  
+      for (int j = 0; j<row.getColumnCount(); j++) {
+        //print(row.getString(j));
+        text(row.getString(j), width/2-245 +(350 *j), 450 + (50 *i));
+      }
     }
   }
 }

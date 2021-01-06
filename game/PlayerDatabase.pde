@@ -13,8 +13,7 @@ class PlayerDatabase {
       String date = String.valueOf(year())+"-"+String.valueOf(month()+"-"+String.valueOf(day()));
       database.updateQuery(String.format("INSERT INTO player(name, created_on) VALUES('%s','%s')", nickName, date));
     }
-      loadPlayer(nickName);
-    
+    loadPlayer(nickName);
   }
 
   boolean doesPlayerExist(String nickName) {
@@ -28,8 +27,6 @@ class PlayerDatabase {
     this.nickName = nickName;
     String query = String.format("SELECT id FROM player WHERE name = '%s'", nickName);
     Table output = database.runQuery(query);
-    id = output.getInt(0,0);
-    
-    println(nickName + " " + id);
+    id = output.getInt(0, 0);
   }
 }

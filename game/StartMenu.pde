@@ -138,7 +138,8 @@ class StartMenu {
           case 0:
             gameState = "BUTTONLAYOUT";
             break;
-          case 1:
+          case 1:          
+            hiscore.updateAchievement();
             gameState = "HISCORE";
             break;
           case 2:

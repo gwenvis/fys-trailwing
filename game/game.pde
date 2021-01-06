@@ -28,6 +28,10 @@ AchievementsDatabase achievementsDb;
 PlayerDatabase playerdb;
 
 void setup() {
+  commentDatabase = new CommentsDatabase();
+  playerdb = new PlayerDatabase();
+  achievementsDb = new AchievementsDatabase();
+
   gameState = "LOGIN";
   animations = new Animations();
   background(255);
@@ -46,13 +50,9 @@ void setup() {
   PFont font = createFont("Arial", 64);
   textFont(font);
   hud = new HUD();
-  
-  /*SessionDatabase session = new SessionDatabase();
-  print(session.getSessions());*/
 
-  commentDatabase = new CommentsDatabase();
-  achievementsDb = new AchievementsDatabase();
-  playerdb = new PlayerDatabase();
+  /*SessionDatabase session = new SessionDatabase();
+   print(session.getSessions());*/
 }
 
 void draw()
@@ -66,7 +66,7 @@ void keyPressed() {
   //send pressed key to input class
 
   Input.keyPressed(key, CODED, keyCode);
-  if(key == ESC)
+  if (key == ESC)
     key = 0;
 }
 
@@ -105,7 +105,7 @@ void gameStates() {
     gameOver.update();
     gameOver.draw();
 
-    if(gameOver.drawCommentOverlay)
+    if (gameOver.drawCommentOverlay)
     {
       gameOver.drawCommentOverlay();
     }

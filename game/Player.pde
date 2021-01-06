@@ -317,6 +317,7 @@ class Player {
     }
 
     if (Input.keyPressed('i')) {
+      coinsTotal = 101;
     }
   }  
 
@@ -418,7 +419,7 @@ class Player {
     session.distance = (int)manager.score;
 
     highscoredb.updateSession(session.getId(), session);
-    coinsTotal = 501 + (coinMultiplyer * 10) + coinAmount;
+    coinsTotal = (coinMultiplyer * 10) + coinAmount;
     achievementsDb.achievementCheck(int(manager.score), coinsTotal, manager.chunkpool, fireballHit);
     gameState = "GAMEOVER";
   }
