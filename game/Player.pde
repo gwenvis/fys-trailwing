@@ -1,71 +1,159 @@
-/* Made by Chantal Boodt */
+/* 
+ * @author Chantal Boodt 
+ */
 
 class Player {
-  int shieldDurability, shieldAmount, hudArmourlvl, coinAmount, currentShield, fireball, coinMultiplyer, coinsTotal;
-  private int currentArmourLevel, speedUpTimer, speedUpCoolDown, armourLoss;
-  private PVector playerPos, shieldPos;
-  private float playerSpeed, jumpPower, jumpGravity, playerJump, gravityPull, currentArmourSpeedMultiplier, playerVelocity;
-  boolean jump, barrierLeft, barrierRight, shieldIsUpLeft, shieldIsUpRight, shieldLeft, shieldRight, timerSet, shieldHit, playerHit, landing, running, fireballHit;
-  boolean jumpBoost = false;
-  boolean invincibility = false;
-  float currentPowerupTimer = 0, score;
-  PImage playerImage, shieldLeftBlueImage, shieldRightBlueImage, shieldLeftGreenImage, shieldRightGreenImage, shieldLeftRedImage, shieldRightRedImage, invincibleSignImage;
-  PVector size = Config.PLAYER_SIZE;
-  private Animation playerWalk;
+  //Used in Enemy class
+  protected boolean shieldIsUpLeft;
+  protected int fireball;
+  protected PVector shieldPos;
+
+  //Used in playGame  
+  Obstacle obstacle = null;
+  public float currentArmourSpeedMultiplier;
+  public float playerSpeed;
+
+  //Used in AchievementsDatabase class
+  public boolean fireballHit;
+  public int coinsTotal;
+
+  //Used in playGame and HUD
+  public int coinAmount;
+  public int shieldAmount; 
+  public int hudArmourlvl, currentArmourLevel;
+
+  //Used in playGame, HUD and AchievementsDatabase
+  public float score;
+
+  //Used in Enemy, playGame and TileManager
+  public PVector playerPos;
+  public PVector size = Config.PLAYER_SIZE;
+
+  //Only used in Player class  
+  private boolean barrierLeft, barrierRight;
+  private boolean shieldIsUpRight, shieldLeft, shieldRight, shieldHit;
+  private boolean timerSet;
+  private boolean playerHit;
+  private boolean jump, landing, running;
+  private boolean jumpBoost = false;
+  private boolean invincibility = false;
+
+  private int shieldDurability, maxShieldAmount, currentShield;
+  private int maxArmourLevel;
+  private int maxCoinAmount, coinMultiplyer;
+  private int screenCalcPercentage, screenCalcPercentageLeft, screenCalcPercentageRight;
+  private int zero, two, three;
+  private int speedUpTimer, speedUpCoolDown;
+
+  private float playerVelocity, speedUp;
+  private float jumpPower, jumpGravity, playerJump, gravityPull; 
+
+  private float currentPowerupTimer = zero;
+  private PImage playerImage;
+  private PImage invincibleSignImage;
+  private PImage shieldLeftBlueImage, shieldLeftGreenImage, shieldLeftRedImage;
+  private PImage shieldRightBlueImage, shieldRightGreenImage, shieldRightRedImage;
+
 
   //particlesystem required variables
-  String ID = "RunDust", hitID = "Hit";
-  int particleSystemStartColourR, particleSystemStartColourG, particleSystemStartColourB, particleSystemEndColourR, particleSystemEndColourG, particleSystemEndColourB, estimatedParticleHeight = 10;
-  int hitStartColourR, hitStartColourG, hitStartColourB, hitEndColourR, hitEndColourG, hitEndColourB, approximateShieldOffset = 15;
-  float particleSystemX, particleSystemY, hitX, hitY;
-  boolean ToRight = true, particlePresent, hitParticlePresent, hitParticleHitShield, hitParticleHitPlayer, onGround, barrel;
-  ParticleSystem dust;
-  ParticleSystem hitObstacle;
+  private boolean ToRight = true;
+  private boolean particlePresent, hitParticlePresent;
+  private boolean hitParticleHitShield, hitParticleHitPlayer;
+  private boolean onGround, barrel;
 
-  TileCollision tileCollision = new TileCollision();
-  Obstacle obstacle = null;
-  TileManager manager;
-  
-  SessionDatabase highscoredb = new SessionDatabase();
-  Session session;
+  private int white;
+  private int particleSystemStartColourR, particleSystemStartColourG, particleSystemStartColourB;
+  private int particleSystemEndColourR, particleSystemEndColourG, particleSystemEndColourB; 
+  private int estimatedParticleHeight, approximateShieldOffset;
+  private int hitStartColourR, hitStartColourG, hitStartColourB;
+  private int hitEndColourR, hitEndColourG, hitEndColourB;
 
+  private float particleSystemX, particleSystemY, hitX, hitY;
+
+  private String ID = "RunDust", hitID = "Hit";
+
+  private ParticleSystem dust;
+  private ParticleSystem hitObstacle;
+
+  //Arraylists
   ArrayList<Float> armourLevels = new ArrayList<Float>();
   ArrayList<PImage> shields = new ArrayList<PImage>();
 
+  /* 
+   * @author Antonio Bottelier 
+   */
+  private Animation playerWalk;
+
+  /* 
+   * @author Cody Bolleboom 
+   */
+  TileCollision tileCollision = new TileCollision();
+  TileManager manager;
+
+  SessionDatabase highscoredb = new SessionDatabase();
+  Session session;
+
+  /* 
+   * Creates Player and its functionality
+   */
   Player(float x, float y) {
-    fireball = 0;
-    speedUpTimer = 0;
-    speedUpCoolDown = 3000;
+    //Used numbers
+    zero = Config.ZERO;
+    two = Config.DIVIDE_IN_HALF;
+    three = Config.HIT_SHIELD_OFFSET;
+    white = Config.COLOUR_WHITE;
+
+    //Fireball amount
+    fireball = zero;
+
+    //Everything used for timers
+    speedUpTimer = zero;
+    speedUpCoolDown = Config.SPEED_UP_COOLDOWN;
     timerSet = false;
 
-    playerPos = new PVector(0, 0);
+    //Used for calculating area a player can move in
+    screenCalcPercentage = Config.SCREEN_CALC;
+    screenCalcPercentageLeft = Config.SCREEN_CALC_LEFT;
+    screenCalcPercentageRight = Config.SCREEN_CALC_RIGHT;
+
+    //Player
+    playerPos = new PVector(zero, zero);
     playerPos.x = x;
     playerPos.y = y;
-    playerJump = 0;
-    gravityPull = 0;
-    coinAmount = 0;
-    currentShield = 0;
-    shieldPos = new PVector(0, 0);
-    shieldPos.x = 0;
-    shieldPos.y = 0;
-    shieldAmount = 2;
-    shieldDurability = 3;
-    coinMultiplyer = 0;
-    playerWalk = animations.PLAYER_WALK;
+    playerJump = zero;   
 
-    shieldIsUpLeft=false;
-    shieldIsUpRight=false;
+    playerSpeed = Config.PLAYER_SPEED;
+    speedUp = Config.PLAYER_SPEED_UP;
+    gravityPull = zero;
+
+    coinMultiplyer = zero;
+    playerWalk = animations.PLAYER_WALK;    
 
     jumpPower = Config.PLAYER_JUMP_POWER;
     jumpGravity = Config.PLAYER_JUMP_GRAVITY;
-    playerSpeed = Config.PLAYER_SPEED;
 
     jump=false;
     barrierLeft=false;
     barrierRight=false;
-    invincibleSignImage = loadImage("Invincibility_sign.png");
     playerImage = loadImage("new_player.png");
     playerImage.resize((int)size.x, (int)size.y);
+
+    //Current coin amount and maximum amount
+    coinAmount = zero;
+    maxCoinAmount = Config.MAX_COIN_AMOUNT;
+
+    //Everything used for the shield  
+    shieldPos = new PVector(zero, zero);
+    shieldPos.x = zero;
+    shieldPos.y = zero;
+
+    currentShield = zero;
+    shieldIsUpLeft = false;
+    shieldIsUpRight = false;
+
+    maxShieldAmount = Config.MAX_SHIELD_AMOUNT;
+    shieldAmount = Config.SHIELD_START_AMOUNT;
+    shieldDurability = Config.SHIELD_START_DURABILITY;
 
     shieldLeftBlueImage = loadImage("ShieldLeftBlue.png");
     shieldRightBlueImage = loadImage("ShieldRightBlue.png");
@@ -75,60 +163,73 @@ class Player {
     shieldRightRedImage = loadImage("ShieldRightRed.png");
     shields();
 
-    armourLoss = 4;
-    currentArmourLevel = 0;
-    hudArmourlvl = 9 - currentArmourLevel;
-
+    //Everything used for the armour
+    currentArmourLevel = zero;
+    maxArmourLevel = Config.MAX_ARMOUR_LEVEL;
+    hudArmourlvl = maxArmourLevel - currentArmourLevel;
     armourLevelsList();
     currentArmourSpeedMultiplier = armourLevels.get(currentArmourLevel);
 
+    //Power-up invincibility
+    invincibility = false;
+    invincibleSignImage = loadImage("Invincibility_sign.png");
+
     //particlesystem dust
     ID = "RunDust";
-    hitID = "Hit";
     ToRight = true;
 
-    particleSystemStartColourR = 255;
-    particleSystemStartColourG = 255;
-    particleSystemStartColourB = 255;
+    estimatedParticleHeight = Config.ESTIMATED_PARTICLE_HEIGHT;
+    approximateShieldOffset = Config.ESTIMATED_DISTANCE_SHIELD_PARTICLE;
 
-    particleSystemEndColourR = 255;
-    particleSystemEndColourG = 255;
-    particleSystemEndColourB = 255;
+    particleSystemStartColourR = white;
+    particleSystemStartColourG = white;
+    particleSystemStartColourB = white;
 
-    particleSystemX = playerPos.x - (size.x / 2);
-    particleSystemY = playerPos.y + (size.x / 2);
+    particleSystemEndColourR = white;
+    particleSystemEndColourG = white;
+    particleSystemEndColourB = white;
 
-    hitStartColourR = 102;
-    hitStartColourG = 51;
-    hitStartColourB = 0;
-
-    hitEndColourR = 153;
-    hitEndColourG = 76;
-    hitEndColourB = 0;
-
-    hitX = playerPos.x + (size.x / 2);
-    hitY = playerPos.y;
+    particleSystemX = playerPos.x - (size.x / Config.POS_CALC);
+    particleSystemY = playerPos.y + (size.x / Config.POS_CALC);
 
     dust = new ParticleSystem(ID, particleSystemStartColourR, particleSystemStartColourG, particleSystemStartColourB, particleSystemEndColourR, particleSystemEndColourG, particleSystemEndColourB, particleSystemX, particleSystemY, false);
+
+    //particlesystem hit
+    hitID = "Hit";
+    hitStartColourR = Config.HIT_START_COLOUR_R;
+    hitStartColourG = Config.HIT_START_COLOUR_G;
+    hitStartColourB = Config.HIT_START_COLOUR_B;
+
+    hitEndColourR = Config.HIT_END_COLOUR_R;
+    hitEndColourG = Config.HIT_END_COLOUR_G;
+    hitEndColourB = Config.HIT_END_COLOUR_B;
+
+    hitX = playerPos.x + (size.x / Config.POS_CALC);
+    hitY = playerPos.y;
+
     hitObstacle = new ParticleSystem(hitID, hitStartColourR, hitStartColourG, hitStartColourB, hitEndColourR, hitEndColourG, hitEndColourB, hitX, hitY, ToRight);
   }
 
+  /* 
+   * Draws player, invincibility sign, shield and particlesystem
+   */
   void draw() {
     imageMode(CENTER);
 
+    //Checks if player is invincible or not
     if (invincibility) {
       image(invincibleSignImage, playerPos.x, playerPos.y);
       tint(#0000AA);
     }
-    //playerImage.resize((int)size.x, (int)size.y);
-    //image(playerImage, playerPos.x, playerPos.y);
     playerWalk.draw(playerPos.x, playerPos.y);
 
-    tint(255, 255);
-    if (shieldAmount != 0 && (shieldIsUpLeft||shieldIsUpRight)) {
+    tint(white, white);
+    //Checks if shield is currently being used
+    if (shieldAmount != zero && (shieldIsUpLeft||shieldIsUpRight)) {
       image(shields.get(currentShield), shieldPos.x, shieldPos.y);
     }
 
+    //Checks if player is running or landing
     if (landing || onGround || particlePresent) {
       if (landing) {
         dust.particleID = "LandDust";
@@ -136,10 +237,13 @@ class Player {
         dust.particleID = "RunDust";
       } else {
       }
+      //draw particlesystem
       dust.draw();
     }
 
+    //Checks if player is hit by a barrel or fireball
     if ((barrel && (hitParticleHitPlayer || hitParticleHitShield)) || hitParticlePresent ) {
+      //draw particlesystem
       hitObstacle.draw();
       hitParticleHitPlayer = false;
       hitParticleHitShield = false;
@@ -147,8 +251,11 @@ class Player {
     }
   }
 
+  /* 
+   * Updates movements, timers, 
+   */
   void update() {
-
+    //Checks if particlesystem is empty
     if (dust.particles.isEmpty()) {
       particlePresent = false;
     }
@@ -156,81 +263,96 @@ class Player {
       hitParticlePresent = false;
     }
 
+    //Checks if timer has ended and resets it
     if (!timerSet) {
       speedUpTimer = millis(); 
       timerSet = true;
     }
 
+    //Timer has not ended calculate playerspeed
     if (millis() - speedUpTimer > speedUpCoolDown) {
-      playerSpeed = playerSpeed * .8f;
+      playerSpeed = playerSpeed * speedUp;
       timerSet = false;
     }
 
-    //cutscene? -cartoon vallen
-    if (playerPos.y >= height - (Config.PLAYER_SIZE.y/2)) {
+    //player position resets when player falls in a hole
+    if (playerPos.y >= height - (size.y/two)) {
       fallPositionChange();
       fireball++;
     }
 
+    //Player not on tiles and jumping up
     if (tileCollision.direction.y != -1) {
       gravityPull++;
-
       onGround = false;
       dust.draw = false;
     }
 
+    //Player jumps into floating tile
     if (tileCollision.direction.y == 1) {
       jumpBoost = false;
       gravityPull = 55;
     }
-    if (tileCollision.direction.y == Config.DOWN && gravityPull != 0) {
+
+    //Player running on the ground
+    if (tileCollision.direction.y == Config.DOWN && gravityPull != zero) {
       playerPos.y = tileCollision.position.y;
 
       particlePresent = true;
       onGround = true;
       dust.draw = true;
 
-      gravityPull = 0;
+      gravityPull = zero;
       jump = false;
     } else if (jump && tileCollision.direction.y != Config.UP) {
+      //Player jumps, particlesystem disabled
       jump();
 
       dust.draw = false;
     }
 
-    if (tileCollision.direction.y != Config.DOWN && gravityPull == 0) {
-      playerPos.sub(tileCollision.direction.x * manager.speed, 0);
+    if (tileCollision.direction.y != Config.DOWN && gravityPull == zero) {
+      //Made by Cody
+      playerPos.sub(tileCollision.direction.x * manager.speed, zero);
     }
-    
+
+    //Player falls into lava
     if (obstacle != null && obstacle.layer.equals("lava")) {
+      //Made by Cody
       currentArmourLevel = 10000;
     }
 
+    //Player picks up a coin
     if (obstacle != null && obstacle.layer.equals("coin")) {
       coinAmount++;
       obstacle = null;
     }
 
+    //Player hits an obstacle
     if (obstacle != null && obstacle.layer.equals("obstacle")) {
       hitParticlePresent = true;
 
       hitObstacle.draw = true;
 
+      //Checks if the shield is used on the right side where the obstacles are
       if (shieldIsUpRight) {
+        //Shield is being used
         hitParticleHitShield = true;
         shieldHit = true;
         shieldHit();
       } else {
+        //No shield, player is hit
         hitParticleHitPlayer = true;
         playerHit = true;
         if (playerHit) {
           damage();
         }        
-        if (playerPos.y >= height - (Config.CHUNK_BOTTOM_OFFSET+(Config.PLAYER_SIZE.y/2))) {
+        if (playerPos.y >= height - (Config.CHUNK_BOTTOM_OFFSET+(size.y/two))) {
+          //Player fals into a hole
         } else {
           if (!invincibility) {
+            //If player is not invincible the player or its armour gets damaged
             currentArmourLevel += obstacle.damage;
-            size.x -= obstacle.damage * armourLoss;
             currentArmourSpeedMultiplier = armourLevels.get(currentArmourLevel > armourLevels.size() - 1 ? armourLevels.size() - 1 : currentArmourLevel);
           }
         }
@@ -238,108 +360,135 @@ class Player {
       obstacle = null;
     }
 
+    //Ends duration of the power-up
     currentPowerupTimer--;
-    if (currentPowerupTimer <= 0) {
+    if (currentPowerupTimer <= zero) {
       jumpBoost = false;
       invincibility = false;
     }
 
+    //Checks barrier on area player can move in
     barrierLeft = playerBarrierLeft();
     barrierRight = playerBarrierRight();
 
-    hudArmourlvl = 9 - currentArmourLevel;
-    score = manager.score + (10 * coinMultiplyer);
+    //Update amount of armour player has left, score
+    hudArmourlvl = maxArmourLevel - currentArmourLevel;
+    score = manager.score + (maxCoinAmount * coinMultiplyer);
+
+    //Update playerposition
     playerPos.y += gravityPull * jumpGravity;
 
+    //Checks which way the player is running and adjusts the placement of the particlesystem  
     if (!dust.toRight) {
-      dust.particleSystemStartX = playerPos.x - (size.x / 2);
+      dust.particleSystemStartX = playerPos.x - (size.x / two);
     } else {
-      dust.particleSystemStartX = playerPos.x + (size.x / 2);
+      dust.particleSystemStartX = playerPos.x + (size.x / two);
     }
-    dust.particleSystemStartY = playerPos.y + (size.y / 2) - estimatedParticleHeight;
+    dust.particleSystemStartY = playerPos.y + (size.y / two) - estimatedParticleHeight;
 
+    //Checks if a particle hit the shield and gives coordinates to particlesystem hit
     if (hitParticleHitShield) {
-      hitObstacle.particleSystemStartX = shieldPos.x + shieldLeftBlueImage.width/2 + approximateShieldOffset;
-      hitObstacle.particleSystemStartY = shieldPos.y - shieldLeftBlueImage.height/3 *1;
+      hitObstacle.particleSystemStartX = shieldPos.x + shieldLeftBlueImage.width/two + approximateShieldOffset;
+      hitObstacle.particleSystemStartY = shieldPos.y - shieldLeftBlueImage.height/three;
     } else {        
-      hitObstacle.particleSystemStartX  = playerPos.x + size.x/2;
+      hitObstacle.particleSystemStartX  = playerPos.x + size.x/two;
       hitObstacle.particleSystemStartY = playerPos.y;
 
-      if (playerPos.y >= height - (Config.CHUNK_BOTTOM_OFFSET+(Config.PLAYER_SIZE.y/2))) {
+      //Checks if the player has fallen into a hole and disables particlesystem and barrel
+      if (playerPos.y >= height - (Config.CHUNK_BOTTOM_OFFSET+(size.y/two)) || playerPos.y <= (size.y/two)) {
         hitParticlePresent = false;
         barrel = false;
       } else {
         barrel = true;
       }
 
+      //Do following three functions
       coins();
       shield();
       move();
     }
   }
 
+  /* 
+   * Describes all movements that need to be made 
+   */
   void move() {
-    playerVelocity = playerSpeed/**currentArmourSpeedMultiplier*/;
+    playerVelocity = playerSpeed * currentArmourSpeedMultiplier;
+
+    //Checks if the player is able of walking to the left
     if (Input.keyCodePressed(LEFT)&&!barrierLeft && tileCollision.direction.x != Config.LEFT) {
       playerPos.x= playerPos.x - playerVelocity - manager.speed;
-
       dust.toRight = true;
     }
 
+    //Checks if the player is able of walking to the right
     if (Input.keyCodePressed(RIGHT)&&!barrierRight && tileCollision.direction.x != Config.RIGHT) {
       playerPos.x += playerVelocity + manager.speed;
-
       dust.toRight = false;
     }
 
+    //Checks if the player is not actively walking to the left or right
     if (!Input.keyCodePressed(LEFT)&&!Input.keyCodePressed(RIGHT))
     {
       dust.toRight = false;
     }
 
+    //Player is not falling down and pressed the x button
     if (Input.keyPressed('x') && tileCollision.direction.y == Config.DOWN) {
       jump = true;
     }    
 
+    //Player pressed the a button
     if (Input.keyPressed('a')) {
+      //Shield used on the right side
       shieldRight = false;
       shieldLeft = true;
       shieldIsUpLeft = true;
     } else {
+      //Shield on the left side is disabled
       shieldIsUpLeft = false;
     }
+
+    //Player pressed the s button
     if (Input.keyPressed('s')) {
+      //Shield used on the left side
       shieldRight = true;
       shieldLeft = false;
       shieldIsUpRight = true;
     } else {
+      //Shield on the right side is disabled
       shieldIsUpRight = false;
-    }
-
-    if (Input.keyPressed('i')) {
-      coinsTotal = 101;
     }
   }  
 
+  /* 
+   * Checks which shield is being used and if a shield is picked up 
+   */
   void shield() {
+    //Checks which shield should be used
     whichShield();
 
+    //Calculate shield movement
     shieldPos.y = playerPos.y;
-    if (currentShield==0||currentShield==2||currentShield==4) {
-      shieldPos.x = playerPos.x - (2*Config.PLAYER_SIZE.x/3);
+    if (currentShield == 0||currentShield == 2||currentShield==4) {
+      shieldPos.x = playerPos.x - (two*size.x/three);
     } 
 
-    if (currentShield==1||currentShield==3||currentShield==5) {
-      shieldPos.x = playerPos.x + (2*Config.PLAYER_SIZE.x/3);
+    if (currentShield == 1||currentShield == 3||currentShield == 5) {
+      shieldPos.x = playerPos.x + (two*size.x/three);
     }
 
+    //Shield picked up
     if (obstacle != null && obstacle.layer.equals("shield")) {
-      if (shieldAmount<5) {
+      if (shieldAmount<maxShieldAmount) {
         shieldAmount++;
       }
     }
   }
 
+  /* 
+   * Checks which shield is being used and how much hits it can take 
+   */
   void whichShield() {
     if (shieldDurability==1) {
       if (shieldLeft) {
@@ -357,7 +506,7 @@ class Player {
       }
     } else {
       if (shieldLeft) {
-        currentShield = 0;
+        currentShield = zero;
       }
       if (shieldRight) {
         currentShield = 1;
@@ -365,22 +514,31 @@ class Player {
     }
   }
 
+  /* 
+   * Checks if a shield has been hit and Calculates the new durability
+   * And which shield should be used next
+   */
   void shieldHit() {
     if (shieldHit) {
       shieldDurability -= obstacle.damage; 
       shieldHit = false;
     }
 
-    if ((shieldLeft&&shieldDurability>0)||(shieldRight&&shieldDurability>0)) {
+    //Shield has been hit
+    if ((shieldLeft && shieldDurability > zero)||(shieldRight && shieldDurability > zero)) {
       shieldDurability = shieldDurability-1;
     }
 
-    if (shieldDurability<=0) {
-      shieldAmount -= 1;
+    //Shield has been broken
+    if (shieldDurability <= zero) {
+      shieldAmount--;
       shieldDurability = 3;
     }
   }
 
+  /* 
+   * Checks if the player or the shield has been hit and calculates damage to it
+   */
   void fireballHit() {
     fireballHit = true;
     if (shieldIsUpLeft && shieldLeft) {
@@ -390,44 +548,61 @@ class Player {
     }
   }
 
+  /* 
+   * Calculates lasting armour of the player
+   */
   void damage() {
     if (!invincibility) {
-      if (currentArmourLevel >= 9) {
+      if (currentArmourLevel >= maxArmourLevel) {
+        //No armour left
         death();
-      } else if (playerHit) {
-        playerHit = false;
-      } else {      
+      } else if (playerHit) {  
         currentArmourLevel++;
-        size.x -= armourLoss;
+        playerHit = false;
       }
     }
   }
 
+  /* 
+   * Checks coin amount
+   */
   void coins() {
-    if (coinAmount == Config.MAX_COIN_AMOUNT) {
-      if (shieldAmount>=5) {
+    if (coinAmount == maxCoinAmount) {
+      //Max number of coins collected 
+      if (shieldAmount >= maxShieldAmount) {
+        //Max number of shields not reached, add shield
         shieldAmount++;
       } else {
+        //Adds a number that multiplies by 10 tot the score
         coinMultiplyer++;
       }
-      coinAmount = 0;
+      coinAmount = zero;
     }
   }
 
+  /* 
+   * Player died gives all necessary information to different classes
+   */
   void death() {
     session.coins = coinAmount;
     session.distance = (int)manager.score;
 
     highscoredb.updateSession(session.getId(), session);
-    coinsTotal = (coinMultiplyer * 10) + coinAmount;
+    coinsTotal = (coinMultiplyer * maxCoinAmount) + coinAmount;
     achievementsDb.achievementCheck(int(manager.score), coinsTotal, manager.chunkpool, fireballHit);
     gameState = "GAMEOVER";
   }
 
+  /* 
+   * Replace player above the top of the screen
+   */
   void fallPositionChange() {
-    playerPos.y = 0 - (Config.PLAYER_SIZE.y/2);
+    playerPos.y = zero - (size.y/two);
   }
 
+  /* 
+   * Checks if player used powerup during jump
+   */
   void jump() {
     if (jumpBoost)
     {
@@ -438,7 +613,11 @@ class Player {
     playerJump = jumpPower + (gravityPull*jumpGravity);
   }
 
+  /* 
+   * Checks if the player picked up a power-up
+   */
   void givePowerUp(PowerupType type) {
+    //Made by Cody/ Anton
     switch(type) {
     case INVINCIBILITY:
       invincibility = true;
@@ -451,9 +630,12 @@ class Player {
     currentPowerupTimer = Config.POWERUP_ACTIVE_TIMER * frameRate;
   }
 
+  /* 
+   * Adds float to arraylist
+   */
   void armourLevelsList() {
     armourLevels.add(1f);
-    armourLevels.add(1.005f);
+    armourLevels.add(1.05f);
     armourLevels.add(1.10f);
     armourLevels.add(1.15f);
     armourLevels.add(1.20f);
@@ -462,7 +644,11 @@ class Player {
     armourLevels.add(1.35f);
     armourLevels.add(1.40f);
   }
-  void shields() {
+
+  /* 
+   * Adds PImage to arraylist
+   */
+  private void shields() {
     shields.add(shieldLeftBlueImage);
     shields.add(shieldRightBlueImage);
     shields.add(shieldLeftGreenImage);
@@ -471,17 +657,25 @@ class Player {
     shields.add(shieldRightRedImage);
   }
 
-  Boolean playerBarrierLeft() {
-    float leftBarrier = width/100 * 20;
-    if (playerPos.x - (Config.PLAYER_SIZE.x/2)<= leftBarrier) {
+  /* 
+   * Defines left barrier of walkable area
+   * Checks if the player reached the barrier and returs true or false
+   */
+  private boolean playerBarrierLeft() {
+    float leftBarrier = width/screenCalcPercentage * screenCalcPercentageLeft;
+    if (playerPos.x - (size.x/two)<= leftBarrier) {
       return true;
     }
     return false;
   }
 
-  Boolean playerBarrierRight() {
-    float rightBarrier = width/100 * 80;
-    if (playerPos.x + (Config.PLAYER_SIZE.x/2)>= rightBarrier) {
+  /* 
+   * Defines right barrier of walkable area
+   * Checks if the player reached the barrier and returs true or false
+   */
+  private boolean playerBarrierRight() {
+    float rightBarrier = width/screenCalcPercentage * screenCalcPercentageRight;
+    if (playerPos.x + (size.x/two)>= rightBarrier) {
       return true;
     }
     return false;

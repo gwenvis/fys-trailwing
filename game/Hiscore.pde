@@ -48,7 +48,7 @@ class Hiscore {
     this.backIconH = backIcon.width/10*3;
     this.backIconX = backIconW/2;
     this.backIconY = 80;
-    
+
     //Everything in the scroll
     this.scrollX = width/2;
     this.scrollY = height/2;
@@ -75,9 +75,6 @@ class Hiscore {
     highscoreTable = highscoredb.getBestSessionsPaginated(0, 7);
 
     achieved = true;
-    //
-
-    //printAchievementTable(achievementsTable);
   }
 
   void updateAchievement() {
@@ -123,16 +120,18 @@ class Hiscore {
     fill(0, 50);
     rectMode(CENTER);
 
+    //checks which button is selected and prints according table
     if (titleButtons.get(1).selected == true) {
+      //highscore button selected
       printTable(highscoreTable);
       achieved = true;
     }
 
     if (titleButtons.get(0).selected == true) {
+      //Achievements button selected
       if (achieved) {
         achieved = false;
       }
-
       printAchievementTable();
     }
   }
@@ -171,13 +170,13 @@ class Hiscore {
     }
   }
 
+  /*
+   * Show the achieved achievements (by the current player) on screen
+   */
   void printAchievementTable() {    
     textSize(30);
     fill(0);
     textAlign(CENTER);
-
-    //achievementsDb.achievementCheck(501, 101, 2, false);
-    //achievementsTable = achievementsDb.readPlayerAchievement();
 
     text("NAME "+ playerdb.nickName, width/2, 350);
 
@@ -189,7 +188,6 @@ class Hiscore {
     for (int i =0; i< achievementsTable.getRowCount(); i++) {
       TableRow row = achievementsTable.getRow(i);  
       for (int j = 0; j<row.getColumnCount(); j++) {
-        //print(row.getString(j));
         text(row.getString(j), width/2-245 +(350 *j), 450 + (50 *i));
       }
     }
