@@ -68,7 +68,7 @@ class StartMenu {
     sliderStrokeWeight = 6;
     distanceBall = 1;
 
-
+    // constructor for buttons = float x, float y, String text, int fontSize
     menuButtons = new ArrayList<TextButton>();
     menuButtons.add(new TextButton(startX, startY, "Start", menuFontSize, color(white), color(green), 0));
     menuButtons.add(new TextButton(hiscoreX, hiscoreY, "Hi-Scores", menuFontSize, color(white), color(green), 1));
@@ -76,14 +76,12 @@ class StartMenu {
 
     manager = new ButtonManager(menuButtons);
 
-    // constructor for buttons = float x, float y, String text, int fontSize
   }
 
 
   void screen() {
 
-    //Starts the audio
-
+    //manages button sellection
     manager.indexSelecterMouse();
     manager.indexSelecterKeysVertical();
 
@@ -91,6 +89,7 @@ class StartMenu {
     imageMode(CENTER);
     image(background, width/2, height/2);
 
+    //draws buttons
     textFont(font);
     for (int i = 0; i < menuButtons.size(); i++) {
       menuButtons.get(i).drawTextButton();
@@ -154,7 +153,7 @@ class StartMenu {
     }
   }
 
-
+  //makes a clickable audio slider.
   void audioSlider() {
     
     if(Input.keyCodeClicked(LEFT)) 

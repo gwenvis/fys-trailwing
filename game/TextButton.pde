@@ -1,3 +1,6 @@
+/* Made by Patrick Eikema
+   This class makes just a simple text button. Can be managed with the ButtonManager class
+*/ 
 class TextButton {
   float x, y, w, h;
   String text;
@@ -7,8 +10,7 @@ class TextButton {
   boolean selected;
   color normalColor;
   color selectedColor;
-  //mouseover sprite
-  //mouseover text & clicktext
+
 
   TextButton(float x, float y, String text, int fontSize,color normalColor, color selectedColor, int index) {
     this.x = x;
@@ -21,7 +23,6 @@ class TextButton {
     this.index = index;
   }
 
-
   void drawTextButton() {
     this.w = textWidth(text);
     textSize(fontSize);
@@ -32,7 +33,7 @@ class TextButton {
     text(text, x, y);
   }
 
-
+  //if selected, changes color.
   void colorChange() {
     if (selected) {
       fill(selectedColor);

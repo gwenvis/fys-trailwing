@@ -48,7 +48,7 @@ class Hiscore {
     this.backIconH = backIcon.width/10*3;
     this.backIconX = backIconW/2;
     this.backIconY = 80;
-
+    
     //Everything in the scroll
     this.scrollX = width/2;
     this.scrollY = height/2;

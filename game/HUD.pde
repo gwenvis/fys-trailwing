@@ -4,6 +4,8 @@ class HUD {
   float coinsX, coinsY, scoreX, scoreY, armorX, armorY, shieldX, shieldY, coinsTextX, coinsTextY, shieldTextX, shieldTextY;
   PImage armor8, armor7, armor6, armor5, armor4, armor3, armor2, armor1, armor0, coin, shield;
   PImage currentArmor;
+  color white;
+  int textSize;
 
   HUD() {
     this.coinsX = 150;
@@ -40,13 +42,15 @@ class HUD {
     this.coin.resize(int(coin.width*0.02), int(coin.height*0.02));
     this.shield = loadImage("shieldHUD.png");
     this.shield.resize(int(shield.width*0.25), int(shield.height*0.25));
+    this.white = color(255);
+    this.textSize = 20;
     //
   }
 
-
+   //this draws the hud on screen
   void draw() {
-    fill(255);
-    textSize(20);
+    fill(white);
+    textSize(textSize);
     textAlign(LEFT);
     image(coin, coinsX, coinsY);
     text(coins, coinsTextX, coinsTextY);
@@ -55,7 +59,8 @@ class HUD {
     image(shield, shieldX, shieldY);
     text("score: " + score, scoreX, scoreY);
   }
-
+  
+  //Update function
   void updateHUD(int coinAmount, int score, int armorlvl, int shieldAmount) {
     this.coins = coinAmount;
     this.score = score;
@@ -92,6 +97,5 @@ class HUD {
     }
   }
 
-  void armor() {
-  }
+
 }

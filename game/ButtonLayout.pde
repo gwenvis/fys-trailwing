@@ -6,9 +6,10 @@ class ButtonLayout {
   PImage keyboard;
   float timer, timercd;
   boolean timerSet;
-  float alpha;
+  int alpha, completelyVisible;
   float alphaTimer, alphaCD;
   boolean firstAlphaSet;
+
 
   ButtonLayout() {
     this.text1X = width/2;
@@ -29,16 +30,19 @@ class ButtonLayout {
     this.alphaCD = 7000;
     this.alpha = 0;
     this.firstAlphaSet = false;
+    this.completelyVisible = 250;
   }
 
   void draw() {
-    if (alpha <= 250 && !firstAlphaSet) {
+    
+    //makes the layout visible at first. 
+    if (alpha <= completelyVisible && !firstAlphaSet) {
       alpha += 5;
     } else {
       firstAlphaSet = true;
     }
 
-
+    //sets a timer. after 7 seconds it makes the layout invisible again. after 9 seconds starts the game. 
     if (!timerSet) {
       timer = millis();
       alphaTimer = millis();
@@ -55,18 +59,20 @@ class ButtonLayout {
     image(keyboard, keyboardX, keyboardY);
     textSize(textSizeSkip);
     text("Press SPACE to skip", text2X, text2Y);
-
+    
+    //if alpha timer done, makes the layout invisible.
     if (millis()-alphaTimer > alphaCD) {
       alpha -= 3;
     }
 
-
+   //if game timr is done, starts the game.
     if (millis()-timer > timercd) {
       noTint();
       gameState = "PLAY";
     }
   }
-
+  
+  //if space is clicked, starts the game.
   void spaceCheck() {
     if (Input.keyClicked(' ')) {
       noTint();
