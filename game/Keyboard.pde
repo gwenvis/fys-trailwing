@@ -1,5 +1,7 @@
- //Made by Anton and Patrick
-
+ /*
+  * @author Patrick
+  * limit added by Antonio
+  */
 public static class Keyboard
 {
   public static String update(String s, int limit)
@@ -22,6 +24,9 @@ public static class Keyboard
   public static String update(String s) { return update(s, -1); }
 }
 
+/*
+ * @author Antonio
+ */
 public class KeyboardHUD
 {
   private final int ROW_V_MARGIN = 4;
