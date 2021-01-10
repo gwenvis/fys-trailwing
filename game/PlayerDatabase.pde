@@ -16,6 +16,7 @@ class PlayerDatabase {
       database.updateQuery(String.format("INSERT INTO player(name, created_on) VALUES('%s','%s')", nickName, date));
     }
       loadPlayer(nickName);
+      println("Nickname: " + nickName + " id: " + id);
     
   }
   //function to check if the name exists in db.
@@ -34,4 +35,8 @@ class PlayerDatabase {
     id = output.getInt(0,0);
     
   }
+  
+  
+
+
 }

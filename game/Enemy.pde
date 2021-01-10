@@ -1,5 +1,5 @@
 /*
-Made by Patrick Eikema, somewhat changed by Chantal Boodt
+Made by Patrick Eikema, attack made by Chantal Boodt
  */
 
 class Enemy {
