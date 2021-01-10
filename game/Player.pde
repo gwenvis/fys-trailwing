@@ -23,6 +23,9 @@ class Player {
   TileCollision tileCollision = new TileCollision();
   Obstacle obstacle = null;
   TileManager manager;
+  
+  SessionDatabase highscoredb = new SessionDatabase();
+  Session session;
 
   ArrayList<Float> armourLevels = new ArrayList<Float>();
   ArrayList<PImage> shields = new ArrayList<PImage>();
@@ -185,6 +188,10 @@ class Player {
 
     if (tileCollision.direction.y != Config.DOWN && gravityPull == 0) {
       playerPos.sub(tileCollision.direction.x * manager.speed, 0);
+    }
+    
+    if (obstacle != null && obstacle.layer.equals("lava")) {
+      currentArmourLevel = 10000;
     }
 
     if (obstacle != null && obstacle.layer.equals("coin")) {
@@ -387,6 +394,10 @@ class Player {
   }
 
   void death() {
+    session.coins = coinAmount;
+    session.distance = (int)manager.score;
+
+    highscoredb.updateSession(session.getId(), session);
     gameState = "GAMEOVER";
   }
 
