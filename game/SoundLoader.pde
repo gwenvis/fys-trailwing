@@ -6,9 +6,9 @@ public class SoundBank
   {
     sounds = new HashMap<SoundType, Sound>();
     sounds.put(SoundType.FOOTSTEP, new Sound(0.6f, app, 
-          "sounds/footstep1.wav", "sounds/footstep2.wav", 
-          "sounds/footstep3.wav", "sounds/footstep4.wav", 
-          "sounds/footstep5.wav", "sounds/footstep6.wav"));
+          "sounds/foot1.wav", "sounds/foot2.wav", 
+          "sounds/foot3.wav", "sounds/foot4.wav", 
+          "sounds/foot5.wav", "sounds/foot6.wav"));
 
     sounds.put(SoundType.JUMP, new Sound(0.6f, app,
           "sounds/jump1.wav", "sounds/jump2.wav"));
@@ -40,6 +40,12 @@ public class Sound
   {
     int index = (int)random(0, sounds.size());
     SoundFile file = sounds.get(index);
+
+    if(file == null)
+    {
+      println("null.. " + index);
+    }
+
     file.amp(volume);
     file.play();
   }
