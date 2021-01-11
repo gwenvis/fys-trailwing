@@ -1,3 +1,6 @@
+/* Made by Patrick Eikema
+   This class is a control tutorial that pops up before the game starts.
+*/
 class ButtonLayout {
   float text1X, text1Y, text2X, text2Y, keyboardX, keyboardY;
   int textSize, textSizeSkip;
