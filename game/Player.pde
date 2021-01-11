@@ -45,11 +45,11 @@ class Player {
   private int zero, two, three;
   private int speedUpTimer, speedUpCoolDown;
 
+  private float barierCalcX, barierCalcY;
   private float playerVelocity, speedUp;
   private float jumpPower, jumpGravity, playerJump, gravityPull; 
 
   private float currentPowerupTimer = zero;
-  private PImage playerImage;
   private PImage invincibleSignImage;
   private PImage shieldLeftBlueImage, shieldLeftGreenImage, shieldLeftRedImage;
   private PImage shieldRightBlueImage, shieldRightGreenImage, shieldRightRedImage;
@@ -135,8 +135,8 @@ class Player {
     jump=false;
     barrierLeft=false;
     barrierRight=false;
-    playerImage = loadImage("new_player.png");
-    playerImage.resize((int)size.x, (int)size.y);
+    barierCalcX = size.x/two;
+    barierCalcY = size.y/two;
 
     //Current coin amount and maximum amount
     coinAmount = zero;
@@ -276,7 +276,7 @@ class Player {
     }
 
     //player position resets when player falls in a hole
-    if (playerPos.y >= height - (size.y/two)) {
+    if (playerPos.y >= height - (barierCalcY)) {
       fallPositionChange();
       fireball++;
     }
@@ -347,7 +347,7 @@ class Player {
         if (playerHit) {
           damage();
         }        
-        if (playerPos.y >= height - (Config.CHUNK_BOTTOM_OFFSET+(size.y/two))) {
+        if (playerPos.y >= height - (Config.CHUNK_BOTTOM_OFFSET+(barierCalcY))) {
           //Player fals into a hole
         } else {
           if (!invincibility) {
@@ -391,11 +391,11 @@ class Player {
       hitObstacle.particleSystemStartX = shieldPos.x + shieldLeftBlueImage.width/two + approximateShieldOffset;
       hitObstacle.particleSystemStartY = shieldPos.y - shieldLeftBlueImage.height/three;
     } else {        
-      hitObstacle.particleSystemStartX  = playerPos.x + size.x/two;
+      hitObstacle.particleSystemStartX  = playerPos.x + barierCalcX;
       hitObstacle.particleSystemStartY = playerPos.y;
 
       //Checks if the player has fallen into a hole and disables particlesystem and barrel
-      if (playerPos.y >= height - (Config.CHUNK_BOTTOM_OFFSET+(size.y/two)) || playerPos.y <= (size.y/two)) {
+      if (playerPos.y >= height - (Config.CHUNK_BOTTOM_OFFSET+(barierCalcY)) || playerPos.y <= (barierCalcY)) {
         hitParticlePresent = false;
         barrel = false;
       } else {
@@ -597,7 +597,7 @@ class Player {
    * Replace player above the top of the screen
    */
   void fallPositionChange() {
-    playerPos.y = zero - (size.y/two);
+    playerPos.y = zero - (barierCalcY);
   }
 
   /* 
@@ -663,7 +663,7 @@ class Player {
    */
   private boolean playerBarrierLeft() {
     float leftBarrier = width/screenCalcPercentage * screenCalcPercentageLeft;
-    if (playerPos.x - (size.x/two)<= leftBarrier) {
+    if (playerPos.x - (barierCalcX)<= leftBarrier) {
       return true;
     }
     return false;
@@ -675,7 +675,7 @@ class Player {
    */
   private boolean playerBarrierRight() {
     float rightBarrier = width/screenCalcPercentage * screenCalcPercentageRight;
-    if (playerPos.x + (size.x/two)>= rightBarrier) {
+    if (playerPos.x + (barierCalcX)>= rightBarrier) {
       return true;
     }
     return false;
