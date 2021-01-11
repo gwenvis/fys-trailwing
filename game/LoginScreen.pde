@@ -1,5 +1,4 @@
-//Made by Patrick, modified by Anton
-
+//Made by Patrick, everything comment related made by Anton
 class LoginScreen implements IKeyboardCallback {
   PImage background;
   float loginTextX, loginTextY, nickNameHintX, nickNameHintY, nickNameTextX, nickNameTextY, pressEnterTextX, pressEnterTextY;
