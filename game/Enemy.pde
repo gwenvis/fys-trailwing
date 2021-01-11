@@ -101,6 +101,7 @@ class Enemy {
 
 
   void movement(float playerY) {
+    playerX = player.playerPos.x;
     if (y < playerY - movedDistance) {
       y += speed;
     } else if (y > playerY + movedDistance) {
@@ -183,12 +184,13 @@ class Enemy {
     for (int i = fireballs.size()-1; i>= 0; i--) {
       ParticleSystem fireball = fireballs.get(i);
       particleSystemX = particleSystemsX.get(i);
-      if (particleSystemX >= hitX && particleSystemX < hitX + playerWidth && particleSystemY >= player.playerPos.y - playerHeightHalf && particleSystemY < player.playerPos.y + playerHeightHalf) {
+      if (particleSystemX >= hitX && particleSystemX < hitX + player.size.x && particleSystemY >= player.playerPos.y - player.size.y/2 && particleSystemY < player.playerPos.y + player.size.y/2) {
+        particleSystemX = 10000;
         fireball.particleID = "Hit";
         fireball.draw =false;
         player.fireballHit();
       }
-      particleSystemsX.set(i, particleSystemX);
+      particleSystemsX.set(i,particleSystemX);
     }
   }
 

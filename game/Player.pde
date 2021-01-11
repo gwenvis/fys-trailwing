@@ -583,7 +583,7 @@ class Player {
       if (currentArmourLevel >= maxArmourLevel) {
         //No armour left
         death();
-      } else if (playerHit) {  
+      } else if (playerHit||fireballHit) {  
         currentArmourLevel++;
         playerHit = false;
       }
