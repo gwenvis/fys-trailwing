@@ -21,8 +21,7 @@ HUD hud;
 ButtonLayout buttonLayout;
 MusicManager musicManager;
 Animations animations;
-
-
+SoundBank soundBank;
 CommentsDatabase commentDatabase;
 AchievementsDatabase achievementsDb;
 PlayerDatabase playerdb;
@@ -50,7 +49,7 @@ void setup() {
   PFont font = createFont("Arial", 64);
   textFont(font);
   hud = new HUD();
-
+  soundBank = new SoundBank(this);
   /*SessionDatabase session = new SessionDatabase();
    print(session.getSessions());*/
 }

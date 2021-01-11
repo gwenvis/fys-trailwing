@@ -44,6 +44,8 @@ class Player {
   private int screenCalcPercentage, screenCalcPercentageLeft, screenCalcPercentageRight;
   private int zero, two, three;
   private int speedUpTimer, speedUpCoolDown;
+  private int lastPlayerFrame;
+  private int[] footstepFrames = { 3, 7 };
 
   private float playerVelocity, speedUp;
   private float jumpPower, jumpGravity, playerJump, gravityPull; 
@@ -221,7 +223,17 @@ class Player {
       image(invincibleSignImage, playerPos.x, playerPos.y);
       tint(#0000AA);
     }
+
     playerWalk.draw(playerPos.x, playerPos.y);
+    int curFrame = playerWalk.getCurrentImage();
+
+    if(curFrame != lastPlayerFrame 
+        && (footstepFrames[0] == curFrame || footstepFrames[1] == curFrame))
+    {
+      soundBank.playSound(SoundType.FOOTSTEP);
+    }
+
+    lastPlayerFrame = playerWalk.getCurrentImage();
 
     tint(white, white);
     //Checks if shield is currently being used

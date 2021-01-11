@@ -1,3 +1,8 @@
+/*
+ * @author Antonio Bottelier
+ *
+ * Class for creating animations and playing them automatically.
+ */
 public class Animation {
   private ArrayList<PImage> sprites = new ArrayList<PImage>();
   private int currentImage = 0;
@@ -15,11 +20,17 @@ public class Animation {
     }
   }
   
+  /*
+   * Constructor for creating animation with separate image files
+   */
   public Animation(int animationSpeed, String... frames) {
     this(frames);
     this.animationSpeed = animationSpeed;
   }
   
+  /*
+   * Constructor for creating an animation with spritesheets.
+   */
   public Animation(String fileName, int xCells, int yCells)
   {
     isSpriteSheet = true;
@@ -79,6 +90,9 @@ public class Animation {
     }
   }
 
+  /*
+   * Draws the sprite at the specified location
+   */
   public void draw(float x, float y) { draw(x,y,-1,-1); }
 
   /*
@@ -100,5 +114,9 @@ public class Animation {
    */
   public void addImage(PImage image) {
     sprites.add(image);
+  }
+
+  public int getCurrentImage() {
+    return currentImage;
   }
 }
