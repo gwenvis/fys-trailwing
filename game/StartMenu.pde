@@ -20,6 +20,7 @@ class StartMenu {
   boolean isSoundMuted;
   float sliderX1, sliderX2, sliderY;
   float sliderBallX, sliderBallY, sliderBallR;
+  float sliderMaxShowLocX, sliderMaxSHowLocY;
   float sliderStrokeWeight;
   float distanceBall;
   PFont font;
@@ -28,45 +29,49 @@ class StartMenu {
   ArrayList<TextButton> menuButtons;
   ButtonManager manager;
 
+
+  //for good practice, I should put the global variables like displayWidth, displayHeight, width, height in the constructor.
   StartMenu() {
-    background = loadImage("./startMenuBackground.jpg");
-    background.resize(displayWidth, displayHeight);
+    this.background = loadImage("./startMenuBackground.jpg");
+    this.background.resize(displayWidth, displayHeight);
 
     //MENU OPTIONS
-    menuFontSize = 50;
-    green = color(0, 255, 100);
-    red = color(245, 42, 42);
-    white = color(255);
-    black = color(0);
-    startX = width/2;
-    startY = height/2-100;
-    hiscoreX = width/2;
-    hiscoreY = height/2;
-    quitX = width/2;
-    quitY = height/2+100;
-    font = createFont("Arial", 64);
+    this.menuFontSize = 50;
+    this.green = color(0, 255, 100);
+    this.red = color(245, 42, 42);
+    this.white = color(255);
+    this.black = color(0);
+    this.startX = width/2;
+    this.startY = height/2-100;
+    this.hiscoreX = width/2;
+    this.hiscoreY = height/2;
+    this.quitX = width/2;
+    this.quitY = height/2+100;
+    this.font = createFont("Arial", 64);
 
     //SOUND STUFF
-    soundIsPlaying = false;
-    soundIconSmall = loadImage("soundIconSmall.png");
-    soundIconBig = loadImage("soundIconBig.png");
-    soundIconSmallMuted = loadImage("soundIconSmallMuted.png");
-    soundIconBigMuted = loadImage("soundIconBigMuted.png");
-    isSoundMuted = false;
-    smallSoundIconW = 50;
-    smallSoundIconH = 39;
-    bigSoundIconW = 55;
-    bigSoundIconH = 43;
-    soundIconX = 50;
-    soundIconY = height-70;
-    sliderX1 = soundIconX + 70;
-    sliderX2 = sliderX1+200;
-    sliderY = soundIconY;
-    sliderBallX = sliderX2;
-    sliderBallY = sliderY;
-    sliderBallR = 20;
-    sliderStrokeWeight = 6;
-    distanceBall = 1;
+    this.soundIsPlaying = false;
+    this.soundIconSmall = loadImage("soundIconSmall.png");
+    this.soundIconBig = loadImage("soundIconBig.png");
+    this.soundIconSmallMuted = loadImage("soundIconSmallMuted.png");
+    this.soundIconBigMuted = loadImage("soundIconBigMuted.png");
+    this.isSoundMuted = false;
+    this.smallSoundIconW = 50;
+    this.smallSoundIconH = 39;
+    this.bigSoundIconW = 55;
+    this.bigSoundIconH = 43;
+    this.soundIconX = 50;
+    this.soundIconY = height-70;
+    this.sliderX1 = soundIconX + 70;
+    this.sliderX2 = sliderX1+200;
+    this.sliderY = soundIconY;
+    this.sliderBallX = sliderX2;
+    this.sliderBallY = sliderY;
+    this.sliderBallR = 20;
+    this.sliderMaxShowLocX = width/5;
+    this.sliderMaxSHowLocY =  height/10*9;
+    this.sliderStrokeWeight = 6;
+    this.distanceBall = 1;
 
     // constructor for buttons = float x, float y, String text, int fontSize
     menuButtons = new ArrayList<TextButton>();
@@ -74,7 +79,7 @@ class StartMenu {
     menuButtons.add(new TextButton(hiscoreX, hiscoreY, "Hi-Scores", menuFontSize, color(white), color(green), 1));
     menuButtons.add(new TextButton(quitX, quitY, "Quit", menuFontSize, color(white), color(red), 2));
 
-    manager = new ButtonManager(menuButtons);
+    this.manager = new ButtonManager(menuButtons);
 
   }
 
@@ -128,10 +133,9 @@ class StartMenu {
   void menuSelecter() {
 
 
-    if ((Input.keyClicked('z') || Input.keyClicked('Z')) && gameState == "START")
-    {
+    if ((Input.keyClicked('z') || Input.keyClicked('Z')) && gameState == "START") {
       for (int i = 0; i < menuButtons.size(); i++) {
-        if (menuButtons.get(i).selected == true) {
+        if (menuButtons.get(i).selected) {
           switch(menuButtons.get(i).index)
           {
           case 0:
@@ -155,7 +159,7 @@ class StartMenu {
 
   //makes a clickable audio slider.
   void audioSlider() {
-    
+    //LEFT and RIGHT key makes sound lower or higher amp
     if(Input.keyCodeClicked(LEFT)) 
     {
       sliderBallX -= 10;
@@ -166,9 +170,11 @@ class StartMenu {
       sliderBallX += 10;
       if(sliderBallX > sliderX2) sliderBallX = sliderX2;
     }
-
+    
+    
+    //makes the actual slider.
     distanceBall = (sliderBallX - sliderX1)/100/2;
-    boolean showSlider = mouseX > 0 && mouseX < width/5 && mouseY > height/10*9 && mouseY < height;
+    boolean showSlider = mouseX > 0 && mouseX < sliderMaxShowLocX && mouseY > sliderMaxSHowLocY && mouseY < height;
     if (showSlider) {
       //sliderline
       stroke(white);
@@ -179,7 +185,8 @@ class StartMenu {
       stroke(white);
       fill(black);
       ellipse(sliderBallX, sliderBallY, sliderBallR, sliderBallR);
-
+      
+      //if mouse button pressed, ball follows the mouse
       if (Input.mouseButtonPressed(LEFT) && showSlider) {
         sliderBallX = mouseX;
 

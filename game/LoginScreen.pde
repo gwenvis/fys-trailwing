@@ -49,14 +49,14 @@ class LoginScreen implements IKeyboardCallback {
     this.removeLetter = false;
 
     //colors
-    black = color(10);
-    white = color(#FAFAFA);
-    grey = color(150);
-   
+    this.black = color(10);
+    this.white = color(#FAFAFA);
+    this.grey = color(150);
+
     keyboardHud = new KeyboardHUD(this, new PVector(width/2-150, height - 300), 10);
     keyboardHud.position.x = width/2 - keyboardHud.getWidth() / 2;
   }
-  
+
   //writes nickname to db
   public void onSubmit(String submittedString)
   {
@@ -109,12 +109,12 @@ class LoginScreen implements IKeyboardCallback {
       } else {
         fill(grey);
       }
-      text(nickNameHint, nickNameHintX,nickNameHintY);
+      text(nickNameHint, nickNameHintX, nickNameHintY);
     } else {
       fill(black);
-      text(nickName, nickNameTextX,nickNameTextY);
+      text(nickName, nickNameTextX, nickNameTextY);
       fill(grey);
-      text("Press 'z' on empty square to continue.", pressEnterTextX,pressEnterTextY );
+      text("Press 'z' on empty square to continue.", pressEnterTextX, pressEnterTextY );
     }
 
 
