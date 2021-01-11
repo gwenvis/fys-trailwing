@@ -40,16 +40,17 @@ class Player {
 
   private int shieldDurability, maxShieldAmount, currentShield;
   private int maxArmourLevel;
+  private int postureChangeSpeed, postureChangeSpeedJump;
   private int maxCoinAmount, coinMultiplyer;
   private int screenCalcPercentage, screenCalcPercentageLeft, screenCalcPercentageRight;
   private int zero, two, three;
   private int speedUpTimer, speedUpCoolDown;
 
+  private float barierCalcX, barierCalcY;
   private float playerVelocity, speedUp;
   private float jumpPower, jumpGravity, playerJump, gravityPull; 
 
   private float currentPowerupTimer = zero;
-  private PImage playerImage;
   private PImage invincibleSignImage;
   private PImage shieldLeftBlueImage, shieldLeftGreenImage, shieldLeftRedImage;
   private PImage shieldRightBlueImage, shieldRightGreenImage, shieldRightRedImage;
@@ -122,6 +123,8 @@ class Player {
     playerPos.y = y;
     playerJump = zero;   
 
+    postureChangeSpeed = 3;
+    postureChangeSpeedJump = 5000;
     playerSpeed = Config.PLAYER_SPEED;
     speedUp = Config.PLAYER_SPEED_UP;
     gravityPull = zero;
@@ -135,8 +138,8 @@ class Player {
     jump=false;
     barrierLeft=false;
     barrierRight=false;
-    playerImage = loadImage("new_player.png");
-    playerImage.resize((int)size.x, (int)size.y);
+    barierCalcX = size.x/two;
+    barierCalcY = size.y/two;
 
     //Current coin amount and maximum amount
     coinAmount = zero;
@@ -276,13 +279,15 @@ class Player {
     }
 
     //player position resets when player falls in a hole
-    if (playerPos.y >= height - (size.y/two)) {
+    if (playerPos.y >= height - (barierCalcY)) {
       fallPositionChange();
       fireball++;
     }
 
     //Player not on tiles and jumping up
     if (tileCollision.direction.y != -1) {
+
+      playerWalk.setAnimationSpeed(postureChangeSpeed);
       gravityPull++;
       onGround = false;
       dust.draw = false;
@@ -290,6 +295,8 @@ class Player {
 
     //Player jumps into floating tile
     if (tileCollision.direction.y == 1) {
+
+      playerWalk.setAnimationSpeed(postureChangeSpeed);
       jumpBoost = false;
       gravityPull = 55;
     }
@@ -347,7 +354,7 @@ class Player {
         if (playerHit) {
           damage();
         }        
-        if (playerPos.y >= height - (Config.CHUNK_BOTTOM_OFFSET+(size.y/two))) {
+        if (playerPos.y >= height - (Config.CHUNK_BOTTOM_OFFSET+(barierCalcY))) {
           //Player fals into a hole
         } else {
           if (!invincibility) {
@@ -391,11 +398,11 @@ class Player {
       hitObstacle.particleSystemStartX = shieldPos.x + shieldLeftBlueImage.width/two + approximateShieldOffset;
       hitObstacle.particleSystemStartY = shieldPos.y - shieldLeftBlueImage.height/three;
     } else {        
-      hitObstacle.particleSystemStartX  = playerPos.x + size.x/two;
+      hitObstacle.particleSystemStartX  = playerPos.x + barierCalcX;
       hitObstacle.particleSystemStartY = playerPos.y;
 
       //Checks if the player has fallen into a hole and disables particlesystem and barrel
-      if (playerPos.y >= height - (Config.CHUNK_BOTTOM_OFFSET+(size.y/two)) || playerPos.y <= (size.y/two)) {
+      if (playerPos.y >= height - (Config.CHUNK_BOTTOM_OFFSET+(barierCalcY)) || playerPos.y <= (barierCalcY)) {
         hitParticlePresent = false;
         barrel = false;
       } else {
@@ -597,13 +604,14 @@ class Player {
    * Replace player above the top of the screen
    */
   void fallPositionChange() {
-    playerPos.y = zero - (size.y/two);
+    playerPos.y = zero - (barierCalcY);
   }
 
   /* 
    * Checks if player used powerup during jump
    */
   void jump() {
+    playerWalk.setAnimationSpeed(postureChangeSpeedJump);
     if (jumpBoost)
     {
       playerPos.y += playerJump*Config.POWERUP_JUMP_BOOST;
@@ -663,7 +671,7 @@ class Player {
    */
   private boolean playerBarrierLeft() {
     float leftBarrier = width/screenCalcPercentage * screenCalcPercentageLeft;
-    if (playerPos.x - (size.x/two)<= leftBarrier) {
+    if (playerPos.x - (barierCalcX)<= leftBarrier) {
       return true;
     }
     return false;
@@ -675,7 +683,7 @@ class Player {
    */
   private boolean playerBarrierRight() {
     float rightBarrier = width/screenCalcPercentage * screenCalcPercentageRight;
-    if (playerPos.x + (size.x/two)>= rightBarrier) {
+    if (playerPos.x + (barierCalcX)>= rightBarrier) {
       return true;
     }
     return false;
