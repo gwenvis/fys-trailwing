@@ -63,19 +63,19 @@ class TileGroup {
     stop = chunk.getFloat("stop");
     //loop through the 
     for (int i = 0; i < chunkTiles.size(); i++) {
-      //get the single tile as an object //<>//
+      //get the single tile as an object //<>// //<>//
       JSONObject tile = chunkTiles.getJSONObject(i);
 
       //add the tile with its variables to the tile array
       tiles.add(new Tile(tile.getString("sprite"), 
         new PVector(tile.getFloat("width"), tile.getFloat("height")), 
-        new PVector(tile.getFloat("x"), tile.getFloat("y")), //<>// //<>// //<>// //<>//
+        new PVector(tile.getFloat("x"), tile.getFloat("y")), //<>// //<>// //<>// //<>// //<>//
         tile.getString("layer")));
     }
 
     //gets the obstacles of the chunk
     JSONArray chunkObstacles = chunk.getJSONArray("obstacles");
-    //loop through the  //<>// //<>// //<>// //<>// //<>//
+    //loop through the  //<>// //<>// //<>// //<>// //<>// //<>//
     for (int n = 0; n < chunkObstacles.size(); n++) {
       //get the single obstacles as an object
       JSONObject obstacle = chunkObstacles.getJSONObject(n);
