@@ -5,12 +5,12 @@
     "songs" : [
       {
         "fileName":"music/mainmenu1.wav",
-        "volume": 0.5
+        "volume": 0.3
       },
 
       {
         "fileName":"music/mainmenu2.wav",
-        "volume": 0.5
+        "volume": 0.3
       }
     ]
   },
@@ -20,7 +20,7 @@
     "songs" : [
       {
         "fileName" : "music/chase1.wav",
-        "volume" : 0.5
+        "volume" : 0.2
       }
     ]
   },
