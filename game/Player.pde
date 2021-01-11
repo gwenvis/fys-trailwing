@@ -40,6 +40,7 @@ class Player {
 
   private int shieldDurability, maxShieldAmount, currentShield;
   private int maxArmourLevel;
+  private int postureChangeSpeed, postureChangeSpeedJump;
   private int maxCoinAmount, coinMultiplyer;
   private int screenCalcPercentage, screenCalcPercentageLeft, screenCalcPercentageRight;
   private int zero, two, three;
@@ -122,6 +123,8 @@ class Player {
     playerPos.y = y;
     playerJump = zero;   
 
+    postureChangeSpeed = 3;
+    postureChangeSpeedJump = 5000;
     playerSpeed = Config.PLAYER_SPEED;
     speedUp = Config.PLAYER_SPEED_UP;
     gravityPull = zero;
@@ -283,6 +286,8 @@ class Player {
 
     //Player not on tiles and jumping up
     if (tileCollision.direction.y != -1) {
+
+      playerWalk.setAnimationSpeed(postureChangeSpeed);
       gravityPull++;
       onGround = false;
       dust.draw = false;
@@ -290,6 +295,8 @@ class Player {
 
     //Player jumps into floating tile
     if (tileCollision.direction.y == 1) {
+
+      playerWalk.setAnimationSpeed(postureChangeSpeed);
       jumpBoost = false;
       gravityPull = 55;
     }
@@ -604,6 +611,7 @@ class Player {
    * Checks if player used powerup during jump
    */
   void jump() {
+    playerWalk.setAnimationSpeed(postureChangeSpeedJump);
     if (jumpBoost)
     {
       playerPos.y += playerJump*Config.POWERUP_JUMP_BOOST;
