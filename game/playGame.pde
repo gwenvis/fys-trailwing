@@ -17,9 +17,12 @@ class PlayGame {
     caveBackground = loadImage("caveBackground.png");
     x1 = 0;
     x2 = width;
-
+  }
+  
+  void createSession()
+  {
     highscoredb = new SessionDatabase();
-    Session newSession = new Session(0, 0, 0, "00:00", year() + "/" + month() + "/" + day(), 1, "");   
+    Session newSession = new Session(0, 0, 0, "00:00", year() + "/" + month() + "/" + day(), playerdb.id, "");   
 
     player.session = highscoredb.addSession(newSession);
   }

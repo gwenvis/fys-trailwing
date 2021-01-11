@@ -1,5 +1,5 @@
 /**
- Made Cody Bolleboom
+ Made by Cody Bolleboom
  05-10-2020 10:44
  */
 
@@ -45,7 +45,7 @@ class TileManager {
     usePool = new ArrayList<JSONObject>();
     difficultyPool = new ArrayList<JSONObject>();
     for (int i = 0; i < chunkPool.getJSONArray(chunkpool).size(); i++) {
-      if ((float)chunkPool.getJSONArray(chunkpool).getJSONObject(i).getFloat("available") != 0) {
+      if ((float)chunkPool.getJSONArray(chunkpool).getJSONObject(i).getFloat("start") != 0) {
         difficultyPool.add(chunkPool.getJSONArray(chunkpool).getJSONObject(i));
       } else {
         usePool.add(chunkPool.getJSONArray(chunkpool).getJSONObject(i));
@@ -166,10 +166,17 @@ class TileManager {
   void listener() {
     println("pool size: " + difficultyPool.size());
     for (int i = 0; i < difficultyPool.size(); i++) {
-      if ((float)difficultyPool.get(i).getFloat("available") <= poolDistance) {
+      if ((float)difficultyPool.get(i).getFloat("start") <= poolDistance) {
           usePool.add(difficultyPool.get(i));
           difficultyPool.remove(i);
         }
+    }
+    
+    for (int i = 0; i < usePool.size(); i++) {
+      JSONObject group = usePool.get(i);
+      if (group.getFloat("stop") != -1 && group.getFloat("stop") <= poolDistance) {
+        usePool.remove(i);
+      }
     }
     
     
@@ -218,7 +225,7 @@ class TileManager {
       usePool = new ArrayList<JSONObject>();
       difficultyPool = new ArrayList<JSONObject>();
       for (int i = 0; i < chunkPool.getJSONArray(chunkpool).size(); i++) {
-        if (chunkPool.getJSONArray(chunkpool).getJSONObject(i).getFloat("available") != 0) {
+        if (chunkPool.getJSONArray(chunkpool).getJSONObject(i).getFloat("start") != 0) {
           difficultyPool.add(chunkPool.getJSONArray(chunkpool).getJSONObject(i));
         } else {
           usePool.add(chunkPool.getJSONArray(chunkpool).getJSONObject(i));

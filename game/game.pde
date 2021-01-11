@@ -9,7 +9,6 @@ float xSpeed = 5;
 int radius = 10;
 boolean ballHit = false;
 String gameState;
-Database achievementsDb;
 Enemy enemy;
 PlayGame play;
 StartMenu start;
@@ -17,15 +16,22 @@ LoginScreen login;
 Hiscore hiscore;
 GameOver gameOver;
 SoundFile backgroundMusicStartScreen;
-CommentsDatabase commentDatabase;
 SoundFile backgroundMusicGameOverScreen;
 HUD hud;
 ButtonLayout buttonLayout;
 MusicManager musicManager;
 Animations animations;
+
+
+CommentsDatabase commentDatabase;
+AchievementsDatabase achievementsDb;
 PlayerDatabase playerdb;
 
 void setup() {
+  commentDatabase = new CommentsDatabase();
+  playerdb = new PlayerDatabase();
+  achievementsDb = new AchievementsDatabase();
+
   gameState = "LOGIN";
   animations = new Animations();
   background(255);
@@ -40,17 +46,13 @@ void setup() {
   login = new LoginScreen();
   gameOver = new GameOver();
   buttonLayout = new ButtonLayout();
-  commentDatabase = new CommentsDatabase();
   musicManager = new MusicManager(this);
   PFont font = createFont("Arial", 64);
   textFont(font);
   hud = new HUD();
-  
-  /*SessionDatabase session = new SessionDatabase();
-  print(session.getSessions());*/
 
-  achievementsDb = new Database("jdbc:mysql://oege.ie.hva.nl/zboodtcd?serverTimezone=UTC", true, "boodtcd", "egRabMlz#xM$NI");
-  playerdb = new PlayerDatabase();
+  /*SessionDatabase session = new SessionDatabase();
+   print(session.getSessions());*/
 }
 
 void draw()
@@ -64,7 +66,7 @@ void keyPressed() {
   //send pressed key to input class
 
   Input.keyPressed(key, CODED, keyCode);
-  if(key == ESC)
+  if (key == ESC)
     key = 0;
 }
 
@@ -103,7 +105,7 @@ void gameStates() {
     gameOver.update();
     gameOver.draw();
 
-    if(gameOver.drawCommentOverlay)
+    if (gameOver.drawCommentOverlay)
     {
       gameOver.drawCommentOverlay();
     }

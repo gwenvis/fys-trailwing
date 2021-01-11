@@ -1,5 +1,7 @@
 /*
-Made by Patrick Eikema, attack made by Chantal Boodt
+Made by Patrick Eikema
+
+ everything to do with the fireball(s)+particlesystem modified by Chantal 
  */
 
 class Enemy {
@@ -13,12 +15,15 @@ class Enemy {
   int angryTimer, angryCooldown;
   int AngryDurationTimer, attackDurationCooldown;
   int fireBallTimer, fireBallDurationCooldown, approximateShieldOffset = 15;
-  int particleSystemStartColourR, particleSystemStartColourG, particleSystemStartColourB, particleSystemEndColourR, particleSystemEndColourG, particleSystemEndColourB;
+  int particleSystemStartColourR, particleSystemStartColourG, particleSystemStartColourB, particleSystemEndColourR, particleSystemEndColourG, particleSystemEndColourB, fireballAmount, fireballStartTimeCalc;
   Player player;
   boolean attack;
   float particleSystemX, particleSystemY;
   float fireBallSpeed;
   String ID;
+  ArrayList<ParticleSystem> fireballs = new ArrayList<ParticleSystem>();
+  ArrayList<Float> particleSystemsY = new ArrayList<Float>();
+  ArrayList<Float> particleSystemsX = new ArrayList<Float>();
 
   ParticleSystem fireballParticleSystem;
   SpriteAnimation dragon; 
@@ -30,8 +35,6 @@ class Enemy {
     //initialisation
     this.player = player;
     dragon = new SpriteAnimation("dragonSprites.png", 3, 8);
-    this.fireBall = loadImage("fireBall.png");
-
 
     //Size & pos Enemy+
     this.x = 150;
@@ -52,7 +55,6 @@ class Enemy {
     this.AngryDurationTimer = 0;
     this.attackDurationCooldown = 7000;  //  Time in ms he stays angry
     this.fireBallTimer = 0;
-    this.fireBallDurationCooldown = 3200;  //Time  it takes to shoot the fireBall WHEN angry. (fireBall duration = attackDurationCooldown - fireBallDurationCooldown)
     this.attack = false;
     this.particleSystemX = x + dragon.frameImage[0].width/5*4 /2;
 
@@ -71,8 +73,6 @@ class Enemy {
     particleSystemEndColourR = 255;
     particleSystemEndColourG = 0;
     particleSystemEndColourB = 0;
-
-    fireballParticleSystem = new ParticleSystem(ID, particleSystemStartColourR, particleSystemStartColourG, particleSystemStartColourB, particleSystemEndColourR, particleSystemEndColourG, particleSystemEndColourB, particleSystemX, particleSystemY, false);
   }
 
   void draw() {
@@ -92,15 +92,20 @@ class Enemy {
 
 
   void attack() {
+    fireballAmount = player.fireball;
+    if (fireballs.size()==fireballAmount) {
+    } else {
+      fireballAdd();
+    }
 
     // timer that changes angry to true and draws the fireBall when angry. 
     if (millis()-angryTimer > angryCooldown  ) {
       angry = true;
-      fireballParticleSystem.particleID = "Fireball";
+      for (int i = fireballs.size()-1; i>= 0; i--) {
+        ParticleSystem fireball = fireballs.get(i);
+        fireball.particleID = "Fireball";
+      }
       fireBallTimer = millis();
-
-
-
       angryTimer = millis();
       AngryDurationTimer = millis();
     } else if (angry && millis()-AngryDurationTimer > attackDurationCooldown) {
@@ -110,15 +115,30 @@ class Enemy {
 
     if (angry && millis()-fireBallTimer > fireBallDurationCooldown) {
       attack = true;
-      fireballParticleSystem.draw = true;
+      for (int i = fireballs.size()-1; i>= 0; i--) {
+        fireballStartTimeCalc = i - 1;
+        if(fireballStartTimeCalc == -1){fireballStartTimeCalc = 0;}
+        fireBallDurationCooldown = Config.FIREBALL_STARTING_TIME + (fireballStartTimeCalc * 500);
+        ParticleSystem fireball = fireballs.get(i);
+        //particleSystemY = particleSystemsY.get(i);
+        //particleSystemX = particleSystemsX.get(i);
+        fireball.draw = true;
 
-      //folow dragono untill shooting
-      particleSystemY = y + 100;
-      particleSystemX = x + dragon.frameImage[0].width/5*4 /2;
+        //folow dragono untill shooting
+        particleSystemY = y + 100;
+        particleSystemX = x + dragon.frameImage[0].width/5*4 /2;
+
+        particleSystemsY.set(i, particleSystemY);
+        particleSystemsX.set(i, particleSystemX);
+      }
     }
 
     if (attack) {
-      particleSystemX += fireBallSpeed;
+      for (int i = fireballs.size()-1; i>= 0; i--) {
+        particleSystemX = particleSystemsX.get(i);
+        particleSystemX += fireBallSpeed;
+        particleSystemsX.set(i,particleSystemX);
+      }
     }
   }
 
@@ -132,21 +152,35 @@ class Enemy {
       hitX = player.playerPos.x - (player.size.x/2);
     }
 
-    //checks collision between fireball and player
-    if (particleSystemX >= hitX && particleSystemX < hitX + player.size.x && particleSystemY >= player.playerPos.y - player.size.y/2 && particleSystemY < player.playerPos.y + player.size.y/2) {
-      particleSystemX = 10000;
-      fireballParticleSystem.particleID = "Hit";
-      fireballParticleSystem.draw =false;
-      player.fireballHit();
+    for (int i = fireballs.size()-1; i>= 0; i--) {
+      ParticleSystem fireball = fireballs.get(i);
+      particleSystemX = particleSystemsX.get(i);
+      if (particleSystemX >= hitX && particleSystemX < hitX + player.size.x && particleSystemY >= player.playerPos.y - player.size.y/2 && particleSystemY < player.playerPos.y + player.size.y/2) {
+        particleSystemX = 10000;
+        fireball.particleID = "Hit";
+        fireball.draw =false;
+        player.fireballHit();
+      }
+      particleSystemsX.set(i,particleSystemX);
     }
   }
 
   void drawAttack() {
     if (attack) {
-      fireballParticleSystem.particleSystemStartX = particleSystemX;
-      fireballParticleSystem.particleSystemStartY = particleSystemY;
-      fireballParticleSystem.draw();
+      for (int i = 0; i< fireballs.size(); i++)
+      {
+        ParticleSystem fireball = fireballs.get(i);
+        fireball.particleSystemStartX  = particleSystemX;
+        fireball.particleSystemStartY = particleSystemY;
+        fireball.draw();
+      }
     }
+  }
+
+  void fireballAdd() {
+    fireballs.add(new ParticleSystem(ID, particleSystemStartColourR, particleSystemStartColourG, particleSystemStartColourB, particleSystemEndColourR, particleSystemEndColourG, particleSystemEndColourB, particleSystemX, particleSystemY, false));
+    particleSystemsY.add(particleSystemY);
+    particleSystemsX.add(particleSystemX);
   }
 
 }
