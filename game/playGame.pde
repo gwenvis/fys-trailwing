@@ -69,7 +69,7 @@ class PlayGame {
   void move() {
     manager.moveGroups();
     enemy.attack();
-    enemy.movement();
+    enemy.movement(player.playerPos.y);
     enemy.collision();
     TileCollision collision = manager.checkCollision(player.playerPos, player.size);
     player.obstacle = manager.ObstacleCheckCollision(player.playerPos, player.size);

@@ -20,7 +20,7 @@ class Enemy {
   boolean attack;
 
   private int movedDistance;
-  private float playerY, playerX;
+  private float playerX;
   private float playerWidthHalf, playerHeightHalf, playerWidth, playerHeight;
   private float shieldWidth;
 
@@ -46,7 +46,7 @@ class Enemy {
 
     //Size & pos Enemy+
     this.x = 150;
-    this.y = playerY -50;
+    this.y = player.playerPos.y -50;
     this.speed = 6;
     this.attackW = (width/10)*3;
     this.attackH = 50;
@@ -70,7 +70,6 @@ class Enemy {
 
     this.fireBallSpeed = 15;
 
-    playerY = player.playerPos.y;
     playerX = player.playerPos.x;
     playerWidthHalf = playerWidth/2;
     playerHeightHalf = playerHeight/2;
@@ -101,10 +100,10 @@ class Enemy {
   }
 
 
-  void movement() {
-    if (y < playerY -movedDistance) {
+  void movement(float playerY) {
+    if (y < playerY - movedDistance) {
       y += speed;
-    } else if (y > playerY +movedDistance) {
+    } else if (y > playerY + movedDistance) {
       y -= speed;
     }
   }
@@ -184,7 +183,7 @@ class Enemy {
     for (int i = fireballs.size()-1; i>= 0; i--) {
       ParticleSystem fireball = fireballs.get(i);
       particleSystemX = particleSystemsX.get(i);
-      if (particleSystemX >= hitX && particleSystemX < hitX + playerWidth && particleSystemY >= playerY - playerHeightHalf && particleSystemY < playerY + playerHeightHalf) {
+      if (particleSystemX >= hitX && particleSystemX < hitX + playerWidth && particleSystemY >= player.playerPos.y - playerHeightHalf && particleSystemY < player.playerPos.y + playerHeightHalf) {
         fireball.particleID = "Hit";
         fireball.draw =false;
         player.fireballHit();
