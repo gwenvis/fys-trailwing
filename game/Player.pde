@@ -220,6 +220,8 @@ class Player {
    */
   void draw() {
     imageMode(CENTER);
+    //image(playerImage, playerPos.x, playerPos.y);
+    playerWalk.draw(playerPos.x, playerPos.y, 74,74);
 
     //Checks if player is invincible or not
     if (invincibility) {
@@ -227,7 +229,6 @@ class Player {
       tint(#0000AA);
     }
 
-    playerWalk.draw(playerPos.x, playerPos.y);
     int curFrame = playerWalk.getCurrentImage();
 
     if(curFrame != lastPlayerFrame 
@@ -316,6 +317,7 @@ class Player {
     //Player running on the ground
     if (tileCollision.direction.y == Config.DOWN && gravityPull != zero) {
       playerPos.y = tileCollision.position.y;
+      playerWalk.setAnimationSpeed(postureChangeSpeed);
 
       particlePresent = true;
       onGround = true;
@@ -328,7 +330,7 @@ class Player {
       jump();
 
       dust.draw = false;
-    }
+    } 
 
     if (tileCollision.direction.y != Config.DOWN && gravityPull == zero) {
       //Made by Cody
@@ -377,6 +379,7 @@ class Player {
         }
       }
       obstacle = null;
+      soundBank.playSound(SoundType.BARREL_HIT);
     }
 
     //Ends duration of the power-up
@@ -455,6 +458,11 @@ class Player {
     //Player is not falling down and pressed the x button
     if (Input.keyPressed('x') && tileCollision.direction.y == Config.DOWN) {
       jump = true;
+
+      if(!jump)
+      {      
+        soundBank.playSound(SoundType.JUMP);
+      }
     }    
 
     //Player pressed the a button

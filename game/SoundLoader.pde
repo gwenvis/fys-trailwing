@@ -12,6 +12,9 @@ public class SoundBank
 
     sounds.put(SoundType.JUMP, new Sound(0.6f, app,
           "sounds/jump1.wav", "sounds/jump2.wav"));
+
+    sounds.put(SoundType.BARREL_HIT, new Sound(0.6f, app,
+          "sounds/barrel1.wav", "sounds/barrel2.wav"));
   }
 
   public void playSound(SoundType soundType)
