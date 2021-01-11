@@ -208,6 +208,7 @@ class TileManager {
    */
   void playerLocation(Player player) {
     if (player.playerPos.y>=height-(Config.PLAYER_SIZE.y/2)) {
+      enemy.y = 0;
 
       chunkpool++;
       poolDistance = 0;
