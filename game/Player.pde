@@ -286,8 +286,6 @@ class Player {
 
     //Player not on tiles and jumping up
     if (tileCollision.direction.y != -1) {
-
-      playerWalk.setAnimationSpeed(postureChangeSpeed);
       gravityPull++;
       onGround = false;
       dust.draw = false;
@@ -296,7 +294,6 @@ class Player {
     //Player jumps into floating tile
     if (tileCollision.direction.y == 1) {
 
-      playerWalk.setAnimationSpeed(postureChangeSpeed);
       jumpBoost = false;
       gravityPull = 55;
     }
@@ -304,6 +301,8 @@ class Player {
     //Player running on the ground
     if (tileCollision.direction.y == Config.DOWN && gravityPull != zero) {
       playerPos.y = tileCollision.position.y;
+
+      playerWalk.setAnimationSpeed(postureChangeSpeed);
 
       particlePresent = true;
       onGround = true;
