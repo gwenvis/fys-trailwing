@@ -4,8 +4,6 @@
  */
 public class CommentOverlay implements IKeyboardCallback
 {
-  
-
   private String commentInput = "";
   private boolean firstFrameSkipped = false;
   private KeyboardHUD keyboardHud;
@@ -22,6 +20,9 @@ public class CommentOverlay implements IKeyboardCallback
     textWidth = textWidth('W') * keyboardHud.getLimit();
   }
 
+  /*
+   * Updates the state and handles keyboard input.
+   */
   public CommentOverlayState update()
   { 
     if(discarded) return CommentOverlayState.DISCARDED;
@@ -44,8 +45,8 @@ public class CommentOverlay implements IKeyboardCallback
 
   public void handleKeyboard()
   {
-    commentInput = Keyboard.update(commentInput);
-    keyboardHud.value = commentInput;
+    //commentInput = Keyboard.update(commentInput);
+    //keyboardHud.value = commentInput;
     keyboardHud.update();
   }
 

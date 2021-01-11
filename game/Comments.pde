@@ -12,7 +12,7 @@ public class CommentsDatabase
    */
   public ArrayList<Comment> getComments(int minRange, int maxRange) 
   {
-    Table commentTable = database.runQuery(String.format("SELECT location, content FROM Comment WHERE location BETWEEN %d AND %d", minRange, maxRange));
+    Table commentTable = database.runQuery(String.format("SELECT distance, content FROM comment WHERE distance BETWEEN %d AND %d", minRange, maxRange));
     if(commentTable.getRowCount() == 0) return null;
 
     ArrayList<Comment> comments = new ArrayList<Comment>();
@@ -21,23 +21,38 @@ public class CommentsDatabase
     {
       int distance = 0;
       String content = null;
-      for(int col = 0; col < commentTable.getColumnCount(); col++)
-      {
-        if(col == 0) distance = commentTable.getInt(row, col);
-        if(col == 1) content = commentTable.getString(row, col);
-      }
+      distance = commentTable.getInt(row, 0);
+      content = commentTable.getString(row, 1);
 
       comments.add(new Comment(content, distance));
     }
 
     return comments;
   }
+  
+  public ArrayList<Comment> getCommentsByName(String name)
+  {
+     Table commentTable = database.runQuery(
+       String.format("SELECT comment.distance, comment.content, player.name FROM comment INNER JOIN player ON player.id = comment.player_id WHERE player.name = '%s'",
+         name));
+     
+     ArrayList<Comment> comments = new ArrayList<Comment>();
+     
+     return comments;
+  }
 
   public void addComment(Comment comment)
   {
     database.updateQuery(
-        String.format("INSERT INTO Comment (location, content, player_ID) values (%d, \"%s\", %d)", 
-          comment.getDistance(), comment.getContent(), 0));
+        String.format("INSERT INTO Comment (distance, content, player_id, created_on) values (%d, \"%s\", %d, CURRENT_TIMESTAMP)", 
+          comment.getDistance(), comment.getContent(), comment.getPlayerId()));
+  }
+  
+  public void updateComment(int id, Comment comment)
+  {
+    database.updateQuery(
+      String.format("UPDATE comment SET distance = %d, content = '%s', player_id = %d WHERE id = %d", 
+        comment.getDistance(), comment.getContent(), comment.getPlayerId(), id));
   }
 }
 
@@ -54,4 +69,5 @@ public class Comment
 
   public String getContent() { return content; }
   public int getDistance() { return distance; }
+  public int getPlayerId() { return 0; }
 }

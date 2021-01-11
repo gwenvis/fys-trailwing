@@ -1,4 +1,5 @@
-/* @author Antonio Bottelier
+/* 
+ * @author Antonio Bottelier
  */
 public class MusicManager
 {

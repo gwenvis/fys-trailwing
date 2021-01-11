@@ -45,6 +45,8 @@ class Player {
   private int screenCalcPercentage, screenCalcPercentageLeft, screenCalcPercentageRight;
   private int zero, two, three;
   private int speedUpTimer, speedUpCoolDown;
+  private int lastPlayerFrame;
+  private int[] footstepFrames = { 3, 7 };
 
   private float barierCalcX, barierCalcY;
   private float playerVelocity, speedUp;
@@ -227,6 +229,16 @@ class Player {
       tint(#0000AA);
     }
 
+    int curFrame = playerWalk.getCurrentImage();
+
+    if(curFrame != lastPlayerFrame 
+        && (footstepFrames[0] == curFrame || footstepFrames[1] == curFrame))
+    {
+      soundBank.playSound(SoundType.FOOTSTEP);
+    }
+
+    lastPlayerFrame = playerWalk.getCurrentImage();
+
     tint(white, white);
     //Checks if shield is currently being used
     if (shieldAmount != zero && (shieldIsUpLeft||shieldIsUpRight)) {
@@ -305,6 +317,7 @@ class Player {
     //Player running on the ground
     if (tileCollision.direction.y == Config.DOWN && gravityPull != zero) {
       playerPos.y = tileCollision.position.y;
+      playerWalk.setAnimationSpeed(postureChangeSpeed);
 
       particlePresent = true;
       onGround = true;
@@ -317,7 +330,7 @@ class Player {
       jump();
 
       dust.draw = false;
-    }
+    } 
 
     if (tileCollision.direction.y != Config.DOWN && gravityPull == zero) {
       //Made by Cody
@@ -366,6 +379,7 @@ class Player {
         }
       }
       obstacle = null;
+      soundBank.playSound(SoundType.BARREL_HIT);
     }
 
     //Ends duration of the power-up
@@ -444,6 +458,11 @@ class Player {
     //Player is not falling down and pressed the x button
     if (Input.keyPressed('x') && tileCollision.direction.y == Config.DOWN) {
       jump = true;
+
+      if(!jump)
+      {      
+        soundBank.playSound(SoundType.JUMP);
+      }
     }    
 
     //Player pressed the a button
