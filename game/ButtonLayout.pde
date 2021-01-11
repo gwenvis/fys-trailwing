@@ -6,7 +6,7 @@ class ButtonLayout {
   PImage keyboard;
   float timer, timercd;
   boolean timerSet;
-  int alpha, completelyVisible;
+  int alpha, completelyVisible, alphaFadeSpeed;
   float alphaTimer, alphaCD;
   boolean firstAlphaSet;
 
@@ -29,6 +29,7 @@ class ButtonLayout {
     this.alphaTimer = 0;
     this.alphaCD = 7000;
     this.alpha = 0;
+    this.alphaFadeSpeed = 5;
     this.firstAlphaSet = false;
     this.completelyVisible = 250;
   }
@@ -37,7 +38,7 @@ class ButtonLayout {
     
     //makes the layout visible at first. 
     if (alpha <= completelyVisible && !firstAlphaSet) {
-      alpha += 5;
+      alpha += alphaFadeSpeed;
     } else {
       firstAlphaSet = true;
     }
