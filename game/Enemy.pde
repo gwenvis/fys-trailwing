@@ -20,6 +20,7 @@ class Enemy {
   boolean attack;
   private boolean lastFrameAngry;
   private boolean lastFrameAttack;
+  private boolean canPlayAttackSound = false;
 
   private int movedDistance;
   private float playerX;
@@ -37,8 +38,6 @@ class Enemy {
 
   ParticleSystem fireballParticleSystem;
   SpriteAnimation dragon; 
-
-
 
   Enemy(Player player) {
 
@@ -122,6 +121,8 @@ class Enemy {
       fireballAdd();
     }
 
+    if(fireballAmount == 0) return;
+
     // timer that changes angry to true and draws the fireBall when angry. 
     if (millis()-angryTimer > angryCooldown  ) {
       angry = true;
@@ -140,6 +141,8 @@ class Enemy {
     if (angry && millis()-fireBallTimer > fireBallDurationCooldown) {
       // Time to attack, starts spawning fireballs
       attack = true;
+      canPlayAttackSound = false;
+      lastFrameAttack = true;
 
       for (int i = fireballs.size()-1; i>= 0; i--) {
         fireballStartTimeCalc = i - 1;
@@ -157,6 +160,10 @@ class Enemy {
         particleSystemsY.set(i, particleSystemY);
         particleSystemsX.set(i, particleSystemX);
       }
+    }
+    else
+    {
+      canPlayAttackSound = true;
     }
 
     if (attack) {
@@ -186,13 +193,13 @@ class Enemy {
       soundBank.playSound(SoundType.DRAGON_BRUL);
     }
 
-    if(attack && attack != lastFrameAttack)
+    if(attack && lastFrameAttack == true && canPlayAttackSound)
     {
-      soundBank.playSound(SoundType.FIRE_START);
+      soundBank.playSound(SoundType.FIRE_SHOOT);
+      lastFrameAttack = false;
     }
 
     lastFrameAngry = angry;
-    lastFrameAttack = attack;
   }
 
   /*
