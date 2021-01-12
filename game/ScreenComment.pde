@@ -15,8 +15,8 @@ public class ScreenComment
 
   public void update()
   {
-    if (!shouldDraw) return;
-    position.x -= manager.speed;
+    if(!shouldDraw) return;
+    position.x -= manager.speed; 
   }
 
   public void appear()
@@ -36,7 +36,7 @@ public class ScreenComment
 
   public void draw()
   {
-    if (!shouldDraw) return;
+    if(!shouldDraw) return;
     fill(255);
     textAlign(LEFT);
     textSize(textSize);

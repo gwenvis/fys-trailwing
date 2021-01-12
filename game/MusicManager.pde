@@ -20,9 +20,9 @@ public class MusicManager
 
   public void update()
   {
-    if (lastState != gameState)
+    if(lastState != gameState)
     {
-      if ((currentCategory == music.get(gameState)) || (currentCategory != null && currentCategory.isAlias(gameState)))
+      if((currentCategory == music.get(gameState)) || (currentCategory != null && currentCategory.isAlias(gameState)))
       {
         lastState = gameState;
         return;
@@ -32,14 +32,14 @@ public class MusicManager
       lastState = gameState;
       stopCurrentSong();
       selectNewSong();
-      if (currentSong != null) println("playing new song " + currentSong.fileName);
+      if(currentSong != null) println("playing new song " + currentSong.fileName);
       else println("no new song found. Bummer.");
       playCurrentSong();
       setVolume(volume);
     }
-
+    
     // wait until the current song has ended before picking a new one
-    if ((currentSong == null || currentSong.isPlaying()) || !currentCategory.loop ) return;
+    if((currentSong == null || currentSong.isPlaying()) || !currentCategory.loop ) return;
 
     selectNewSong();
     playCurrentSong();
@@ -49,7 +49,7 @@ public class MusicManager
   public void setVolume(float volume)
   {
     this.volume = volume;
-    if (currentSong != null)
+    if(currentSong != null)
     {
       currentSong.setVolume(volume);
     }
@@ -62,12 +62,12 @@ public class MusicManager
 
   private void stopCurrentSong()
   {
-    if (currentSong != null) currentSong.stop();
+    if(currentSong != null) currentSong.stop();
   }
 
   private void playCurrentSong()
   {
-    if (currentSong == null) return;
+    if(currentSong == null) return;
     currentSong.play();
     currentSong.sound.jump(0);
   }
@@ -77,7 +77,7 @@ public class MusicManager
     // select a random song from the current state.
     currentSong = null;
     currentCategory = null;
-    if (!music.containsKey(lastState)) return; // .. if it exists, of course.
+    if(!music.containsKey(lastState)) return; // .. if it exists, of course.
 
     currentCategory = music.get(lastState);
     int randomIndex = -1;
@@ -85,7 +85,7 @@ public class MusicManager
     do {
       randomIndex = (int)random(0, currentCategory.getSongCount());
       tries--;
-    } while (tries > 0 && (randomIndex != lastSongIndex || !preventRepetition));
+    } while(tries > 0 && (randomIndex != lastSongIndex || !preventRepetition));
 
     currentSong = currentCategory.getSong(randomIndex);
   }
@@ -94,14 +94,14 @@ public class MusicManager
   {
     music = new HashMap<String, StateMusicCategory>();
     JSONArray musicData = loadJSONArray(MUSIC_DATA_PATH);
-    for (int i = 0; i < musicData.size(); i++)
+    for(int i = 0; i < musicData.size(); i++)
     {
       JSONObject stateData = musicData.getJSONObject(i);
       String stateName = stateData.getString("state");
 
       ArrayList<Song> songs = new ArrayList<Song>();
       JSONArray stateSongsData = stateData.getJSONArray("songs");
-      for (int j = 0; j < stateSongsData.size(); j++)
+      for(int j = 0; j < stateSongsData.size(); j++)
       {
         JSONObject s = stateSongsData.getJSONObject(j);
         String fileName = s.getString("fileName");
@@ -121,9 +121,9 @@ public class MusicManager
   private String[] getAlias(JSONObject o)
   {
     JSONArray alia = o.getJSONArray("alias");
-    if (alia == null || alia.size() == 0) return null;
+    if(alia == null || alia.size() == 0) return null;
     String[] alias = new String[alia.size()];
-    for (int i = 0; i < alias.length; i++)
+    for(int i = 0; i < alias.length; i++)
     {
       alias[i] = alia.getString(i);
     }

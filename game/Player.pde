@@ -231,8 +231,8 @@ class Player {
 
     int curFrame = playerWalk.getCurrentImage();
 
-    if (curFrame != lastPlayerFrame 
-      && (footstepFrames[0] == curFrame || footstepFrames[1] == curFrame))
+    if(curFrame != lastPlayerFrame 
+        && (footstepFrames[0] == curFrame || footstepFrames[1] == curFrame))
     {
       soundBank.playSound(SoundType.FOOTSTEP);
     }
@@ -457,7 +457,7 @@ class Player {
 
     //Player is not falling down and pressed the x button
     if (Input.keyPressed('x') && tileCollision.direction.y == Config.DOWN) {
-      if (!jump)
+      if(!jump)
       {      
         soundBank.playSound(SoundType.JUMP);
       } 

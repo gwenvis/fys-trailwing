@@ -1,7 +1,7 @@
-/*
+ /*
   * @author Patrick
- * limit added by Antonio
- */
+  * limit added by Antonio
+  */
 public static class Keyboard
 {
   public static String update(String s, int limit)
@@ -21,9 +21,7 @@ public static class Keyboard
     return s;
   }
 
-  public static String update(String s) { 
-    return update(s, -1);
-  }
+  public static String update(String s) { return update(s, -1); }
 }
 
 /*
@@ -43,8 +41,8 @@ public class KeyboardHUD
   public PVector position;
   private IKeyboardCallback keyboardCallback;
   private String[][] keys = {
-    {"q", "w", "e", "r", "t", "y", "u", "i", "o", "p"}, 
-    {"a", "s", "d", "f", "g", "h", "j", "k", "l", "↵"}, 
+    {"q", "w", "e", "r", "t", "y", "u", "i", "o", "p"},
+    {"a", "s", "d", "f", "g", "h", "j", "k", "l", "↵"},
     {"z", "x", "c", "v", "b", "n", "m", "_", "×", "«"}
   };
   private int selectedKeyX = 0;
@@ -80,42 +78,49 @@ public class KeyboardHUD
 
   public void update()
   {
-    if (Input.keyCodeClicked(UP))
+    if(Input.keyCodeClicked(UP))
     {
       selectedKeyY--;
-      if (selectedKeyY < 0) selectedKeyY = keys.length - 1;
-    } else if (Input.keyCodeClicked(DOWN))
+      if(selectedKeyY < 0) selectedKeyY = keys.length - 1;
+    }
+    else if(Input.keyCodeClicked(DOWN))
     {
       selectedKeyY++;
-      if (selectedKeyY > keys.length - 1) selectedKeyY = 0;
-    } else if (Input.keyCodeClicked(LEFT))
+      if(selectedKeyY > keys.length - 1) selectedKeyY = 0;
+    }
+    else if(Input.keyCodeClicked(LEFT))
     {
       selectedKeyX--;
-      if (selectedKeyX < 0) selectedKeyX = keys[selectedKeyY].length - 1;
-    } else if (Input.keyCodeClicked(RIGHT))
+      if(selectedKeyX < 0) selectedKeyX = keys[selectedKeyY].length - 1;
+    }
+    else if(Input.keyCodeClicked(RIGHT))
     {
       selectedKeyX++;
-      if (selectedKeyX > keys[selectedKeyY].length - 1) selectedKeyX = 0;
+      if(selectedKeyX > keys[selectedKeyY].length - 1) selectedKeyX = 0;
     }
 
-    if (Input.keyClicked('z') || Input.keyClicked('Z'))
+    if(Input.keyClicked('z') || Input.keyClicked('Z'))
     {
       String k = keys[selectedKeyY][selectedKeyX];
 
-      if (k.equals(RETURN_KEY))
+      if(k.equals(RETURN_KEY))
       {
         submit();
-      } else if (k.equals(BACKSPACE_KEY))
+      }
+      else if(k.equals(BACKSPACE_KEY))
       {
         backspace();
-      } else if (k.equals(DISCARD_KEY))
+      }
+      else if(k.equals(DISCARD_KEY))
       {
         discard();
         value = "";
-      } else if (k.equals(SPACE_KEY))
+      }
+      else if(k.equals(SPACE_KEY))
       {
         addCharacter(" ");
-      } else
+      }
+      else
       {
         addCharacter(k);
       }
@@ -124,11 +129,11 @@ public class KeyboardHUD
 
   public void draw()
   {
-    for (int i = 0; i < keys.length; i++)
+    for(int i = 0; i < keys.length; i++)
     {
       float y = position.y + KEY_HEIGHT * i + ROW_V_MARGIN * i;
 
-      for (int j = 0; j < keys[i].length; j++)
+      for(int j = 0; j < keys[i].length; j++)
       {
         float x = position.x + KEY_WIDTH * j + KEY_MARGIN * j;
         boolean selected = i == selectedKeyY && j == selectedKeyX;
@@ -138,7 +143,7 @@ public class KeyboardHUD
         fill(c);
         rectMode(CORNER);
         rect(x, y, KEY_WIDTH, KEY_HEIGHT);
-
+        
         stroke(0);
         fill(0);
         textSize(16);
@@ -159,13 +164,13 @@ public class KeyboardHUD
 
   public void backspace()
   {
-    if (value.length() > 0) value = value.substring(0, value.length()-1);
+    if(value.length() > 0) value = value.substring(0, value.length()-1);
     keyboardCallback.onValueChanged(value);
   }
 
   public void addCharacter(String character)
   {
-    if ((limit == -1 || value.length() < limit))
+    if((limit == -1 || value.length() < limit))
     {
       value += character;
       keyboardCallback.onValueChanged(value);

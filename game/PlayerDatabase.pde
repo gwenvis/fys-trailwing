@@ -23,7 +23,7 @@ class PlayerDatabase {
     Table output = database.runQuery(query);
     return output.getInt(0, 0) == 1;
   }
-
+  
   //looks in db for nickname, then takes its id
   void loadPlayer(String nickName) {
     // stores existing playerdata locally.
@@ -32,4 +32,8 @@ class PlayerDatabase {
     Table output = database.runQuery(query);
     id = output.getInt(0, 0);
   }
+  
+  
+
+
 }
