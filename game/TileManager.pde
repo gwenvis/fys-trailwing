@@ -109,6 +109,10 @@ class TileManager {
           col.direction = collision;
           col.position = new PVector(tilePosition.x + tile.size.x * collision.x, tilePosition.y + ((tile.size.y/2+targetSize.y/2) * collision.y));
 
+          if (tile.layer.equals("lava")) {
+            player.death();
+          }
+
           return col;
         }
       }

@@ -175,6 +175,7 @@ class Player {
     //Power-up invincibility
     invincibility = false;
     invincibleSignImage = loadImage("Invincibility_sign.png");
+    invincibleSignImage.resize((int)size.x,(int)size.y);
 
     //particlesystem dust
     ID = "RunDust";

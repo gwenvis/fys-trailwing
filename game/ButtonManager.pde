@@ -35,8 +35,10 @@ class ButtonManager {
   void indexSelecterKeysVertical() {
     if ((Input.keyClicked('s')||Input.keyCodeClicked(DOWN)) && index < indexMax) {
       index += 1;
+      soundBank.playSound(SoundType.BUTTON_NAVIGATE);
     } else if ((Input.keyClicked('w')||Input.keyCodeClicked(UP))&& index > 0) {
       index -= 1;
+      soundBank.playSound(SoundType.BUTTON_NAVIGATE);
     }
 
     for (int i = 0; i < buttons.size(); i++) {
