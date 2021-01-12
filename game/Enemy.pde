@@ -191,7 +191,7 @@ class Enemy {
       }
     }
 
-    if(angry && angry != lastFrameAngry && millis()-fireBallTimer > fireBallDurationCooldown)
+    if (angry && angry != lastFrameAngry && millis()-fireBallTimer > fireBallDurationCooldown)
     {
       soundBank.playSound(SoundType.DRAGON_BRUL);
       lastFrameAngry = angry;

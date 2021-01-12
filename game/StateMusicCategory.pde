@@ -22,11 +22,11 @@ public class StateMusicCategory
    */
   public boolean isAlias(String alias)
   {
-    if(this.alias == null || this.alias.length == 0) return false;
+    if (this.alias == null || this.alias.length == 0) return false;
 
-    for(String a : this.alias)
+    for (String a : this.alias)
     {
-      if(a.equals(alias)) return true;
+      if (a.equals(alias)) return true;
     }
 
     return false;
@@ -43,16 +43,18 @@ public class StateMusicCategory
   /*
    * Get the Song Count.
    */
-  public int getSongCount() { return songs.size(); }
+  public int getSongCount() { 
+    return songs.size();
+  }
 
   /*
    * Gets a song with the filename.
    */
   public Song getSong(String fileName)
   {
-    for(Song song : songs)
+    for (Song song : songs)
     {
-      if(song.fileName.equals(fileName)) return song;
+      if (song.fileName.equals(fileName)) return song;
     }
 
     return null;

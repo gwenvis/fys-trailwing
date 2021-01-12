@@ -12,15 +12,14 @@ public class Database
   public Database(String connectLink, boolean useStaticConnection, String username, String password)
   { 
     Properties properties = new Properties();
-    if(username != null) properties.put("user", username);
-    if(password != null) properties.put("password", password);
+    if (username != null) properties.put("user", username);
+    if (password != null) properties.put("password", password);
 
     this.useStaticConnection = useStaticConnection;
-    if(useStaticConnection && GlobalDatabase.getConnection() == null)
+    if (useStaticConnection && GlobalDatabase.getConnection() == null)
     {
       GlobalDatabase.setConnection(new MySQLConnection(connectLink, properties));
-    }
-    else 
+    } else 
     {
       sqlConnection = new MySQLConnection(connectLink, properties);
     }
@@ -48,11 +47,10 @@ public static class GlobalDatabase
 
   public static void setConnection(SQLConnection con)
   {
-    if(sqlConnection == null)
+    if (sqlConnection == null)
     {
       sqlConnection = con;
-    }
-    else
+    } else
     {
       println("warning: the global database has already been set, not changing");
     }

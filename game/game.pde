@@ -95,7 +95,7 @@ void gameStates() {
     start.audioSlider();
   } else if (gameState == "PLAY") {
     boolean available = screenShake.isAvailable();
-    if(available)
+    if (available)
     {
       pushMatrix();
       PVector offset = screenShake.getOffset();
@@ -103,7 +103,7 @@ void gameStates() {
     }
     play.update();
     play.draw();
-    if(available)
+    if (available)
     {
       popMatrix();
     }

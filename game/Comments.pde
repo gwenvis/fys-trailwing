@@ -20,11 +20,11 @@ public class CommentsDatabase
   public ArrayList<Comment> getComments(int minRange, int maxRange) 
   {
     Table commentTable = database.runQuery(String.format("SELECT distance, content FROM comment WHERE distance BETWEEN %d AND %d", minRange, maxRange));
-    if(commentTable.getRowCount() == 0) return null;
+    if (commentTable.getRowCount() == 0) return null;
 
     ArrayList<Comment> comments = new ArrayList<Comment>();
 
-    for(int row = 0; row < commentTable.getRowCount(); row++)
+    for (int row = 0; row < commentTable.getRowCount(); row++)
     {
       int distance = 0;
       String content = null;
@@ -36,19 +36,19 @@ public class CommentsDatabase
 
     return comments;
   }
-  
+
   /*
    * Get all comments by name (NOT IMPLEMENTED!)
    */
   public ArrayList<Comment> getCommentsByName(String name)
   {
-     Table commentTable = database.runQuery(
-       String.format("SELECT comment.distance, comment.content, player.name FROM comment INNER JOIN player ON player.id = comment.player_id WHERE player.name = '%s'",
-         name));
-     
-     ArrayList<Comment> comments = new ArrayList<Comment>();
-     
-     return comments;
+    Table commentTable = database.runQuery(
+      String.format("SELECT comment.distance, comment.content, player.name FROM comment INNER JOIN player ON player.id = comment.player_id WHERE player.name = '%s'", 
+      name));
+
+    ArrayList<Comment> comments = new ArrayList<Comment>();
+
+    return comments;
   }
 
   /*
@@ -57,10 +57,10 @@ public class CommentsDatabase
   public void addComment(Comment comment)
   {
     database.updateQuery(
-        String.format("INSERT INTO comment (distance, content, player_id, created_on) values (%d, \"%s\", %d, CURRENT_TIMESTAMP)", 
-          comment.getDistance(), comment.getContent(), comment.getPlayerId()));
+      String.format("INSERT INTO comment (distance, content, player_id, created_on) values (%d, \"%s\", %d, CURRENT_TIMESTAMP)", 
+      comment.getDistance(), comment.getContent(), comment.getPlayerId()));
   }
-  
+
   /*
    * Update a comment's values
    */
@@ -68,6 +68,6 @@ public class CommentsDatabase
   {
     database.updateQuery(
       String.format("UPDATE comment SET distance = %d, content = '%s', player_id = %d WHERE id = %d", 
-        comment.getDistance(), comment.getContent(), comment.getPlayerId(), id));
+      comment.getDistance(), comment.getContent(), comment.getPlayerId(), id));
   }
 }

@@ -1,6 +1,6 @@
 /* Made by Patrick Eikema
-   This class is a control tutorial that pops up before the game starts.
-*/
+ This class is a control tutorial that pops up before the game starts.
+ */
 class ButtonLayout {
   float text1X, text1Y, text2X, text2Y, keyboardX, keyboardY;
   int textSize, textSizeSkip;
@@ -38,7 +38,7 @@ class ButtonLayout {
   }
 
   void draw() {
-    
+
     //makes the layout visible at first. 
     if (alpha <= completelyVisible && !firstAlphaSet) {
       alpha += alphaFadeSpeed;
@@ -63,19 +63,19 @@ class ButtonLayout {
     image(keyboard, keyboardX, keyboardY);
     textSize(textSizeSkip);
     text("Press SPACE to skip", text2X, text2Y);
-    
+
     //if alpha timer done, makes the layout invisible.
     if (millis()-alphaTimer > alphaCD) {
       alpha -= 3;
     }
 
-   //if game timr is done, starts the game.
+    //if game timr is done, starts the game.
     if (millis()-timer > timercd) {
       noTint();
       gameState = "PLAY";
     }
   }
-  
+
   //if space is clicked, starts the game.
   void spaceCheck() {
     if (Input.keyClicked(' ')) {
