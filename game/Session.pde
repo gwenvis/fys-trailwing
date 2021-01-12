@@ -70,7 +70,7 @@ public class SessionDatabase
   */
   public ArrayList<Session> getBestSessionsPaginated(int page, int amountPerPage) 
   {
-    return formatDefaultList(String.format("SELECT `session`.*, `player`.`name` as name FROM `session` inner join `player` on `session`.`id` = `player`.id ORDER BY `session`.distance DESC LIMIT %d, %d", page, amountPerPage));
+    return formatDefaultList(String.format("SELECT `session`.*, `player`.`name` as name FROM `session` inner join `player` on `session`.`player_id` = `player`.id ORDER BY `session`.distance DESC LIMIT %d, %d", page, amountPerPage));
   }
   
   /*
