@@ -25,14 +25,16 @@ SoundBank soundBank;
 CommentsDatabase commentDatabase;
 AchievementsDatabase achievementsDb;
 PlayerDatabase playerdb;
+Parallux parallux;
 
 void setup() {
   commentDatabase = new CommentsDatabase();
   playerdb = new PlayerDatabase();
   achievementsDb = new AchievementsDatabase();
-
+  parallux = new Parallux();
   gameState = "LOGIN";
   animations = new Animations();
+  loadAssets();
   background(255);
   size(1600, 900, P2D);
   frameRate(60);
@@ -46,7 +48,6 @@ void setup() {
   gameOver = new GameOver();
   buttonLayout = new ButtonLayout();
   musicManager = new MusicManager(this);
-  PFont font = createFont("Arial", 64);
   textFont(font);
   hud = new HUD();
   soundBank = new SoundBank(this);
@@ -95,6 +96,7 @@ void gameStates() {
   } else if (gameState == "PLAY") {
     play.update();
     play.draw();
+    
   } else if (gameState == "BUTTONLAYOUT") {
     buttonLayout.draw(); 
     buttonLayout.spaceCheck();

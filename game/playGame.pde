@@ -14,11 +14,12 @@ class PlayGame {
     screenComments = new ArrayList<ScreenComment>();
     distance = 0;
     currentCommentLoadDistance = 0;
-    caveBackground = loadImage("caveBackground.png");
+    //caveBackground = loadImage("caveBackground.png");
+
     x1 = 0;
     x2 = width;
   }
-  
+
   void createSession()
   {
     highscoredb = new SessionDatabase();
@@ -35,7 +36,7 @@ class PlayGame {
     player.score = manager.score;
     player.update();
     manager.listener();
-    
+
     //make the player faster if movement cap is higher
     if (manager.speed <= manager.speedCap) {
       manager.speed += Config.CAMERA_SPEED_UP_SPEED;
@@ -64,8 +65,8 @@ class PlayGame {
   }
 
   /**
-  * handles movement and collision
-  */
+   * handles movement and collision
+   */
   void move() {
     manager.moveGroups();
     enemy.attack();
@@ -106,8 +107,10 @@ class PlayGame {
     imageMode(CORNER);
 
     if (manager.chunkpool == 0) {
-      image(caveBackground, x1, 0, width, height);
-      image(caveBackground, x2, 0, width, height);
+      parallux.background();
+      parallux.init();
+      //image(caveBackground, x1, 0, width, height);
+      //image(caveBackground, x2, 0, width, height);
       x1-=2;
       x2-=2;
       if (x1 + width < 0) {
@@ -116,7 +119,9 @@ class PlayGame {
         x2 = width;
       }
     } else {
-      background(0);
+      parallux.setCave();
+      parallux.cave();
+      //background(0);
     }
   }
 
