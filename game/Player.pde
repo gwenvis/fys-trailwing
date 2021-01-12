@@ -37,6 +37,7 @@ class Player {
   private boolean jump, landing, running;
   private boolean jumpBoost = false;
   private boolean invincibility = false;
+  private boolean dead = false;
 
   private int shieldDurability, maxShieldAmount, currentShield;
   private int maxArmourLevel;
@@ -221,7 +222,7 @@ class Player {
   void draw() {
     imageMode(CENTER);
     //image(playerImage, playerPos.x, playerPos.y);
-    playerWalk.draw(playerPos.x, playerPos.y);
+    playerWalk.draw(playerPos.x, playerPos.y, size.x,size.y);
 
     //Checks if player is invincible or not
     if (invincibility) {
@@ -581,6 +582,8 @@ class Player {
    * Calculates lasting armour of the player
    */
   void damage() {
+    if(dead) return;
+
     if (!invincibility) {
       if (currentArmourLevel >= maxArmourLevel) {
         //No armour left
@@ -617,7 +620,7 @@ class Player {
   void death() {
     session.coins = coinAmount;
     session.distance = (int)manager.score;
-
+    dead = true;
     highscoredb.updateSession(session.getId(), session);
     coinsTotal = (coinMultiplyer * maxCoinAmount) + coinAmount;
     achievementsDb.achievementCheck(int(manager.score), coinsTotal, manager.chunkpool, fireballHit);
