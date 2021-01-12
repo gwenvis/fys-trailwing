@@ -213,6 +213,10 @@ class Player {
     hitObstacle = new ParticleSystem(hitID, hitStartColourR, hitStartColourG, hitStartColourB, hitEndColourR, hitEndColourG, hitEndColourB, hitX, hitY, ToRight);
   }
 
+  public void updatePlayerSpeed() {
+    currentArmourSpeedMultiplier = armourLevels.get(currentArmourLevel > armourLevels.size() - 1 ? armourLevels.size() - 1 : currentArmourLevel);
+  }
+
   /* 
    * Draws player, invincibility sign, shield and particlesystem
    */
@@ -572,6 +576,7 @@ class Player {
     if (shieldIsUpLeft && shieldLeft) {
       shieldHit();
     } else {
+      updatePlayerSpeed();
       damage();
     }
   }
@@ -594,6 +599,8 @@ class Player {
     }
 
     screenShake.addScreenShake();
+    
+    updatePlayerSpeed();
   }
 
   /* 
