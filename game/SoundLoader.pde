@@ -45,7 +45,7 @@ public class SoundBank
 
     sounds.put(SoundType.BUTTON_SELECT, new Sound(0.6f, app, "sounds/buttonselect1.wav"));
 
-    sounds.put(SoundType.COIN, new Sound(0.6f, app, "sounds/coin1.wav"));
+    sounds.put(SoundType.COIN, new Sound(0.4f, app, "sounds/coin1.wav"));
 
     sounds.put(SoundType.LAVA_BUBBLE, new Sound(0.6f, app, "sounds/lava.wav"));
     
