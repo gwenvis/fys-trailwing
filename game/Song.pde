@@ -22,7 +22,7 @@ public class Song
 
   public void setVolume(float volume)
   {
-    if(volume == calcVolume) return;
+    if (volume == calcVolume) return;
     calcVolume = volume * this.volume;
     sound.amp(calcVolume);
   }

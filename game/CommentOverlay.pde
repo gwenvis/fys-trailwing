@@ -14,7 +14,7 @@ public class CommentOverlay implements IKeyboardCallback
 
   public CommentOverlay() 
   {
-    keyboardHud = new KeyboardHUD(this, new PVector(0,height/2+50), 20);
+    keyboardHud = new KeyboardHUD(this, new PVector(0, height/2+50), 20);
     keyboardHud.position.x = width/2-keyboardHud.getWidth()/2;
 
     textWidth = textWidth('W') * keyboardHud.getLimit();
@@ -25,17 +25,17 @@ public class CommentOverlay implements IKeyboardCallback
    */
   public CommentOverlayState update()
   { 
-    if(discarded) return CommentOverlayState.DISCARDED;
+    if (discarded) return CommentOverlayState.DISCARDED;
 
     // Ignore the first frame ( for keyboard input ) 
-    if(!firstFrameSkipped)
+    if (!firstFrameSkipped)
     {
       firstFrameSkipped = true;
       return CommentOverlayState.NOT_FINISHED;
     }
 
     handleKeyboard();
-    if(submitted)
+    if (submitted)
     {
       return CommentOverlayState.SUBMITTED;
     }
@@ -57,7 +57,7 @@ public class CommentOverlay implements IKeyboardCallback
 
   public void draw() 
   {
-    background(0,0,0,0.3f);
+    background(0, 0, 0, 0.3f);
     textSize(32);
     fill(255);
     textAlign(LEFT);
@@ -85,8 +85,8 @@ public class CommentOverlay implements IKeyboardCallback
 }
 
 public enum CommentOverlayState
-  {
-    DISCARDED,
-    NOT_FINISHED,
+{
+  DISCARDED, 
+    NOT_FINISHED, 
     SUBMITTED
-  }
+}

@@ -25,7 +25,7 @@ class GameOver {
     this.backButton.add(new TextButton(backButtonX, backButtonY, "Back to start", fontSizeBackButton, color(255), color(200), 1));
     this.fontSizeYouDied = 80;
     this.manager = new ButtonManager(backButton);
-    this.red = color(255,0,0);
+    this.red = color(255, 0, 0);
     this.white = color(255);
   }
 
@@ -48,8 +48,8 @@ class GameOver {
 
   void update()
   {
-    if(drawCommentOverlay) return;
-    
+    if (drawCommentOverlay) return;
+
     //sets timer to eventually reset to start.
     if (!timeSet) {
       screenTimer = millis();
@@ -59,9 +59,9 @@ class GameOver {
     if (millis() - screenTimer > screenCD) {
       setup();
     }
-    
+
     //if X is pressed, give comment overlay.
-    if(Input.keyPressed('x'))
+    if (Input.keyPressed('x'))
     {
       drawCommentOverlay = true;
     }
@@ -74,7 +74,7 @@ class GameOver {
   void drawCommentOverlay()
   {
     if (commentOverlay == null) commentOverlay = new CommentOverlay();
-    
+
     CommentOverlayState state = commentOverlay.update();
 
     if (state == CommentOverlayState.SUBMITTED)
@@ -84,8 +84,7 @@ class GameOver {
       println("Comment placed: \"" + comment.getContent() + "\" at distance: " + comment.getDistance());
       commentDatabase.addComment(comment);
       commentOverlay = null;
-    }
-    else if(state == CommentOverlayState.DISCARDED)
+    } else if (state == CommentOverlayState.DISCARDED)
     {
       drawCommentOverlay = false;
       commentOverlay = null;
@@ -93,6 +92,4 @@ class GameOver {
 
     if (commentOverlay != null) commentOverlay.draw();
   }
-
-  
 }

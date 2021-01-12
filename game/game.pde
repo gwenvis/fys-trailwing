@@ -84,7 +84,7 @@ void mouseReleased() {
   Input.mouseReleased(mouseButton);
 }
 
-
+// this handles game states.
 void gameStates() {
   if (gameState == "LOGIN") {
     login.screen();

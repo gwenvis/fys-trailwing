@@ -5,8 +5,8 @@
 
 class Obstacle extends Tile {
   float damage;
-  
-    /**
+
+  /**
    * @author Cody Bolleboom
    * sets the Tile constructor variables
    */

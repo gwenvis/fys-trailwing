@@ -15,11 +15,11 @@ public class Animation {
   private PImage spriteSheetImage;
 
   public Animation(String... frames) {
-    for(String frame : frames) {
+    for (String frame : frames) {
       addImage(frame);
     }
   }
-  
+
   /*
    * Constructor for creating animation with separate image files
    */
@@ -27,7 +27,7 @@ public class Animation {
     this(frames);
     this.animationSpeed = animationSpeed;
   }
-  
+
   /*
    * Constructor for creating an animation with spritesheets.
    */
@@ -45,16 +45,16 @@ public class Animation {
     int imgHeight = spriteSheetImage.height;
     //println(String.format("x: %d y: %d w: %d h: %d", imgWidth/xCells*currentImage+1*currentImage, imgHeight/yCells+1, imgWidth/xCells, imgHeight/yCells));
     PImage spr = spriteSheetImage.get(imgWidth/xCells*currentImage+1*currentImage, 0, imgWidth/xCells, imgHeight/yCells);
-   
-    if(width == -1 || height == -1)
+
+    if (width == -1 || height == -1)
       image(spr, x, y);
     else
       image(spr, x, y, width, height);
   }
-  
+
   private void drawSprite(float x, float y, float width, float height)
   {
-    if(width == -1 || height == -1)
+    if (width == -1 || height == -1)
       image(sprites.get(currentImage), x, y);
     else
       image(sprites.get(currentImage), x, y, width, height);
@@ -75,17 +75,17 @@ public class Animation {
    *   Also provides optional width and height arguments.
    */
   public void draw(float x, float y, float width, float height) {
-    
-    if(isSpriteSheet) drawSpriteSheet(x, y, width, height);
+
+    if (isSpriteSheet) drawSpriteSheet(x, y, width, height);
     else drawSprite(x, y, width, height);
 
     animationTime++;
     boolean newFrame = animationTime > animationSpeed;
-    if(newFrame) {
+    if (newFrame) {
       animationTime = 0;
       currentImage += 1;
       int size = isSpriteSheet ? getSpriteSheetLength() : getSpriteLength();
-      if(currentImage >= size) 
+      if (currentImage >= size) 
         currentImage = 0;
     }
   }
@@ -93,7 +93,9 @@ public class Animation {
   /*
    * Draws the sprite at the specified location
    */
-  public void draw(float x, float y) { draw(x,y,-1,-1); }
+  public void draw(float x, float y) { 
+    draw(x, y, -1, -1);
+  }
 
   /*
    * Sets the animation speed (in frames)

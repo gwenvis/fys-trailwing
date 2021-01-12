@@ -1,10 +1,10 @@
 /* 
-Made by Patrick Eikema
-
-
-This class needs an array list of Buttons.
-It handles the selection of buttons. 
-*/ 
+ Made by Patrick Eikema
+ 
+ 
+ This class needs an array list of Buttons.
+ It handles the selection of buttons. 
+ */
 
 class ButtonManager {
   ArrayList<TextButton> buttons;

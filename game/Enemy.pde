@@ -168,12 +168,12 @@ class Enemy {
       }
     }
 
-    if(angry && angry != lastFrameAngry)
+    if (angry && angry != lastFrameAngry)
     {
       soundBank.playSound(SoundType.DRAGON_BRUL);
     }
 
-    if(attack && attack != lastFrameAttack)
+    if (attack && attack != lastFrameAttack)
     {
       soundBank.playSound(SoundType.FIRE_START);
     }
