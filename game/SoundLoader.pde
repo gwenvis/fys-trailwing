@@ -10,11 +10,26 @@ public class SoundBank
           "sounds/foot3.wav", "sounds/foot4.wav", 
           "sounds/foot5.wav", "sounds/foot6.wav"));
 
-    sounds.put(SoundType.JUMP, new Sound(0.6f, app,
+    sounds.put(SoundType.JUMP, new Sound(0.67f, app,
           "sounds/jump1.wav", "sounds/jump2.wav"));
 
     sounds.put(SoundType.BARREL_HIT, new Sound(0.6f, app,
           "sounds/barrel1.wav", "sounds/barrel2.wav"));
+    
+    sounds.put(SoundType.DRAGON_BRUL, new Sound(0.8f, app,
+          "sounds/moan1.wav", "sounds/moan2.wav"));
+
+    sounds.put(SoundType.FIRE_START, new Sound(0.6f, app, "sounds/fire1.wav"));
+
+    sounds.put(SoundType.FIRE_SHOOT, new Sound(0.75f, app, "sounds/breath1.wav"));
+
+    sounds.put(SoundType.HURT, new Sound(0.6f, app, "sounds/hurt1.wav", "sounds/hurt2.wav"));
+
+    sounds.put(SoundType.DEATH, new Sound(0.6f, app, "sounds/death1.wav"));
+
+    sounds.put(SoundType.SHIELD_HIT, new Sound(0.6f, app, "sounds/shield1.wav"));
+    
+    sounds.put(SoundType.INVICIBILITY_GRAB, new Sound(0.6f, app, "sounds/potion1.wav"));
   }
 
   public void playSound(SoundType soundType)
@@ -57,7 +72,13 @@ public class Sound
 enum SoundType
 {
   DRAGON_BRUL,
+  FIRE_START,
+  FIRE_SHOOT,
   JUMP,
   FOOTSTEP,
-  BARREL_HIT
+  BARREL_HIT,
+  HURT,
+  DEATH,
+  SHIELD_HIT,
+  INVICIBILITY_GRAB
 }

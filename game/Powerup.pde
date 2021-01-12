@@ -1,7 +1,8 @@
 /**
  * Made by Antonio Bottelier
+ * The powerup class detects collision with the player
+ * and then gives the player the appropriate powerup.
  */
-
 public class Powerup extends Tile
 {
   ArrayList<PImage> sprites;
@@ -25,7 +26,7 @@ public class Powerup extends Tile
 
   @Override
   void update() {
-    // test collision with player
+    // aabb -> test collision with player
     
     PVector playerPos = player.playerPos;
     PVector playerSize = player.size;
@@ -34,9 +35,15 @@ public class Powerup extends Tile
     boolean vCol = relativePosition.y < playerPos.y + playerSize.y
       && relativePosition.y + size.y > playerPos.y;
 
+    // give the player the powerup if collided
     if(vCol && hCol) {
       enabled = false;
       player.givePowerUp(powerUpType);
+
+      if(powerUpType == PowerupType.INVINCIBILITY)
+      {
+        soundBank.playSound(SoundType.INVICIBILITY_GRAB);
+      }
     }
   }
 }

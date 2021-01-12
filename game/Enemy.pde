@@ -18,6 +18,9 @@ class Enemy {
   int particleSystemStartColourR, particleSystemStartColourG, particleSystemStartColourB, particleSystemEndColourR, particleSystemEndColourG, particleSystemEndColourB, fireballAmount, fireballStartTimeCalc;
   Player player;
   boolean attack;
+  private boolean lastFrameAngry;
+  private boolean lastFrameAttack;
+  private boolean canPlayAttackSound = false;
 
   private int movedDistance;
   private float playerX;
@@ -36,8 +39,6 @@ class Enemy {
 
   ParticleSystem fireballParticleSystem;
   SpriteAnimation dragon; 
-
-
 
   Enemy(Player player) {
 
@@ -125,6 +126,8 @@ class Enemy {
       fireballAdd();
     }
 
+    if(fireballAmount == 0) return;
+
     // timer that changes angry to true and draws the fireBall when angry. 
     if (millis()-angryTimer > angryCooldown  ) {
       angry = true;
@@ -143,6 +146,9 @@ class Enemy {
     if (angry && millis()-fireBallTimer > fireBallDurationCooldown) {
       // Time to attack, starts spawning fireballs
       attack = true;
+      canPlayAttackSound = false;
+      lastFrameAttack = true;
+
       for (int i = fireballs.size()-1; i>= 0; i--) {
         fireballStartTimeCalc = i - 1;
         if (fireballStartTimeCalc == -1) {
@@ -160,15 +166,45 @@ class Enemy {
         particleSystemsX.set(i, particleSystemX);
       }
     }
+    else
+    {
+      canPlayAttackSound = true;
+    }
 
     if (attack) {
       // Attack movement
       for (int i = fireballs.size()-1; i>= 0; i--) {
         particleSystemX = particleSystemsX.get(i);
+        particleSystemY = particleSystemsY.get(i);
         particleSystemX += fireBallSpeed;
+
+        float pY = player.playerPos.y;
+        if(particleSystemY < pY)
+        {
+          particleSystemY += Config.VERTICAL_FIREBALL_SPEED;
+        }
+        else
+        {
+          particleSystemY -= Config.VERTICAL_FIREBALL_SPEED;
+        }
+
+        particleSystemsY.set(i, particleSystemY);
         particleSystemsX.set(i, particleSystemX);
       }
     }
+
+    if(angry && angry != lastFrameAngry)
+    {
+      soundBank.playSound(SoundType.DRAGON_BRUL);
+    }
+
+    if(attack && lastFrameAttack == true && canPlayAttackSound)
+    {
+      soundBank.playSound(SoundType.FIRE_SHOOT);
+      lastFrameAttack = false;
+    }
+
+    lastFrameAngry = angry;
   }
 
   /*

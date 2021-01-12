@@ -16,8 +16,8 @@ static class Config {
   final static float POWERUP_WIDTH = 100;
   final static float POWERUP_HEIGHT = 100;
   final static float POWERUP_SPAWN_CHANCE = 100/4;
-  final static float POWERUP_ACTIVE_TIMER = 5.5f; // in seconds
-  final static float POWERUP_JUMP_BOOST = 2f; // multiplies jump by this
+  final static float POWERUP_ACTIVE_TIMER = 3.5f; // in seconds
+  final static float POWERUP_JUMP_BOOST = 1.3f; // multiplies jump by this
   final static String[] POWERUP_SPRITENAMES = new String[] {
     "invincibility.png", 
     "super_jump.png"
@@ -44,7 +44,7 @@ static class Config {
   final static float PLAYER_SPEED_UP = .8F;
   final static float PLAYER_JUMP_POWER = -15f;
   final static float PLAYER_JUMP_GRAVITY = 0.25f;
-  final static float PLAYER_SPEED = 5;
+  final static float PLAYER_SPEED = 10;
   final static float PLAYER_MAX_SHIELD_AMOUNT = 5;
   final static float PLAYER_JUMP_OFFSET = 120; 
 
@@ -64,6 +64,7 @@ static class Config {
 
   //Enemy
   final static int FIREBALL_STARTING_TIME = 3200;
+  final static float VERTICAL_FIREBALL_SPEED = 02;
 
   //Achievement database
   final static int ACHIEVEMENT_AMOUNT = 4;  

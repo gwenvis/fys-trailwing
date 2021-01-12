@@ -37,13 +37,13 @@ class Player {
   private boolean jump, landing, running;
   private boolean jumpBoost = false;
   private boolean invincibility = false;
+  private boolean dead = false;
 
   private int shieldDurability, maxShieldAmount, currentShield;
   private int maxArmourLevel;
   private int postureChangeSpeed, postureChangeSpeedJump;
   private int maxCoinAmount, coinMultiplyer;
   private int screenCalcPercentage, screenCalcPercentageLeft, screenCalcPercentageRight;
-  private int zero, two, three;
   private int speedUpTimer, speedUpCoolDown;
   private int lastPlayerFrame;
   private int[] footstepFrames = { 3, 7 };
@@ -52,7 +52,7 @@ class Player {
   private float playerVelocity, speedUp;
   private float jumpPower, jumpGravity, playerJump, gravityPull; 
 
-  private float currentPowerupTimer = zero;
+  private float currentPowerupTimer = 0;
   private PImage invincibleSignImage;
   private PImage shieldLeftBlueImage, shieldLeftGreenImage, shieldLeftRedImage;
   private PImage shieldRightBlueImage, shieldRightGreenImage, shieldRightRedImage;
@@ -101,16 +101,13 @@ class Player {
    */
   Player(float x, float y) {
     //Used numbers
-    zero = Config.ZERO;
-    two = Config.DIVIDE_IN_HALF;
-    three = Config.HIT_SHIELD_OFFSET;
     white = Config.COLOUR_WHITE;
 
     //Fireball amount
-    fireball = zero;
+    fireball = 0;
 
     //Everything used for timers
-    speedUpTimer = zero;
+    speedUpTimer = 0;
     speedUpCoolDown = Config.SPEED_UP_COOLDOWN;
     timerSet = false;
 
@@ -120,18 +117,18 @@ class Player {
     screenCalcPercentageRight = Config.SCREEN_CALC_RIGHT;
 
     //Player
-    playerPos = new PVector(zero, zero);
+    playerPos = new PVector(0, 0);
     playerPos.x = x;
     playerPos.y = y;
-    playerJump = zero;   
+    playerJump = 0;   
 
     postureChangeSpeed = 3;
     postureChangeSpeedJump = 5000;
     playerSpeed = Config.PLAYER_SPEED;
     speedUp = Config.PLAYER_SPEED_UP;
-    gravityPull = zero;
+    gravityPull = 0;
 
-    coinMultiplyer = zero;
+    coinMultiplyer = 0;
     playerWalk = animations.PLAYER_WALK;    
 
     jumpPower = Config.PLAYER_JUMP_POWER;
@@ -140,19 +137,19 @@ class Player {
     jump=false;
     barrierLeft=false;
     barrierRight=false;
-    barierCalcX = size.x/two;
-    barierCalcY = size.y/two;
+    barierCalcX = size.x/2;
+    barierCalcY = size.y/2;
 
     //Current coin amount and maximum amount
-    coinAmount = zero;
+    coinAmount = 0;
     maxCoinAmount = Config.MAX_COIN_AMOUNT;
 
     //Everything used for the shield  
-    shieldPos = new PVector(zero, zero);
-    shieldPos.x = zero;
-    shieldPos.y = zero;
+    shieldPos = new PVector(0, 0);
+    shieldPos.x = 0;
+    shieldPos.y = 0;
 
-    currentShield = zero;
+    currentShield = 0;
     shieldIsUpLeft = false;
     shieldIsUpRight = false;
 
@@ -169,7 +166,7 @@ class Player {
     shields();
 
     //Everything used for the armour
-    currentArmourLevel = zero;
+    currentArmourLevel = 0;
     maxArmourLevel = Config.MAX_ARMOUR_LEVEL;
     hudArmourlvl = maxArmourLevel - currentArmourLevel;
     armourLevelsList();
@@ -221,7 +218,7 @@ class Player {
   void draw() {
     imageMode(CENTER);
     //image(playerImage, playerPos.x, playerPos.y);
-    playerWalk.draw(playerPos.x, playerPos.y, 74,74);
+    playerWalk.draw(playerPos.x, playerPos.y, size.x,size.y);
 
     //Checks if player is invincible or not
     if (invincibility) {
@@ -241,7 +238,7 @@ class Player {
 
     tint(white, white);
     //Checks if shield is currently being used
-    if (shieldAmount != zero && (shieldIsUpLeft||shieldIsUpRight)) {
+    if (shieldAmount != 0 && (shieldIsUpLeft||shieldIsUpRight)) {
       image(shields.get(currentShield), shieldPos.x, shieldPos.y);
     }
 
@@ -287,7 +284,7 @@ class Player {
 
     //Timer has not ended calculate playerspeed
     if (millis() - speedUpTimer > speedUpCoolDown) {
-      playerSpeed = playerSpeed * speedUp;
+      //playerSpeed = playerSpeed * speedUp;
       timerSet = false;
     }
 
@@ -315,7 +312,7 @@ class Player {
     }
 
     //Player running on the ground
-    if (tileCollision.direction.y == Config.DOWN && gravityPull != zero) {
+    if (tileCollision.direction.y == Config.DOWN && gravityPull != 0) {
       playerPos.y = tileCollision.position.y;
       playerWalk.setAnimationSpeed(postureChangeSpeed);
 
@@ -323,7 +320,7 @@ class Player {
       onGround = true;
       dust.draw = true;
 
-      gravityPull = zero;
+      gravityPull = 0;
       jump = false;
     } else if (jump && tileCollision.direction.y != Config.UP) {
       //Player jumps, particlesystem disabled
@@ -332,9 +329,9 @@ class Player {
       dust.draw = false;
     } 
 
-    if (tileCollision.direction.y != Config.DOWN && gravityPull == zero) {
+    if (tileCollision.direction.y != Config.DOWN && gravityPull == 0) {
       //Made by Cody
-      playerPos.sub(tileCollision.direction.x * manager.speed, zero);
+      playerPos.sub(tileCollision.direction.x * manager.speed, 0);
     }
 
     //Player falls into lava
@@ -384,7 +381,7 @@ class Player {
 
     //Ends duration of the power-up
     currentPowerupTimer--;
-    if (currentPowerupTimer <= zero) {
+    if (currentPowerupTimer <= 0) {
       jumpBoost = false;
       invincibility = false;
     }
@@ -402,16 +399,16 @@ class Player {
 
     //Checks which way the player is running and adjusts the placement of the particlesystem  
     if (!dust.toRight) {
-      dust.particleSystemStartX = playerPos.x - (size.x / two);
+      dust.particleSystemStartX = playerPos.x - (size.x / 2);
     } else {
-      dust.particleSystemStartX = playerPos.x + (size.x / two);
+      dust.particleSystemStartX = playerPos.x + (size.x / 2);
     }
-    dust.particleSystemStartY = playerPos.y + (size.y / two) - estimatedParticleHeight;
+    dust.particleSystemStartY = playerPos.y + (size.y / 2) - estimatedParticleHeight;
 
     //Checks if a particle hit the shield and gives coordinates to particlesystem hit
     if (hitParticleHitShield) {
-      hitObstacle.particleSystemStartX = shieldPos.x + shieldLeftBlueImage.width/two + approximateShieldOffset;
-      hitObstacle.particleSystemStartY = shieldPos.y - shieldLeftBlueImage.height/three;
+      hitObstacle.particleSystemStartX = shieldPos.x + shieldLeftBlueImage.width/2 + approximateShieldOffset;
+      hitObstacle.particleSystemStartY = shieldPos.y - shieldLeftBlueImage.height/3;
     } else {        
       hitObstacle.particleSystemStartX  = playerPos.x + barierCalcX;
       hitObstacle.particleSystemStartY = playerPos.y;
@@ -424,7 +421,7 @@ class Player {
         barrel = true;
       }
 
-      //Do following three functions
+      //Do following 3 functions
       coins();
       shield();
       move();
@@ -435,17 +432,17 @@ class Player {
    * Describes all movements that need to be made 
    */
   void move() {
-    playerVelocity = playerSpeed * currentArmourSpeedMultiplier;
+    playerVelocity = playerSpeed;
 
     //Checks if the player is able of walking to the left
     if (Input.keyCodePressed(LEFT)&&!barrierLeft && tileCollision.direction.x != Config.LEFT) {
-      playerPos.x= playerPos.x - playerVelocity - manager.speed;
+      playerPos.x= playerPos.x - playerVelocity;
       dust.toRight = true;
     }
 
     //Checks if the player is able of walking to the right
     if (Input.keyCodePressed(RIGHT)&&!barrierRight && tileCollision.direction.x != Config.RIGHT) {
-      playerPos.x += playerVelocity + manager.speed;
+      playerPos.x += playerVelocity;
       dust.toRight = false;
     }
 
@@ -457,12 +454,12 @@ class Player {
 
     //Player is not falling down and pressed the x button
     if (Input.keyPressed('x') && tileCollision.direction.y == Config.DOWN) {
-      jump = true;
-
       if(!jump)
       {      
         soundBank.playSound(SoundType.JUMP);
-      }
+      } 
+
+      jump = true;
     }    
 
     //Player pressed the a button
@@ -498,11 +495,11 @@ class Player {
     //Calculate shield movement
     shieldPos.y = playerPos.y;
     if (currentShield == 0||currentShield == 2||currentShield==4) {
-      shieldPos.x = playerPos.x - (two*size.x/three);
+      shieldPos.x = playerPos.x - (2*size.x/3);
     } 
 
     if (currentShield == 1||currentShield == 3||currentShield == 5) {
-      shieldPos.x = playerPos.x + (two*size.x/three);
+      shieldPos.x = playerPos.x + (2*size.x/3);
     }
 
     //Shield picked up
@@ -533,7 +530,7 @@ class Player {
       }
     } else {
       if (shieldLeft) {
-        currentShield = zero;
+        currentShield = 0;
       }
       if (shieldRight) {
         currentShield = 1;
@@ -552,15 +549,17 @@ class Player {
     }
 
     //Shield has been hit
-    if ((shieldLeft && shieldDurability > zero)||(shieldRight && shieldDurability > zero)) {
+    if ((shieldLeft && shieldDurability > 0)||(shieldRight && shieldDurability > 0)) {
       shieldDurability = shieldDurability-1;
     }
 
     //Shield has been broken
-    if (shieldDurability <= zero) {
+    if (shieldDurability <= 0) {
       shieldAmount--;
       shieldDurability = 3;
     }
+
+    soundBank.playSound(SoundType.SHIELD_HIT);
   }
 
   /* 
@@ -579,15 +578,21 @@ class Player {
    * Calculates lasting armour of the player
    */
   void damage() {
+    if(dead) return;
+
     if (!invincibility) {
       if (currentArmourLevel >= maxArmourLevel) {
         //No armour left
         death();
+        soundBank.playSound(SoundType.DEATH);
       } else if (playerHit||fireballHit) {  
         currentArmourLevel++;
         playerHit = false;
+        soundBank.playSound(SoundType.HURT);
       }
     }
+
+    screenShake.addScreenShake();
   }
 
   /* 
@@ -603,7 +608,7 @@ class Player {
         //Adds a number that multiplies by 10 tot the score
         coinMultiplyer++;
       }
-      coinAmount = zero;
+      coinAmount = 0;
     }
   }
 
@@ -613,7 +618,7 @@ class Player {
   void death() {
     session.coins = coinAmount;
     session.distance = (int)manager.score;
-
+    dead = true;
     highscoredb.updateSession(session.getId(), session);
     coinsTotal = (coinMultiplyer * maxCoinAmount) + coinAmount;
     achievementsDb.achievementCheck(int(manager.score), coinsTotal, manager.chunkpool, fireballHit);
@@ -624,7 +629,7 @@ class Player {
    * Replace player above the top of the screen
    */
   void fallPositionChange() {
-    playerPos.y = zero - (barierCalcY);
+    playerPos.y = 0 - (barierCalcY);
   }
 
   /* 
@@ -663,14 +668,14 @@ class Player {
    */
   void armourLevelsList() {
     armourLevels.add(1f);
-    armourLevels.add(1.05f);
-    armourLevels.add(1.10f);
-    armourLevels.add(1.15f);
-    armourLevels.add(1.20f);
-    armourLevels.add(1.25f);
-    armourLevels.add(1.30f);
-    armourLevels.add(1.35f);
-    armourLevels.add(1.40f);
+    armourLevels.add(2f);
+    armourLevels.add(4f);
+    armourLevels.add(6f);
+    armourLevels.add(8f);
+    armourLevels.add(10f);
+    armourLevels.add(12f);
+    armourLevels.add(14f);
+    armourLevels.add(15f);
   }
 
   /* 
