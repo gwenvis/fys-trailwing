@@ -459,7 +459,7 @@ class Player {
     }
 
     //Player is not falling down and pressed the x button
-    if (Input.keyPressed('x') && tileCollision.direction.y == Config.DOWN) {
+    if ((Input.keyCodePressed(UP) || Input.keyPressed('x')) && tileCollision.direction.y == Config.DOWN) {
       if(!jump)
       {      
         soundBank.playSound(SoundType.JUMP);
