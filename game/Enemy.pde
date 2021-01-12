@@ -1,7 +1,8 @@
-/*
-Made by Patrick Eikema
- 
- everything to do with the fireball(s)+particlesystem modified by Chantal 
+/**
+ * @author Patrick Eikema
+ *
+ * everything to do with the fireball(s)+particlesystem modified by Chantal
+ * sound triggers added by Antonio Bottelier
  */
 
 class Enemy {
@@ -190,18 +191,20 @@ class Enemy {
       }
     }
 
-    if (angry && angry != lastFrameAngry)
+    if(angry && angry != lastFrameAngry && millis()-fireBallTimer > fireBallDurationCooldown)
     {
       soundBank.playSound(SoundType.DRAGON_BRUL);
+      lastFrameAngry = angry;
     }
 
     if (attack && lastFrameAttack == true && canPlayAttackSound)
     {
       soundBank.playSound(SoundType.FIRE_SHOOT);
       lastFrameAttack = false;
+      lastFrameAngry = false;
     }
 
-    lastFrameAngry = angry;
+    //lastFrameAngry = angry;
   }
 
   /*

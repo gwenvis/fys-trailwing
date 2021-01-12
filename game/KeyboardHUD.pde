@@ -62,21 +62,25 @@ public class KeyboardHUD
     {
       selectedKeyY--;
       if(selectedKeyY < 0) selectedKeyY = keys.length - 1;
+      soundBank.playSound(SoundType.BUTTON_NAVIGATE);
     }
     else if(Input.keyCodeClicked(DOWN))
     {
       selectedKeyY++;
       if(selectedKeyY > keys.length - 1) selectedKeyY = 0;
+      soundBank.playSound(SoundType.BUTTON_NAVIGATE);
     }
     else if(Input.keyCodeClicked(LEFT))
     {
       selectedKeyX--;
       if(selectedKeyX < 0) selectedKeyX = keys[selectedKeyY].length - 1;
+      soundBank.playSound(SoundType.BUTTON_NAVIGATE);
     }
     else if(Input.keyCodeClicked(RIGHT))
     {
       selectedKeyX++;
       if(selectedKeyX > keys[selectedKeyY].length - 1) selectedKeyX = 0;
+      soundBank.playSound(SoundType.BUTTON_NAVIGATE);
     }
 
     if(Input.keyClicked('z') || Input.keyClicked('Z'))

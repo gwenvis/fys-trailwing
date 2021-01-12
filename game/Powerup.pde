@@ -44,6 +44,10 @@ public class Powerup extends Tile
       {
         soundBank.playSound(SoundType.INVICIBILITY_GRAB);
       }
+      else
+      {
+        soundBank.playSound(SoundType.JUMP_BOOST_GRAB);
+      }
     }
   }
 }
