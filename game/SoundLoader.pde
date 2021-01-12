@@ -44,6 +44,12 @@ public class SoundBank
     sounds.put(SoundType.BUTTON_NAVIGATE, new Sound(0.6f, app, "sounds/buttonmove1.wav"));
 
     sounds.put(SoundType.BUTTON_SELECT, new Sound(0.6f, app, "sounds/buttonselect1.wav"));
+
+    sounds.put(SoundType.COIN, new Sound(0.6f, app, "sounds/coin1.wav"));
+
+    sounds.put(SoundType.LAVA_BUBBLE, new Sound(0.6f, app, "sounds/lava.wav"));
+    
+    sounds.put(SoundType.LAVA_DEATH, new Sound(0.6f, app, "sounds/lavadeath1.wav"));
   }
 
   /*
@@ -53,5 +59,12 @@ public class SoundBank
   {
     sounds.get(soundType).play();
   }
-}
 
+  /*
+   * Gets the sound file.
+   */
+  public SoundFile getSoundFile(SoundType soundType)
+  {
+    return sounds.get(soundType).get();
+  }
+}

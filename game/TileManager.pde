@@ -86,10 +86,18 @@ class TileManager {
    * @return void
    */
   TileCollision checkCollision(PVector targetPosition, PVector targetSize) {
+
+    boolean lavaOnScreen = false;
+
     for (TileGroup tileGroup : tileGroups) {
       for (Tile tile : tileGroup.tiles) {
         PVector tilePosition = new PVector(tileGroup.position.x + tile.position.x, tileGroup.position.y + tile.position.y);
 
+        if(!lavaOnScreen && tile.layer.equals("lava") 
+            && tilePosition.x > 0 && tilePosition.x < width)
+        {
+          lavaOnScreen = true;
+        }
 
         boolean top = tilePosition.y + tile.size.y / 2 >= targetPosition.y - targetSize.y / 2 && tilePosition.y - tile.size.y / 2 - 1 <= targetPosition.y - targetSize.y / 2;
         boolean bottom = tilePosition.y + tile.size.y / 2 >= targetPosition.y + targetSize.y / 2 && tilePosition.y - tile.size.y / 2  <= targetPosition.y + targetSize.y / 2;
@@ -110,11 +118,15 @@ class TileManager {
           col.position = new PVector(tilePosition.x + tile.size.x * collision.x, tilePosition.y + ((tile.size.y/2+targetSize.y/2) * collision.y));
 
           if (tile.layer.equals("lava")) {
+            soundBank.playSound(SoundType.LAVA_DEATH);
             player.death();
           }
 
+          play.lavaOnScreen = lavaOnScreen;
           return col;
         }
+
+        play.lavaOnScreen = lavaOnScreen;
       }
     }
 
