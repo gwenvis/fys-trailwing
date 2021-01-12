@@ -29,7 +29,6 @@ class Enemy {
   private float playerWidthHalf;
   private float shieldWidth;
 
-  private int fireballsDelay;
   float dragonBorder;
   private float distanceDragonFireball;
   private float particleSystemX, particleSystemY;
@@ -70,7 +69,7 @@ class Enemy {
     this.attack = false;
     this.particleSystemX = x + distanceDragonFireball;
 
-    this.particleSystemY = y+movedDistance;
+    this.particleSystemY = y + dragonBorder;
 
     this.fireBallSpeed = 15;
 
@@ -83,7 +82,6 @@ class Enemy {
 
     movedDistance = 100;
     dragonBorder = (movedDistance / 4) * 3;
-    fireballsDelay = 500;
     distanceDragonFireball = dragon.frameImage[0].width/5*4 /2;
 
     particleSystemStartColourR = 255;
@@ -125,7 +123,7 @@ class Enemy {
       fireballAdd();
     }
 
-    if(fireballAmount == 0) return;
+    if (fireballAmount == 0) return;
 
     // timer that changes angry to true and draws the fireBall when angry. 
     if (millis()-angryTimer > angryCooldown  ) {
@@ -153,38 +151,36 @@ class Enemy {
         if (fireballStartTimeCalc == -1) {
           fireballStartTimeCalc = 0;
         }
-        fireBallDurationCooldown = Config.FIREBALL_STARTING_TIME + (fireballStartTimeCalc * fireballsDelay);
+        fireBallDurationCooldown = Config.FIREBALL_STARTING_TIME;
         ParticleSystem fireball = fireballs.get(i);
         fireball.draw = true;
 
         //folow dragono untill shooting
-        particleSystemY = y + movedDistance;
-        particleSystemX = x + distanceDragonFireball;
+        particleSystemY = y + dragonBorder;
+        particleSystemX = x + distanceDragonFireball ;
 
         particleSystemsY.set(i, particleSystemY);
         particleSystemsX.set(i, particleSystemX);
       }
-    }
-    else
+    } else
     {
       canPlayAttackSound = true;
     }
 
     if (attack) {
-      // Attack movement
+      // Attack movement      
       for (int i = fireballs.size()-1; i>= 0; i--) {
         particleSystemX = particleSystemsX.get(i);
         particleSystemY = particleSystemsY.get(i);
         particleSystemX += fireBallSpeed;
 
         float pY = player.playerPos.y;
-        
+
         //fireball follows player
-        if(particleSystemY < pY)
+        if (particleSystemY < pY)
         {
           particleSystemY += Config.VERTICAL_FIREBALL_SPEED;
-        }
-        else
+        } else
         {
           particleSystemY -= Config.VERTICAL_FIREBALL_SPEED;
         }
@@ -194,12 +190,12 @@ class Enemy {
       }
     }
 
-    if(angry && angry != lastFrameAngry)
+    if (angry && angry != lastFrameAngry)
     {
       soundBank.playSound(SoundType.DRAGON_BRUL);
     }
 
-    if(attack && lastFrameAttack == true && canPlayAttackSound)
+    if (attack && lastFrameAttack == true && canPlayAttackSound)
     {
       soundBank.playSound(SoundType.FIRE_SHOOT);
       lastFrameAttack = false;
@@ -246,8 +242,11 @@ class Enemy {
       {
         ParticleSystem fireball = fireballs.get(i);
         fireball.particleSystemStartX  = particleSystemX;
-        fireball.particleSystemStartY = particleSystemY;
-        fireball.draw();
+        fireball.particleSystemStartY = particleSystemY - (50 * i);
+        if (fireball.particleSystemStartX < x + distanceDragonFireball) {
+        } else {
+          fireball.draw();
+        }
       }
     }
   }
