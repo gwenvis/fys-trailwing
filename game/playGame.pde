@@ -7,6 +7,14 @@ class PlayGame {
   ArrayList<ScreenComment> screenComments = new ArrayList<ScreenComment>();
   float x1, x2;
 
+  // ANTONIO BOTTELIER
+  public boolean lavaOnScreen;
+  private SoundFile lava;
+  private float lavaVolume = 0.0f;
+  private final float LAVA_CHANGE_SPEED = 0.072f;
+  private final float MAX_LAVA_VOL = 1.0f;
+  // END ANTON
+
   SessionDatabase highscoredb;
   Session session;
 
@@ -20,6 +28,9 @@ class PlayGame {
     landscape = loadImage("landscape.png");
     cave = loadImage("caveBackground.png");
     clouds = loadImage("clouds.png");
+    lava = soundBank.getSoundFile(SoundType.LAVA_BUBBLE);
+    lava.amp(0);
+    lava.loop();
   }
 
   void createSession()
@@ -32,6 +43,7 @@ class PlayGame {
 
   void update()
   {
+    changeLavaSound();
 
     //updates important variables
     player.manager = manager;
@@ -60,11 +72,28 @@ class PlayGame {
       }
     }
 
-
     move();
 
     hud.updateHUD(player.coinAmount, int(player.score), player.currentArmourLevel, player.shieldAmount);
   }
+
+  // FUNCTION BY ANTON!!!!
+  private void changeLavaSound()
+  {
+    if(lavaOnScreen)
+    {
+      lavaVolume += LAVA_CHANGE_SPEED;
+      if(lavaVolume > MAX_LAVA_VOL) lavaVolume = MAX_LAVA_VOL;
+    }
+    else
+    {
+      lavaVolume -= LAVA_CHANGE_SPEED;
+      if(lavaVolume < 0) lavaVolume = 0;
+    }
+
+    lava.amp(lavaVolume);
+  }
+  // END FUNCTION BY ANTON!!!!!!!
 
   /**
    * handles movement and collision

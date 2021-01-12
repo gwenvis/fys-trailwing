@@ -345,6 +345,7 @@ class Player {
     if (obstacle != null && obstacle.layer.equals("coin")) {
       coinAmount++;
       obstacle = null;
+      soundBank.playSound(SoundType.COIN);
     }
 
     //Player hits an obstacle
@@ -585,7 +586,6 @@ class Player {
       if (currentArmourLevel >= maxArmourLevel) {
         //No armour left
         death();
-        soundBank.playSound(SoundType.DEATH);
       } else if (playerHit||fireballHit) {  
         currentArmourLevel++;
         playerHit = false;
@@ -624,6 +624,8 @@ class Player {
     coinsTotal = (coinMultiplyer * maxCoinAmount) + coinAmount;
     achievementsDb.achievementCheck(int(manager.score), coinsTotal, manager.chunkpool, fireballHit);
     gameState = "GAMEOVER";
+    soundBank.playSound(SoundType.DEATH);
+    play.lavaOnScreen = false;
   }
 
   /* 

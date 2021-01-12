@@ -22,6 +22,14 @@ public class Sound
 
   public void play()
   {
+    SoundFile file = get();
+
+    file.amp(volume);
+    file.play();
+  }
+
+  public SoundFile get()
+  {
     int index = (int)random(0, sounds.size());
     SoundFile file = sounds.get(index);
 
@@ -30,8 +38,7 @@ public class Sound
       println("null.. " + index);
     }
 
-    file.amp(volume);
-    file.play();
+    return file;
   }
 }
 

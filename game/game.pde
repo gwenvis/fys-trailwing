@@ -32,6 +32,7 @@ void setup() {
   playerdb = new PlayerDatabase();
   achievementsDb = new AchievementsDatabase();
   screenShake = new ScreenShake();
+  soundBank = new SoundBank(this);
   gameState = "LOGIN";
   animations = new Animations();
   background(255);
@@ -50,7 +51,6 @@ void setup() {
   PFont font = createFont("Arial", 64);
   textFont(font);
   hud = new HUD();
-  soundBank = new SoundBank(this);
   /*SessionDatabase session = new SessionDatabase();
    print(session.getSessions());*/
 }
