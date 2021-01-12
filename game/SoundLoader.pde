@@ -16,12 +16,12 @@ public class SoundBank
     sounds.put(SoundType.BARREL_HIT, new Sound(0.6f, app,
           "sounds/barrel1.wav", "sounds/barrel2.wav"));
     
-    sounds.put(SoundType.DRAGON_BRUL, new Sound(0.6f, app,
+    sounds.put(SoundType.DRAGON_BRUL, new Sound(0.8f, app,
           "sounds/moan1.wav", "sounds/moan2.wav"));
 
     sounds.put(SoundType.FIRE_START, new Sound(0.6f, app, "sounds/fire1.wav"));
 
-    sounds.put(SoundType.FIRE_SHOOT, new Sound(0.6f, app, "sounds/breath1.wav"));
+    sounds.put(SoundType.FIRE_SHOOT, new Sound(0.75f, app, "sounds/breath1.wav"));
 
     sounds.put(SoundType.HURT, new Sound(0.6f, app, "sounds/hurt1.wav", "sounds/hurt2.wav"));
 
