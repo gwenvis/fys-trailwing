@@ -44,7 +44,7 @@ static class Config {
   final static float PLAYER_SPEED_UP = .8F;
   final static float PLAYER_JUMP_POWER = -15f;
   final static float PLAYER_JUMP_GRAVITY = 0.25f;
-  final static float PLAYER_SPEED = 5;
+  final static float PLAYER_SPEED = 10;
   final static float PLAYER_MAX_SHIELD_AMOUNT = 5;
   final static float PLAYER_JUMP_OFFSET = 120; 
 
