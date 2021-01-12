@@ -1,6 +1,8 @@
-/* @author Antonio Bottelier
+/**
+ * @author Antonio Bottelier
  *
  * Overlay for when you die to start commenting
+ * Shows a keyboard on the display.
  */
 public class CommentOverlay implements IKeyboardCallback
 {
@@ -84,9 +86,19 @@ public class CommentOverlay implements IKeyboardCallback
   }
 }
 
+/**
+ * @author Antonio Bottelier
+ *
+ * State of the user writing the comment.
+ */
 public enum CommentOverlayState
-  {
-    DISCARDED,
-    NOT_FINISHED,
-    SUBMITTED
-  }
+{
+  // Comment is discarded and will not be submitted.
+  DISCARDED,
+
+  // Writing comment is not yet finished, continue.
+  NOT_FINISHED,
+
+  // Comment is submitted.
+  SUBMITTED
+}

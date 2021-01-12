@@ -1,4 +1,5 @@
-/* @author Antonio Bottelier
+/**
+ * @author Antonio Bottelier
  *
  * Allows adding screenshake to the game by sending
  * screenshake requests to the class. Sends back offsets
@@ -13,6 +14,10 @@ public class ScreenShake
 
   private int currentScreenShakeTime = 0;
 
+  /*
+   * Adds screenshake with the specified time.
+   * Use -1 to use a default screenshake time.
+   */
   public void addScreenShake(int time)
   {
     if(time == -1)
@@ -24,6 +29,9 @@ public class ScreenShake
     currentScreenShakeTime = time;
   }
 
+  /*
+   * Adds default screenshake time.
+   */
   public void addScreenShake() { addScreenShake(-1); }
 
   // Gets the offset and updates the values for the next screen shake.
@@ -45,6 +53,9 @@ public class ScreenShake
     return new PVector(x*multiplication, y*multiplication);
   }
 
+  /*
+   * Check if there is any screenshake time available.
+   */
   public boolean isAvailable()
   {
     return currentScreenShakeTime > 0;

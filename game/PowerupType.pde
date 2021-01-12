@@ -1,3 +1,10 @@
+/**
+ * @author Antonio Bottelier
+ *
+ * All PowerUp types in the game. 
+ * Holds an additional integer value specifying what
+ * sprite it should be drawn with.
+ */
 enum PowerupType { 
     INVINCIBILITY(0),
     SUPER_JUMP(1);

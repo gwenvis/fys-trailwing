@@ -1,3 +1,9 @@
+/**
+ * @author Antonio Bottelier
+ *
+ * Preloads all sounds in the game and allows the playing
+ * of sounds with the SoundType enum.
+ */
 public class SoundBank
 {
   private HashMap<SoundType, Sound> sounds;
@@ -32,53 +38,12 @@ public class SoundBank
     sounds.put(SoundType.INVICIBILITY_GRAB, new Sound(0.6f, app, "sounds/potion1.wav"));
   }
 
+  /*
+   * Play sound with the specified SoundType
+   */
   public void playSound(SoundType soundType)
   {
     sounds.get(soundType).play();
   }
 }
 
-public class Sound
-{
-  private ArrayList<SoundFile> sounds;
-  private float volume;
-
-  public Sound(float volume, PApplet app, String... sounds)
-  {
-    this.sounds = new ArrayList<SoundFile>();
-    this.volume = volume;
-
-    for(int i = 0; i < sounds.length; i++)
-    {
-      this.sounds.add(new SoundFile(app, sounds[i])); 
-    }
-  }
-
-  public void play()
-  {
-    int index = (int)random(0, sounds.size());
-    SoundFile file = sounds.get(index);
-
-    if(file == null)
-    {
-      println("null.. " + index);
-    }
-
-    file.amp(volume);
-    file.play();
-  }
-}
-
-enum SoundType
-{
-  DRAGON_BRUL,
-  FIRE_START,
-  FIRE_SHOOT,
-  JUMP,
-  FOOTSTEP,
-  BARREL_HIT,
-  HURT,
-  DEATH,
-  SHIELD_HIT,
-  INVICIBILITY_GRAB
-}

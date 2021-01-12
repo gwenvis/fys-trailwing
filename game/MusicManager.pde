@@ -1,5 +1,10 @@
-/* 
+/** 
  * @author Antonio Bottelier
+ *
+ * The Music Manager loads all song data specified in the json file.
+ * It checks what state the game is in, and plays the songs depending on the state.
+ * When there is an alias specified, it checks whether the new state is an alias, and if it is it continues the
+ * music from the previous state (or plays it again if the previous state is not the correct state)
  */
 public class MusicManager
 {
@@ -18,6 +23,10 @@ public class MusicManager
     preload(p);
   }
 
+  /*
+   * updates the music manager, checks if the state has switched
+   * and if it has it plays the new music.
+   */
   public void update()
   {
     if(lastState != gameState)
@@ -46,6 +55,9 @@ public class MusicManager
     setVolume(volume);
   }
 
+  /*
+   * Sets volume of all songs
+   */
   public void setVolume(float volume)
   {
     this.volume = volume;
@@ -55,16 +67,25 @@ public class MusicManager
     }
   }
 
+  /*
+   * Get the current volume.
+   */
   public float getVolume()
   {
     return volume;
   }
 
+  /* 
+   * Plays the current song.
+   */
   private void stopCurrentSong()
   {
     if(currentSong != null) currentSong.stop();
   }
 
+  /*
+   * Stops the current song
+   */
   private void playCurrentSong()
   {
     if(currentSong == null) return;
@@ -72,9 +93,11 @@ public class MusicManager
     currentSong.sound.jump(0);
   }
 
+  /*
+   * Choose a new random song from the current state.
+   */
   private void selectNewSong()
   {
-    // select a random song from the current state.
     currentSong = null;
     currentCategory = null;
     if(!music.containsKey(lastState)) return; // .. if it exists, of course.
@@ -90,6 +113,9 @@ public class MusicManager
     currentSong = currentCategory.getSong(randomIndex);
   }
 
+  /*
+   * Preload the music specified in the JSON file.
+   */
   public void preload(PApplet p)
   {
     music = new HashMap<String, StateMusicCategory>();
