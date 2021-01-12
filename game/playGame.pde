@@ -9,7 +9,7 @@ class PlayGame {
 
   // ANTONIO BOTTELIER
   public boolean lavaOnScreen;
-  private SoundFile lava;
+  public SoundFile lava;
   private float lavaVolume = 0.0f;
   private final float LAVA_CHANGE_SPEED = 0.072f;
   private final float MAX_LAVA_VOL = 1.0f;

@@ -49,6 +49,7 @@ class GameOver {
   void update()
   {
     play.lavaOnScreen = false;
+    play.lava.amp(0);
     if(drawCommentOverlay) return;
     
     //sets timer to eventually reset to start.
