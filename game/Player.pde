@@ -585,7 +585,7 @@ class Player {
         //No armour left
         death();
         soundBank.playSound(SoundType.DEATH);
-      } else if (playerHit) {  
+      } else if (playerHit||fireballHit) {  
         currentArmourLevel++;
         playerHit = false;
         soundBank.playSound(SoundType.HURT);
