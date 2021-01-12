@@ -439,13 +439,13 @@ class Player {
 
     //Checks if the player is able of walking to the left
     if (Input.keyCodePressed(LEFT)&&!barrierLeft && tileCollision.direction.x != Config.LEFT) {
-      playerPos.x= playerPos.x - playerVelocity - manager.speed;
+      playerPos.x= playerPos.x - playerVelocity;
       dust.toRight = true;
     }
 
     //Checks if the player is able of walking to the right
     if (Input.keyCodePressed(RIGHT)&&!barrierRight && tileCollision.direction.x != Config.RIGHT) {
-      playerPos.x += playerVelocity + manager.speed;
+      playerPos.x += playerVelocity;
       dust.toRight = false;
     }
 
