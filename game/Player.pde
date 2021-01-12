@@ -457,12 +457,12 @@ class Player {
 
     //Player is not falling down and pressed the x button
     if (Input.keyPressed('x') && tileCollision.direction.y == Config.DOWN) {
-      jump = true;
-
       if(!jump)
       {      
         soundBank.playSound(SoundType.JUMP);
-      }
+      } 
+
+      jump = true;
     }    
 
     //Player pressed the a button
@@ -561,6 +561,8 @@ class Player {
       shieldAmount--;
       shieldDurability = 3;
     }
+
+    soundBank.playSound(SoundType.SHIELD_HIT);
   }
 
   /* 
@@ -583,9 +585,11 @@ class Player {
       if (currentArmourLevel >= maxArmourLevel) {
         //No armour left
         death();
+        soundBank.playSound(SoundType.DEATH);
       } else if (playerHit) {  
         currentArmourLevel++;
         playerHit = false;
+        soundBank.playSound(SoundType.HURT);
       }
     }
   }
