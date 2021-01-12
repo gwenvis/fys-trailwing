@@ -24,7 +24,7 @@ class PlayGame {
     currentCommentLoadDistance = 0;
     x1 = 0;
     x2 = width;
-    
+
     landscape = loadImage("landscape.png");
     cave = loadImage("caveBackground.png");
     clouds = loadImage("clouds.png");
@@ -80,15 +80,14 @@ class PlayGame {
   // FUNCTION BY ANTON!!!!
   private void changeLavaSound()
   {
-    if(lavaOnScreen)
+    if (lavaOnScreen)
     {
       lavaVolume += LAVA_CHANGE_SPEED;
-      if(lavaVolume > MAX_LAVA_VOL) lavaVolume = MAX_LAVA_VOL;
-    }
-    else
+      if (lavaVolume > MAX_LAVA_VOL) lavaVolume = MAX_LAVA_VOL;
+    } else
     {
       lavaVolume -= LAVA_CHANGE_SPEED;
-      if(lavaVolume < 0) lavaVolume = 0;
+      if (lavaVolume < 0) lavaVolume = 0;
     }
 
     lava.amp(lavaVolume);
@@ -134,12 +133,11 @@ class PlayGame {
   }
 
   void backgroundManager() {
-    if (manager.chunkpool == 0){
+    if (manager.chunkpool == 0) {
       background = clouds;
-    } else if(manager.chunkpool == 1){
+    } else if (manager.chunkpool == 1) {
       background = landscape;
-    }
-    else if (manager.chunkpool == 2) {
+    } else if (manager.chunkpool == 2) {
       background = cave;
     }
 

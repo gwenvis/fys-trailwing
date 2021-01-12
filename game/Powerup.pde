@@ -14,9 +14,9 @@ public class Powerup extends Tile
     this.position = pos;
     this.size = size;
 
-    if(sprites == null) {
+    if (sprites == null) {
       sprites = new ArrayList<PImage>();
-      for(int i = 0; i < Config.POWERUP_SPRITENAMES.length; i++) {
+      for (int i = 0; i < Config.POWERUP_SPRITENAMES.length; i++) {
         sprites.add(loadImage(Config.POWERUP_SPRITENAMES[i]));
       }
     }
@@ -25,9 +25,9 @@ public class Powerup extends Tile
   }
 
   @Override
-  void update() {
+    void update() {
     // aabb -> test collision with player
-    
+
     PVector playerPos = player.playerPos;
     PVector playerSize = player.size;
     boolean hCol = relativePosition.x < playerPos.x + playerSize.x 
@@ -36,15 +36,14 @@ public class Powerup extends Tile
       && relativePosition.y + size.y > playerPos.y;
 
     // give the player the powerup if collided
-    if(vCol && hCol) {
+    if (vCol && hCol) {
       enabled = false;
       player.givePowerUp(powerUpType);
 
-      if(powerUpType == PowerupType.INVINCIBILITY)
+      if (powerUpType == PowerupType.INVINCIBILITY)
       {
         soundBank.playSound(SoundType.INVICIBILITY_GRAB);
-      }
-      else
+      } else
       {
         soundBank.playSound(SoundType.JUMP_BOOST_GRAB);
       }

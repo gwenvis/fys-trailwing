@@ -93,8 +93,8 @@ class TileManager {
       for (Tile tile : tileGroup.tiles) {
         PVector tilePosition = new PVector(tileGroup.position.x + tile.position.x, tileGroup.position.y + tile.position.y);
 
-        if(!lavaOnScreen && tile.layer.equals("lava") 
-            && tilePosition.x > 0 && tilePosition.x < width)
+        if (!lavaOnScreen && tile.layer.equals("lava") 
+          && tilePosition.x > 0 && tilePosition.x < width)
         {
           lavaOnScreen = true;
         }

@@ -14,7 +14,13 @@ public class Comment
   private String content;
   private int distance;
 
-  public String getContent() { return content; }
-  public int getDistance() { return distance; }
-  public int getPlayerId() { return 0; }
+  public String getContent() { 
+    return content;
+  }
+  public int getDistance() { 
+    return distance;
+  }
+  public int getPlayerId() { 
+    return 0;
+  }
 }

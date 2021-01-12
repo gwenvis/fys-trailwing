@@ -47,7 +47,7 @@ class HUD {
     //
   }
 
-   //this draws the hud on screen
+  //this draws the hud on screen
   void draw() {
     fill(white);
     textSize(textSize);
@@ -59,7 +59,7 @@ class HUD {
     image(shield, shieldX, shieldY);
     text("score: " + score, scoreX, scoreY);
   }
-  
+
   //Update function
   void updateHUD(int coinAmount, int score, int armorlvl, int shieldAmount) {
     this.coins = coinAmount;
@@ -96,6 +96,4 @@ class HUD {
       break;
     }
   }
-
-
 }

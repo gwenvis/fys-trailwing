@@ -175,7 +175,7 @@ class Player {
     //Power-up invincibility
     invincibility = false;
     invincibleSignImage = loadImage("Invincibility_sign.png");
-    invincibleSignImage.resize((int)size.x,(int)size.y);
+    invincibleSignImage.resize((int)size.x, (int)size.y);
 
     //particlesystem dust
     ID = "RunDust";
@@ -223,7 +223,7 @@ class Player {
   void draw() {
     imageMode(CENTER);
     //image(playerImage, playerPos.x, playerPos.y);
-    playerWalk.draw(playerPos.x, playerPos.y, size.x,size.y);
+    playerWalk.draw(playerPos.x, playerPos.y, size.x, size.y);
 
     //Checks if player is invincible or not
     if (invincibility) {
@@ -233,8 +233,8 @@ class Player {
 
     int curFrame = playerWalk.getCurrentImage();
 
-    if(curFrame != lastPlayerFrame 
-        && (footstepFrames[0] == curFrame || footstepFrames[1] == curFrame))
+    if (curFrame != lastPlayerFrame 
+      && (footstepFrames[0] == curFrame || footstepFrames[1] == curFrame))
     {
       soundBank.playSound(SoundType.FOOTSTEP);
     }
@@ -585,7 +585,7 @@ class Player {
    * Calculates lasting armour of the player
    */
   void damage() {
-    if(dead) return;
+    if (dead) return;
 
     if (!invincibility) {
       if (currentArmourLevel >= maxArmourLevel) {
@@ -599,7 +599,7 @@ class Player {
     }
 
     screenShake.addScreenShake();
-    
+
     updatePlayerSpeed();
   }
 
@@ -706,7 +706,7 @@ class Player {
    */
   private boolean playerBarrierLeft() {
 
-    if(playerPos.x < 0)
+    if (playerPos.x < 0)
     {
       death();
     }
