@@ -36,6 +36,14 @@ public class SoundBank
     sounds.put(SoundType.SHIELD_HIT, new Sound(0.6f, app, "sounds/shield1.wav"));
     
     sounds.put(SoundType.INVICIBILITY_GRAB, new Sound(0.6f, app, "sounds/potion1.wav"));
+
+    sounds.put(SoundType.JUMP_BOOST_GRAB, new Sound(0.6f, app, "sounds/jumppower1.wav"));
+
+    sounds.put(SoundType.MAIN_MENU_ENTER, new Sound(0.6f, app, "sounds/mainmenu1.wav"));
+
+    sounds.put(SoundType.BUTTON_NAVIGATE, new Sound(0.6f, app, "sounds/buttonmove1.wav"));
+
+    sounds.put(SoundType.BUTTON_SELECT, new Sound(0.6f, app, "sounds/buttonselect1.wav"));
   }
 
   /*
