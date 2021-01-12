@@ -134,6 +134,7 @@ class StartMenu {
 
 
     if ((Input.keyClicked('z') || Input.keyClicked('Z')) && gameState == "START") {
+      soundBank.playSound(SoundType.BUTTON_SELECT);
       for (int i = 0; i < menuButtons.size(); i++) {
         if (menuButtons.get(i).selected) {
           switch(menuButtons.get(i).index)

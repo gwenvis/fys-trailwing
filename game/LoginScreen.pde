@@ -63,6 +63,7 @@ class LoginScreen implements IKeyboardCallback {
     {
       playerdb.login(nickName);
       play.createSession();
+      soundBank.playSound(SoundType.MAIN_MENU_ENTER);
       gameState = "START";
     }
   }
