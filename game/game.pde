@@ -25,12 +25,13 @@ SoundBank soundBank;
 CommentsDatabase commentDatabase;
 AchievementsDatabase achievementsDb;
 PlayerDatabase playerdb;
+ScreenShake screenShake;
 
 void setup() {
   commentDatabase = new CommentsDatabase();
   playerdb = new PlayerDatabase();
   achievementsDb = new AchievementsDatabase();
-
+  screenShake = new ScreenShake();
   gameState = "LOGIN";
   animations = new Animations();
   background(255);
@@ -93,8 +94,19 @@ void gameStates() {
     start.menuSelecter();
     start.audioSlider();
   } else if (gameState == "PLAY") {
+    boolean available = screenShake.isAvailable();
+    if(available)
+    {
+      pushMatrix();
+      PVector offset = screenShake.getOffset();
+      translate(offset.x, offset.y);
+    }
     play.update();
     play.draw();
+    if(available)
+    {
+      popMatrix();
+    }
   } else if (gameState == "BUTTONLAYOUT") {
     buttonLayout.draw(); 
     buttonLayout.spaceCheck();

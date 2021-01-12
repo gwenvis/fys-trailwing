@@ -591,6 +591,8 @@ class Player {
         soundBank.playSound(SoundType.HURT);
       }
     }
+
+    screenShake.addScreenShake();
   }
 
   /* 
