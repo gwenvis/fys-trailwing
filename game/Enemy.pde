@@ -15,7 +15,9 @@ class Enemy {
   int angryTimer, angryCooldown;
   int AngryDurationTimer, attackDurationCooldown;
   int fireBallTimer, fireBallDurationCooldown, approximateShieldOffset = 15;
-  int particleSystemStartColourR, particleSystemStartColourG, particleSystemStartColourB, particleSystemEndColourR, particleSystemEndColourG, particleSystemEndColourB, fireballAmount, fireballStartTimeCalc;
+  int particleSystemStartColourR, particleSystemStartColourG, particleSystemStartColourB;
+  int particleSystemEndColourR, particleSystemEndColourG, particleSystemEndColourB;
+  int fireballAmount, fireballStartTimeCalc;
   Player player;
   boolean attack;
   private boolean lastFrameAngry;
@@ -72,18 +74,15 @@ class Enemy {
 
     this.fireBallSpeed = 15;
 
-    dragonBorder = (movedDistance / 4) * 3;
     playerX = player.playerPos.x;
     playerWidthHalf = player.size.x/2;
-    playerHeightHalf = player.size.y/2;
-    playerWidth = player.size.x;
-    playerHeight = player.size.y;
     shieldWidth = player.shieldLeftBlueImage.width/2;
 
     //particlesystem fireball
     ID = "Fireball";
 
     movedDistance = 100;
+    dragonBorder = (movedDistance / 4) * 3;
     fireballsDelay = 500;
     distanceDragonFireball = dragon.frameImage[0].width/5*4 /2;
 
