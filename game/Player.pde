@@ -705,6 +705,12 @@ class Player {
    * Checks if the player reached the barrier and returs true or false
    */
   private boolean playerBarrierLeft() {
+
+    if(playerPos.x < 0)
+    {
+      death();
+    }
+
     float leftBarrier = width/screenCalcPercentage * screenCalcPercentageLeft;
     if (playerPos.x - (barierCalcX)<= leftBarrier) {
       return true;
