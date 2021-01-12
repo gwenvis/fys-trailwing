@@ -287,7 +287,7 @@ class Player {
 
     //Timer has not ended calculate playerspeed
     if (millis() - speedUpTimer > speedUpCoolDown) {
-      playerSpeed = playerSpeed * speedUp;
+      //playerSpeed = playerSpeed * speedUp;
       timerSet = false;
     }
 
@@ -435,7 +435,7 @@ class Player {
    * Describes all movements that need to be made 
    */
   void move() {
-    playerVelocity = playerSpeed * currentArmourSpeedMultiplier;
+    playerVelocity = playerSpeed;
 
     //Checks if the player is able of walking to the left
     if (Input.keyCodePressed(LEFT)&&!barrierLeft && tileCollision.direction.x != Config.LEFT) {
@@ -457,12 +457,12 @@ class Player {
 
     //Player is not falling down and pressed the x button
     if (Input.keyPressed('x') && tileCollision.direction.y == Config.DOWN) {
-      jump = true;
-
       if(!jump)
       {      
         soundBank.playSound(SoundType.JUMP);
-      }
+      } 
+
+      jump = true;
     }    
 
     //Player pressed the a button
@@ -561,6 +561,8 @@ class Player {
       shieldAmount--;
       shieldDurability = 3;
     }
+
+    soundBank.playSound(SoundType.SHIELD_HIT);
   }
 
   /* 
@@ -583,9 +585,11 @@ class Player {
       if (currentArmourLevel >= maxArmourLevel) {
         //No armour left
         death();
+        soundBank.playSound(SoundType.DEATH);
       } else if (playerHit) {  
         currentArmourLevel++;
         playerHit = false;
+        soundBank.playSound(SoundType.HURT);
       }
     }
   }
@@ -663,14 +667,14 @@ class Player {
    */
   void armourLevelsList() {
     armourLevels.add(1f);
-    armourLevels.add(1.05f);
-    armourLevels.add(1.10f);
-    armourLevels.add(1.15f);
-    armourLevels.add(1.20f);
-    armourLevels.add(1.25f);
-    armourLevels.add(1.30f);
-    armourLevels.add(1.35f);
-    armourLevels.add(1.40f);
+    armourLevels.add(2f);
+    armourLevels.add(4f);
+    armourLevels.add(6f);
+    armourLevels.add(8f);
+    armourLevels.add(10f);
+    armourLevels.add(12f);
+    armourLevels.add(14f);
+    armourLevels.add(15f);
   }
 
   /* 

@@ -18,6 +18,8 @@ class Enemy {
   int particleSystemStartColourR, particleSystemStartColourG, particleSystemStartColourB, particleSystemEndColourR, particleSystemEndColourG, particleSystemEndColourB, fireballAmount, fireballStartTimeCalc;
   Player player;
   boolean attack;
+  private boolean lastFrameAngry;
+  private boolean lastFrameAttack;
 
   private int movedDistance;
   private float playerX;
@@ -138,6 +140,7 @@ class Enemy {
     if (angry && millis()-fireBallTimer > fireBallDurationCooldown) {
       // Time to attack, starts spawning fireballs
       attack = true;
+
       for (int i = fireballs.size()-1; i>= 0; i--) {
         fireballStartTimeCalc = i - 1;
         if (fireballStartTimeCalc == -1) {
@@ -164,6 +167,19 @@ class Enemy {
         particleSystemsX.set(i, particleSystemX);
       }
     }
+
+    if(angry && angry != lastFrameAngry)
+    {
+      soundBank.playSound(SoundType.DRAGON_BRUL);
+    }
+
+    if(attack && attack != lastFrameAttack)
+    {
+      soundBank.playSound(SoundType.FIRE_START);
+    }
+
+    lastFrameAngry = angry;
+    lastFrameAttack = attack;
   }
 
   /*

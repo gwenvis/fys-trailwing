@@ -44,7 +44,7 @@ public class CommentsDatabase
   public void addComment(Comment comment)
   {
     database.updateQuery(
-        String.format("INSERT INTO Comment (distance, content, player_id, created_on) values (%d, \"%s\", %d, CURRENT_TIMESTAMP)", 
+        String.format("INSERT INTO comment (distance, content, player_id, created_on) values (%d, \"%s\", %d, CURRENT_TIMESTAMP)", 
           comment.getDistance(), comment.getContent(), comment.getPlayerId()));
   }
   
