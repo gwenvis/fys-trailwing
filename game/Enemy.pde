@@ -163,7 +163,20 @@ class Enemy {
       // Attack movement
       for (int i = fireballs.size()-1; i>= 0; i--) {
         particleSystemX = particleSystemsX.get(i);
+        particleSystemY = particleSystemsY.get(i);
         particleSystemX += fireBallSpeed;
+
+        float pY = player.playerPos.y;
+        if(particleSystemY < pY)
+        {
+          particleSystemY += Config.VERTICAL_FIREBALL_SPEED;
+        }
+        else
+        {
+          particleSystemY -= Config.VERTICAL_FIREBALL_SPEED;
+        }
+
+        particleSystemsY.set(i, particleSystemY);
         particleSystemsX.set(i, particleSystemX);
       }
     }
