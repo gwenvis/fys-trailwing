@@ -1,5 +1,5 @@
 class PlayGame {
-  PImage caveBackground;
+  PImage background, clouds, landscape, cave;
   boolean commentOverlayEnabled = false;
   CommentOverlay commentOverlay;
   public int distance = 0;
@@ -14,11 +14,14 @@ class PlayGame {
     screenComments = new ArrayList<ScreenComment>();
     distance = 0;
     currentCommentLoadDistance = 0;
-    caveBackground = loadImage("caveBackground.png");
     x1 = 0;
     x2 = width;
+    
+    landscape = loadImage("landscape.png");
+    cave = loadImage("caveBackground.png");
+    clouds = loadImage("clouds.png");
   }
-  
+
   void createSession()
   {
     highscoredb = new SessionDatabase();
@@ -35,7 +38,7 @@ class PlayGame {
     player.score = manager.score;
     player.update();
     manager.listener();
-    
+
     //make the player faster if movement cap is higher
     if (manager.speed <= manager.speedCap) {
       manager.speed += Config.CAMERA_SPEED_UP_SPEED;
@@ -64,8 +67,8 @@ class PlayGame {
   }
 
   /**
-  * handles movement and collision
-  */
+   * handles movement and collision
+   */
   void move() {
     manager.moveGroups();
     enemy.attack();
@@ -102,21 +105,27 @@ class PlayGame {
   }
 
   void backgroundManager() {
+    if (manager.chunkpool == 0){
+      background = clouds;
+    } else if(manager.chunkpool == 1){
+      background = landscape;
+    }
+    else if (manager.chunkpool == 2) {
+      background = cave;
+    }
+
+
 
     imageMode(CORNER);
 
-    if (manager.chunkpool == 0) {
-      image(caveBackground, x1, 0, width, height);
-      image(caveBackground, x2, 0, width, height);
-      x1-=2;
-      x2-=2;
-      if (x1 + width < 0) {
-        x1 = width;
-      } else if (x2 + width < 0 ) {
-        x2 = width;
-      }
-    } else {
-      background(0);
+    image(background, x1, 0, width, height);
+    image(background, x2, 0, width, height);
+    x1-=2;
+    x2-=2;
+    if (x1 + width < 0) {
+      x1 = width;
+    } else if (x2 + width < 0 ) {
+      x2 = width;
     }
   }
 

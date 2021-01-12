@@ -178,11 +178,11 @@ class Hiscore {
     fill(0);
     textAlign(CENTER);
 
-    text("NAME "+ playerdb.nickName, width/2, 350);
+    text("NAME "+ playerdb.nickName, width/2, 310);
 
     textAlign(LEFT);
-    text("ACHIEVEMENT", width/2-245, 400);
-    text("DATE", width/2+100, 400);
+    text("ACHIEVEMENT", width/2-245, 390);
+    text("DATE", width/2+100, 390);
 
 
     for (int i =0; i< achievementsTable.getRowCount(); i++) {

@@ -221,7 +221,7 @@ class Player {
   void draw() {
     imageMode(CENTER);
     //image(playerImage, playerPos.x, playerPos.y);
-    playerWalk.draw(playerPos.x, playerPos.y, 74,74);
+    playerWalk.draw(playerPos.x, playerPos.y);
 
     //Checks if player is invincible or not
     if (invincibility) {
