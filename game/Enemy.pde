@@ -15,7 +15,9 @@ class Enemy {
   int angryTimer, angryCooldown;
   int AngryDurationTimer, attackDurationCooldown;
   int fireBallTimer, fireBallDurationCooldown, approximateShieldOffset = 15;
-  int particleSystemStartColourR, particleSystemStartColourG, particleSystemStartColourB, particleSystemEndColourR, particleSystemEndColourG, particleSystemEndColourB, fireballAmount, fireballStartTimeCalc;
+  int particleSystemStartColourR, particleSystemStartColourG, particleSystemStartColourB;
+  int particleSystemEndColourR, particleSystemEndColourG, particleSystemEndColourB;
+  int fireballAmount, fireballStartTimeCalc;
   Player player;
   boolean attack;
   private boolean lastFrameAngry;
@@ -24,10 +26,11 @@ class Enemy {
 
   private int movedDistance;
   private float playerX;
-  private float playerWidthHalf, playerHeightHalf, playerWidth, playerHeight;
+  private float playerWidthHalf;
   private float shieldWidth;
 
   private int fireballsDelay;
+  float dragonBorder;
   private float distanceDragonFireball;
   private float particleSystemX, particleSystemY;
   private float fireBallSpeed;
@@ -72,16 +75,14 @@ class Enemy {
     this.fireBallSpeed = 15;
 
     playerX = player.playerPos.x;
-    playerWidthHalf = playerWidth/2;
-    playerHeightHalf = playerHeight/2;
-    playerWidth = player.size.x;
-    playerHeight = player.size.y;
+    playerWidthHalf = player.size.x/2;
     shieldWidth = player.shieldLeftBlueImage.width/2;
 
     //particlesystem fireball
     ID = "Fireball";
 
     movedDistance = 100;
+    dragonBorder = (movedDistance / 4) * 3;
     fireballsDelay = 500;
     distanceDragonFireball = dragon.frameImage[0].width/5*4 /2;
 
@@ -100,11 +101,14 @@ class Enemy {
     dragon.draw(x, y);
   }
 
-
+  /*
+ * @author Patrick
+   */
   void movement(float playerY) {
-    if (y < playerY - movedDistance) {
+    playerX = player.playerPos.x;
+    if (y < playerY - dragonBorder) {
       y += speed;
-    } else if (y > playerY + movedDistance) {
+    } else if (y > playerY + dragonBorder) {
       y -= speed;
     }
   }
@@ -219,7 +223,8 @@ class Enemy {
     for (int i = fireballs.size()-1; i>= 0; i--) {
       ParticleSystem fireball = fireballs.get(i);
       particleSystemX = particleSystemsX.get(i);
-      if (particleSystemX >= hitX && particleSystemX < hitX + playerWidth && particleSystemY >= player.playerPos.y - playerHeightHalf && particleSystemY < player.playerPos.y + playerHeightHalf) {
+      if (particleSystemX >= hitX && particleSystemX < hitX + player.size.x && particleSystemY >= player.playerPos.y - player.size.y/2 && particleSystemY < player.playerPos.y + player.size.y/2) {
+        particleSystemX = 10000;
         fireball.particleID = "Hit";
         fireball.draw =false;
         player.fireballHit();

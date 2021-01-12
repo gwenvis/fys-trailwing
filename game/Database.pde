@@ -1,4 +1,5 @@
-/* @author Antonio Bottelier
+/**
+ * @author Antonio Bottelier
  * 
  * Base class to easily connect to your database.
  * Extend this to create a wrapper for a single table.

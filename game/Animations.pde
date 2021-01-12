@@ -1,4 +1,4 @@
-/*
+/**
  * @author Antonio Bottelier
  *
  * Initiliazies all animation for global use. The Animations class is instantiated in the root project 

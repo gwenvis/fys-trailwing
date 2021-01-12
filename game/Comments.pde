@@ -1,3 +1,10 @@
+/**
+ * @author Antonio Bottelier
+ *
+ * The comment database is a wrapper for the Database
+ * that allows the uploading of comments and retrieving the comments
+ * to be shown on the scren.
+ */
 public class CommentsDatabase
 {
   Database database;
@@ -30,6 +37,9 @@ public class CommentsDatabase
     return comments;
   }
   
+  /*
+   * Get all comments by name (NOT IMPLEMENTED!)
+   */
   public ArrayList<Comment> getCommentsByName(String name)
   {
      Table commentTable = database.runQuery(
@@ -41,6 +51,9 @@ public class CommentsDatabase
      return comments;
   }
 
+  /*
+   * Add a comment to the database
+   */
   public void addComment(Comment comment)
   {
     database.updateQuery(
@@ -48,26 +61,13 @@ public class CommentsDatabase
           comment.getDistance(), comment.getContent(), comment.getPlayerId()));
   }
   
+  /*
+   * Update a comment's values
+   */
   public void updateComment(int id, Comment comment)
   {
     database.updateQuery(
       String.format("UPDATE comment SET distance = %d, content = '%s', player_id = %d WHERE id = %d", 
         comment.getDistance(), comment.getContent(), comment.getPlayerId(), id));
   }
-}
-
-public class Comment
-{
-  public Comment(String content, int distance)
-  {
-    this.content = content;
-    this.distance = distance;
-  }
-
-  private String content;
-  private int distance;
-
-  public String getContent() { return content; }
-  public int getDistance() { return distance; }
-  public int getPlayerId() { return 0; }
 }

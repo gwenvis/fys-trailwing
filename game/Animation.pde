@@ -1,4 +1,4 @@
-/*
+/**
  * @author Antonio Bottelier
  *
  * Class for creating animations and playing them automatically.

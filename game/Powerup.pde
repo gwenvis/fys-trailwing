@@ -1,5 +1,5 @@
 /**
- * Made by Antonio Bottelier
+ * @author Antonio Bottelier
  * The powerup class detects collision with the player
  * and then gives the player the appropriate powerup.
  */
