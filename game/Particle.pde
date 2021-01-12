@@ -208,7 +208,7 @@ class Particle {
     ReturnDirection = negativeDirection * directionChange;
     return ReturnDirection;
   }
-  
+
   /*
    * Checks if particle is visible
    */

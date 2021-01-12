@@ -20,7 +20,7 @@ public class ScreenShake
    */
   public void addScreenShake(int time)
   {
-    if(time == -1)
+    if (time == -1)
     {
       currentScreenShakeTime = SCREEN_SHAKE_TIME;
       return;
@@ -32,14 +32,16 @@ public class ScreenShake
   /*
    * Adds default screenshake time.
    */
-  public void addScreenShake() { addScreenShake(-1); }
+  public void addScreenShake() { 
+    addScreenShake(-1);
+  }
 
   // Gets the offset and updates the values for the next screen shake.
   public PVector getOffset()
   {
-    if(currentScreenShakeTime == 0)
+    if (currentScreenShakeTime == 0)
     {
-      return new PVector(0,0);
+      return new PVector(0, 0);
     }
 
     currentScreenShakeTime--;
@@ -48,7 +50,7 @@ public class ScreenShake
 
     // apply easing when time is low
     float multiplication = currentScreenShakeTime / SCREEN_SHAKE_EASE_TIME;
-    if(multiplication > 1) multiplication = 1;
+    if (multiplication > 1) multiplication = 1;
 
     return new PVector(x*multiplication, y*multiplication);
   }

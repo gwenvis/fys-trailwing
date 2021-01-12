@@ -1,7 +1,7 @@
- /*
+/*
   * @author Patrick
-  * limit added by Antonio
-  */
+ * limit added by Antonio
+ */
 public static class Keyboard
 {
   public static String update(String s, int limit)
@@ -21,5 +21,7 @@ public static class Keyboard
     return s;
   }
 
-  public static String update(String s) { return update(s, -1); }
+  public static String update(String s) { 
+    return update(s, -1);
+  }
 }

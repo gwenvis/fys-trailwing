@@ -49,6 +49,7 @@ class GameOver {
   void update()
   {
     play.lavaOnScreen = false;
+    play.lava.amp(0);
     if(drawCommentOverlay) return;
     
     //sets timer to eventually reset to start.
@@ -60,9 +61,9 @@ class GameOver {
     if (millis() - screenTimer > screenCD) {
       setup();
     }
-    
+
     //if X is pressed, give comment overlay.
-    if(Input.keyPressed('x'))
+    if (Input.keyPressed('x'))
     {
       drawCommentOverlay = true;
     }
@@ -75,7 +76,7 @@ class GameOver {
   void drawCommentOverlay()
   {
     if (commentOverlay == null) commentOverlay = new CommentOverlay();
-    
+
     CommentOverlayState state = commentOverlay.update();
 
     if (state == CommentOverlayState.SUBMITTED)
@@ -85,8 +86,7 @@ class GameOver {
       println("Comment placed: \"" + comment.getContent() + "\" at distance: " + comment.getDistance());
       commentDatabase.addComment(comment);
       commentOverlay = null;
-    }
-    else if(state == CommentOverlayState.DISCARDED)
+    } else if (state == CommentOverlayState.DISCARDED)
     {
       drawCommentOverlay = false;
       commentOverlay = null;
@@ -94,6 +94,4 @@ class GameOver {
 
     if (commentOverlay != null) commentOverlay.draw();
   }
-
-  
 }

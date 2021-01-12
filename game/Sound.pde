@@ -14,9 +14,9 @@ public class Sound
     this.sounds = new ArrayList<SoundFile>();
     this.volume = volume;
 
-    for(int i = 0; i < sounds.length; i++)
+    for (int i = 0; i < sounds.length; i++)
     {
-      this.sounds.add(new SoundFile(app, sounds[i])); 
+      this.sounds.add(new SoundFile(app, sounds[i]));
     }
   }
 
@@ -33,7 +33,7 @@ public class Sound
     int index = (int)random(0, sounds.size());
     SoundFile file = sounds.get(index);
 
-    if(file == null)
+    if (file == null)
     {
       println("null.. " + index);
     }

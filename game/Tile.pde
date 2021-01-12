@@ -22,7 +22,8 @@ class Tile {
     layer = spriteLayer;
   }
 
-  Tile() {}
+  Tile() {
+  }
 
   /**
    * @author Cody Bolleboom
@@ -32,13 +33,14 @@ class Tile {
    */
   void drawTile() {
     imageMode(CENTER);
-    if(!enabled) return;
+    if (!enabled) return;
     update();
     image(sprite, position.x, position.y, size.x, size.y);
   }
 
   // update is overridden
-  void update() { }
+  void update() {
+  }
 
   /**
    * @author Cody Bolleboom
@@ -50,7 +52,7 @@ class Tile {
    */
   void drawTileRelative(PVector parent) {
     imageMode(CENTER);
-    if(!enabled) return;
+    if (!enabled) return;
     relativePosition = new PVector(position.x + parent.x, position.y + parent.y);
     update();
     image(sprite, position.x + parent.x, position.y + parent.y, size.x, size.y);

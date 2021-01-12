@@ -1,6 +1,6 @@
 /* Made by Patrick Eikema
-   This class makes just a simple text button. Can be managed with the ButtonManager class
-*/ 
+ This class makes just a simple text button. Can be managed with the ButtonManager class
+ */
 class TextButton {
   float x, y, w, h;
   String text;
@@ -12,7 +12,7 @@ class TextButton {
   color selectedColor;
 
 
-  TextButton(float x, float y, String text, int fontSize,color normalColor, color selectedColor, int index) {
+  TextButton(float x, float y, String text, int fontSize, color normalColor, color selectedColor, int index) {
     this.x = x;
     this.y = y;
     this.text = text;

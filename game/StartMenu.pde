@@ -80,7 +80,6 @@ class StartMenu {
     menuButtons.add(new TextButton(quitX, quitY, "Quit", menuFontSize, color(white), color(red), 2));
 
     this.manager = new ButtonManager(menuButtons);
-
   }
 
 
@@ -161,18 +160,17 @@ class StartMenu {
   //makes a clickable audio slider.
   void audioSlider() {
     //LEFT and RIGHT key makes sound lower or higher amp
-    if(Input.keyCodeClicked(LEFT)) 
+    if (Input.keyCodeClicked(LEFT)) 
     {
       sliderBallX -= 10;
-      if(sliderBallX < sliderX1) sliderBallX = sliderX1;
-    }
-    else if(Input.keyCodeClicked(RIGHT))
+      if (sliderBallX < sliderX1) sliderBallX = sliderX1;
+    } else if (Input.keyCodeClicked(RIGHT))
     {
       sliderBallX += 10;
-      if(sliderBallX > sliderX2) sliderBallX = sliderX2;
+      if (sliderBallX > sliderX2) sliderBallX = sliderX2;
     }
-    
-    
+
+
     //makes the actual slider.
     distanceBall = (sliderBallX - sliderX1)/100/2;
     boolean showSlider = mouseX > 0 && mouseX < sliderMaxShowLocX && mouseY > sliderMaxSHowLocY && mouseY < height;
@@ -186,7 +184,7 @@ class StartMenu {
       stroke(white);
       fill(black);
       ellipse(sliderBallX, sliderBallY, sliderBallR, sliderBallR);
-      
+
       //if mouse button pressed, ball follows the mouse
       if (Input.mouseButtonPressed(LEFT) && showSlider) {
         sliderBallX = mouseX;
