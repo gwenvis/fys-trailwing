@@ -244,6 +244,7 @@ class Enemy {
       for (int i = 0; i< fireballs.size(); i++)
       {
         ParticleSystem fireball = fireballs.get(i);
+        fireball.particleID = "Fireball";
         fireball.particleSystemStartX  = particleSystemX;
         fireball.particleSystemStartY = particleSystemY - (50 * i);
         if (fireball.particleSystemStartX < x + distanceDragonFireball) {
